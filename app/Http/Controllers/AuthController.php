@@ -16,34 +16,41 @@ class AuthController extends Controller
         Session::flash('message', $msg);
     }
 
-    public function signin()
+    public function signin(Request $request, $role)
     {
-        return view('pages.auth.login');
+
+        return view('pages.auth.' . $role, [
+            'role' => $role
+        ]);
     }
 
-    public function signup()
+    public function getRoleId($role)
     {
-        return view('pages.auth.login');
+        if ($role === 'admin') {
+            return 1;
+        }
+        if ($role === 'teacher') {
+            return 2;
+        }
+        return 3;
     }
 
-    public function authentication(Request $request)
+    public function authentication(Request $request, $role)
     {
+        $request->merge([
+            'role_id' => $this->getRoleId($role)
+        ]);
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
+            'role_id' => ['required'],
         ]);
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            if(Auth::user()->role_id === 1) {
-                return redirect('/');
-            } else if(Auth::user()->role_id === 2) {
-                return redirect('/teacher');
-            } else {
-                return redirect('/student');
-            }
+            return redirect('/' . $role);
         }
         $this->message('Incorrect username or password', 'failed');
-        return redirect('/signin');
+        return redirect('/' . $role . '/signin');
     }
 
     public function store(Request $request)
@@ -74,6 +81,6 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/signin');
+        return redirect('/student/signin');
     }
 }

@@ -19,16 +19,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
     Route::middleware('admin-only')->group(function () {
-        Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');;
+        Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
+        Route::get('/admin', [AdminController::class, 'home'])->name('admin-dashboard');
     });
     Route::middleware('teacher-only')->group(function () {
         Route::prefix('teacher')->group(function () {
-            Route::get('/', [TeacherController::class, 'home'])->name('teacher-dashboard');;
+            Route::get('/', [TeacherController::class, 'home'])->name('teacher-dashboard');
         });
     });
     Route::middleware('student-only')->group(function () {
         Route::prefix('student')->group(function () {
-            Route::get('/', [StudentController::class, 'home'])->name('student-dashboard');;
+            Route::get('/', [StudentController::class, 'home'])->name('student-dashboard');
         });
     });
     Route::get('/logout', [AuthController::class, 'signout']);
@@ -36,8 +37,9 @@ Route::middleware('auth')->group(function () {
 
 // Account Login
 Route::middleware('guest')->group(function () {
-    Route::get('/signin', [AuthController::class, 'signin'])->name('login');
+    Route::get('/{role}/signin', [AuthController::class, 'signin'])->name('login')->defaults('role', 'student');
+    Route::post('/signin/{role}', [AuthController::class, 'authentication']);
+
     Route::get('/signup', [AuthController::class, 'signup']);
-    Route::post('/signin', [AuthController::class, 'authentication']);
     Route::post('/signup', [AuthController::class, 'store']);
 });
