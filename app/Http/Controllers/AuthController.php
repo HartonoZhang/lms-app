@@ -18,7 +18,6 @@ class AuthController extends Controller
 
     public function signin(Request $request, $role)
     {
-
         return view('pages.auth.' . $role, [
             'role' => $role
         ]);
@@ -43,7 +42,7 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
-            'role_id' => ['required'],
+            'role_id' => ['required']
         ]);
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();

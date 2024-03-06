@@ -10,4 +10,9 @@ class TeacherController extends Controller
     {
         return view('pages.dashboards.teacher');
     }
+
+    public function profile()
+    {
+        return view('pages.profiles.teacher');
+    }
 }

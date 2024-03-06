@@ -10,4 +10,9 @@ class StudentController extends Controller
     {
         return view('pages.dashboards.student');
     }
+
+    public function profile()
+    {
+        return view('pages.profiles.student');
+    }
 }

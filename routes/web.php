@@ -20,16 +20,25 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::middleware('admin-only')->group(function () {
         Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
-        Route::get('/admin', [AdminController::class, 'home'])->name('admin-dashboard');
+        Route::get('/setting', [AdminController::class, 'setting']);
+        Route::prefix('admin')->group(function () {
+            Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
+            Route::get('/profile', [AdminController::class, 'profile']);
+
+            Route::put('/updateProfile', [AdminController::class, 'saveProfiles']);
+            Route::put('/updatePassword', [AdminController::class, 'savePassword']);
+        });
     });
     Route::middleware('teacher-only')->group(function () {
         Route::prefix('teacher')->group(function () {
             Route::get('/', [TeacherController::class, 'home'])->name('teacher-dashboard');
+            Route::get('/profile', [TeacherController::class, 'profile']);
         });
     });
     Route::middleware('student-only')->group(function () {
         Route::prefix('student')->group(function () {
             Route::get('/', [StudentController::class, 'home'])->name('student-dashboard');
+            Route::get('/profile', [StudentController::class, 'profile']);
         });
     });
     Route::get('/logout', [AuthController::class, 'signout']);

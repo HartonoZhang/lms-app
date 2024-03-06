@@ -18,7 +18,7 @@
     @yield('css-link')
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
     <!-- Site wrapper -->
     <div class="wrapper">
         <!-- Navbar -->
@@ -31,12 +31,6 @@
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="/" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="/task" class="nav-link">Task</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="/finance" class="nav-link">Finance</a>
                 </li>
             </ul>
 

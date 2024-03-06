@@ -41,7 +41,7 @@
     </style>
 </head>
 
-<body>
+<body style="background-color: #f4f6f9;">
     <section class="vh-100">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -61,8 +61,9 @@
                                             <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
                                             <span class="h1 fw-bold mb-0">Logo</span>
                                         </div>
-                                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your
-                                            account</h5>
+                                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">
+                                            @yield('sub-title')
+                                        </h5>
                                         @if (Session::get('status') == 'success')
                                             <div class="alert alert-success" role="alert">
                                                 {{ Session::get('message') }}
@@ -73,7 +74,7 @@
                                             </div>
                                         @endif
                                         <input type="text" class="form-control" name="role" value="1" hidden>
-                                        <div class="input-group form-outline mb-4">
+                                        <div class="input-group form-outline mb-2">
                                             <div class="input-group">
                                                 <input type="email" class="form-control" placeholder="Email"
                                                     name="email">
@@ -87,7 +88,7 @@
                                                 <p class="text-danger m-0">{{ $message }}</p>
                                             @enderror
                                         </div>
-                                        <div class="input-group form-outline mb-4">
+                                        <div class="input-group form-outline mb-2">
                                             <div class="input-group">
                                                 <input type="password" class="form-control" placeholder="Password"
                                                     name="password" autocomplete="on">
