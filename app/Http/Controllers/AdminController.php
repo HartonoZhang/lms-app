@@ -42,6 +42,16 @@ class AdminController extends Controller
         return view('pages.students.add');
     }
 
+    public function teacherList()
+    {
+        return view('pages.teachers.list');
+    }
+
+    public function teacherAdd()
+    {
+        return view('pages.teachers.add');
+    }
+
     public function saveProfiles(Request $request)
     {
         $validation = $request->validate([

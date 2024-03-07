@@ -10,7 +10,7 @@
 @section('content')
     <div class="container-fluid h-100">
         <div class="d-flex justify-content-end mb-2">
-            <a href="{{ route('student-add') }}" class="btn btn-success">
+            <a href="{{ route('student-add') }}" class="btn btn-primary">
                 New Student
             </a>
         </div>
@@ -139,15 +139,20 @@
                 }],
                 "buttons": [
                     "copy",
+                    "print",
+                    {
+                        extend: 'spacer',
+                        style: 'bar',
+                        text: 'Export files:'
+                    },
                     {
                         extend: 'csv',
-                        title: "List Students"
+                        title: "List Students",
                     },
                     {
                         extend: 'excel',
                         title: "List Students"
-                    },
-                    "print"
+                    }
                 ]
             }).buttons().container().appendTo('#tabel-students_wrapper .col-md-6:eq(0)');
         });
