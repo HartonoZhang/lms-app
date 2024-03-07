@@ -73,7 +73,7 @@
                                     <option value=''>Catholic
                                     </option>
                                     <option value=''>Hindu
-                                    </option>   
+                                    </option>
                                     <option value=''>Buddhist
                                     </option>
                                     <option value=''>Confucian
@@ -107,12 +107,18 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/dist/css/adminlte.min.css">
 
     <style>
+        .select2-container--bootstrap4.select2-container--focus .select2-selection {
+            box-shadow: none !important;
+        }
+
+        .select2-container--bootstrap4 .select2-selection {
+            -webkit-transition: none !important;
+        }
+
         label {
-            font-weight: 400 !important; 
+            font-weight: 400 !important;
         }
     </style>
 @endsection
@@ -125,7 +131,9 @@
 
     <script type="text/javascript">
         $(function() {
-            $('.select2').select2()
+            $('select').select2({
+                theme: 'bootstrap4',
+            });
 
             @if (Session::has('status'))
                 @if (Session::get('status') === 'success')

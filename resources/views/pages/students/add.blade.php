@@ -115,7 +115,6 @@
 
         .select2-container--bootstrap4 .select2-selection {
             -webkit-transition: none !important;
-            transition: none !important;
         }
 
         label {
