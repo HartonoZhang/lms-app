@@ -18,7 +18,7 @@
             </div>
         </a>
 
-        <nav class="mt-2">
+        <nav class="mt-2 main-menu">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
                 <li class="nav-header">MAIN MENU</li>
@@ -146,4 +146,19 @@
             </ul>
         </nav>
     </div>
+    <script type="text/javascript">
+        var navParent = document.querySelectorAll("ul.nav-treeview");
+        var checkElement = false;
+        for (let i = 0; i < navParent.length; i++) {
+            let navChild = [].slice.call(navParent[i].children);
+            for (let j = 0; j<navChild.length; j++){
+                if(navChild[j].children[0].className.includes("active")){
+                    navParent[i].parentElement.classList.add("menu-is-opening");
+                    navParent[i].parentElement.classList.add("menu-open");
+                    navChild[j].setAttribute("style","display: block");
+                    break;
+                }
+            }
+        }
+    </script>
 </aside>
