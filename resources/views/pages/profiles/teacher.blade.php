@@ -1,9 +1,9 @@
-@extends('pages.layouts.template')
+@extends('layouts.template')
 
 @section('title', 'Profile')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('teacher-dashboard') }}">Home</a></li>
     <li class="breadcrumb-item active">Profile</li>
 @endsection
 
@@ -32,7 +32,7 @@
                         </ul>
                         <button class="btn btn-primary btn-block" data-toggle="modal"
                             data-target="#modal-update-photo"><b>Change Profile Photo</b></button>
-                        <a href="/logout" class="btn btn-danger btn-block"><b>Logout</b></a>
+                        <a href="{{ route('logout') }}" class="btn btn-danger btn-block"><b>Logout</b></a>
                     </div>
                     <!-- /.card-body -->
                 </div>

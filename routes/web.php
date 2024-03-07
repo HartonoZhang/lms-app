@@ -20,13 +20,20 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::middleware('admin-only')->group(function () {
         Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
-        Route::get('/setting', [AdminController::class, 'setting']);
+        Route::get('/setting', [AdminController::class, 'setting'])->name('setting');
+
+        Route::prefix('student')->group(function () {
+            Route::get('/list', [AdminController::class, 'studentList'])->name('student-list');
+            Route::get('/add', [AdminController::class, 'studentAdd'])->name('student-add');
+        });
+
         Route::prefix('admin')->group(function () {
             Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
             Route::get('/profile', [AdminController::class, 'profile']);
 
             Route::put('/updateProfile', [AdminController::class, 'saveProfiles']);
             Route::put('/updatePassword', [AdminController::class, 'savePassword']);
+            Route::put('/updatePhoto', [AdminController::class, 'savePhoto']);
         });
     });
     Route::middleware('teacher-only')->group(function () {
@@ -41,7 +48,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/profile', [StudentController::class, 'profile']);
         });
     });
-    Route::get('/logout', [AuthController::class, 'signout']);
+    Route::get('/logout', [AuthController::class, 'signout'])->name('logout');
 });
 
 // Account Login

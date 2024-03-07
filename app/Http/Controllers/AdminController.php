@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -29,6 +30,16 @@ class AdminController extends Controller
     public function setting()
     {
         return view('pages.setting.index');
+    }
+
+    public function studentList()
+    {
+        return view('pages.students.list');
+    }
+
+    public function studentAdd()
+    {
+        return view('pages.students.add');
     }
 
     public function saveProfiles(Request $request)
@@ -62,6 +73,31 @@ class AdminController extends Controller
             ]);
 
             $this->message('Password Successfully Updated!', 'success');
+            return back();
+        }
+    }
+
+    public function savePhoto(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'image' => ['required']
+        ]);
+
+        if ($validate->fails()) {
+            Session::flash('failUpload');
+            return back()
+                ->withErrors($validate);;
+        } else {
+            $user = User::find(Auth::user()->id);
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $imgName = Auth::user()->name . '-' . now()->timestamp . '.' . $extension;
+            $request->file('image')->move('assets/images/profile', $imgName);
+
+            $user->update([
+                'image' => $imgName
+            ]);
+
+            $this->message('Profile Photo Successfully Updated.', 'success');
             return back();
         }
     }

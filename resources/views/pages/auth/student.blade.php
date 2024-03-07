@@ -1,4 +1,4 @@
-@extends('pages.layouts.auth')
+@extends('layouts.auth')
 
 @section('sub-title')
     Sign into your <span class="badge badge-secondary">Student</span> account

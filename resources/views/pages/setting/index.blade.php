@@ -1,9 +1,9 @@
-@extends('pages.layouts.template')
+@extends('layouts.template')
 
 @section('title', 'Settings')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('admin-dashboard') }}">Home</a></li>
     <li class="breadcrumb-item active">Settings</li>
 @endsection
 
@@ -27,14 +27,22 @@
                         </div>
                         <div class="form-group">
                             <label for="inputDescription">Logo *</label>
-                            <input type="file" id="inputName" class="form-control" value="AdminLTE">
-                            <small id="emailHelp" class="form-text text-muted">Recommended image size is 150px x 150px</small>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="customFile">
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
+                            <small id="emailHelp" class="form-text text-muted">Recommended image size is 150px x
+                                150px</small>
                         </div>
                         <div class="form-group">
                             <label for="inputDescription">Favicon *</label>
-                            <input type="file" id="inputName" class="form-control" value="AdminLTE">
-                            <small id="emailHelp" class="form-text text-muted">Recommended image size is 16px x 16px or 32px x 32px</small>
-                        </div>  
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="customFile">
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
+                            <small id="emailHelp" class="form-text text-muted">Recommended image size is 16px x 16px or 32px
+                                x 32px</small>
+                        </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Update</button>
                         </div>
@@ -45,7 +53,7 @@
             <div class="col-md-6">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">General</h3>
+                        <h3 class="card-title">Address</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                 <i class="fas fa-minus"></i>
@@ -88,34 +96,6 @@
                     </div>
                     <!-- /.card-body -->
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modal-update-photo">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="/admin/updatePhoto" method="POST" enctype="multipart/form-data" data-remote="true">
-                    @csrf
-                    @method('PUT')
-                    <div class="modal-header">
-                        <h4 class="modal-title">Update Profile Photo</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <input type="file" class="form-control" id="image" name="image">
-                            @error('file')
-                                <p class="text-danger mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="modal-footer float-end">
-                        <button type="submit" class="btn btn-primary">Update</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>

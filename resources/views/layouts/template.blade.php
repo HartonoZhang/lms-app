@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ asset('assets') }}/dist/css/adminlte.min.css">
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="{{ asset('css') }}/app.css">
     @yield('css-link')
 </head>
 
@@ -22,7 +23,7 @@
     <!-- Site wrapper -->
     <div class="wrapper">
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light border-0" style="background-color: #f4f6f9">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -30,7 +31,7 @@
                             class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="/" class="nav-link">Home</a>
+                    <a href="/{{ strtolower(Auth::user()->role->name) }}" class="nav-link">Home</a>
                 </li>
             </ul>
 
@@ -77,7 +78,7 @@
         </nav>
         <!-- /.navbar -->
 
-        @include('pages.layouts.navbar')
+        @include('layouts.navbar')
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -129,6 +130,7 @@
     <!-- daterangepicker -->
     <script src="{{ asset('assets') }}/plugins/moment/moment.min.js"></script>
     <script src="{{ asset('assets') }}/plugins/daterangepicker/daterangepicker.js"></script>
+
     @yield('js-script')
 </body>
 
