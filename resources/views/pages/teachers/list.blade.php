@@ -1,6 +1,6 @@
 @extends('layouts.template')
 
-@section('title', 'List Students')
+@section('title', 'List Teachers')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin-dashboard') }}">Home</a></li>
@@ -10,7 +10,7 @@
 @section('content')
     <div class="container-fluid h-100">
         <div class="d-flex justify-content-end mb-2">
-            <a href="{{ route('student-add') }}" class="btn btn-success">
+            <a href="{{ route('teacher-add') }}" class="btn btn-primary">
                 New Teacher
             </a>
         </div>
@@ -149,7 +149,7 @@
                     },
                     "print"
                 ]
-            }).buttons().container().appendTo('#tabel-students_wrapper .col-md-6:eq(0)');
+            }).buttons().container().appendTo('#tabel-teachers_wrapper .col-md-6:eq(0)');
         });
     </script>
 @endsection

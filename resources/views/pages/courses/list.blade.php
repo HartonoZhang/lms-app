@@ -1,17 +1,17 @@
 @extends('layouts.template')
 
-@section('title', 'List Students')
+@section('title', 'List Courses')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin-dashboard') }}">Home</a></li>
-    <li class="breadcrumb-item active">List Students</li>
+    <li class="breadcrumb-item active">List Courses</li>
 @endsection
 
 @section('content')
     <div class="container-fluid h-100">
         <div class="d-flex justify-content-end mb-2">
-            <a href="{{ route('student-add') }}" class="btn btn-primary">
-                New Student
+            <a href="{{ route('teacher-add') }}" class="btn btn-primary">
+                New Teacher
             </a>
         </div>
         <div class="card">
@@ -22,11 +22,11 @@
                     @else
                         there are {{ count($listTask) }} tasks
                     @endif --}}
-                    there is 1 student
+                    there is 1 teacher
                 </h3>
             </div>
             <div class="card-body">
-                <table id="tabel-students" class="table table-bordered table-striped">
+                <table id="tabel-courses" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>Title</th>
@@ -129,7 +129,7 @@
 
     <script>
         $(function() {
-            $("#tabel-students").DataTable({
+            $("#tabel-courses").DataTable({
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
@@ -139,22 +139,17 @@
                 }],
                 "buttons": [
                     "copy",
-                    "print",
-                    {
-                        extend: 'spacer',
-                        style: 'bar',
-                        text: 'Export files:'
-                    },
                     {
                         extend: 'csv',
-                        title: "List Students",
+                        title: "List Courses"
                     },
                     {
                         extend: 'excel',
-                        title: "List Students"
-                    }
+                        title: "List Courses"
+                    },
+                    "print"
                 ]
-            }).buttons().container().appendTo('#tabel-students_wrapper .col-md-6:eq(0)');
+            }).buttons().container().appendTo('#tabel-courses_wrapper .col-md-6:eq(0)');
         });
     </script>
 @endsection

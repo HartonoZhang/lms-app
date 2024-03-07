@@ -27,6 +27,16 @@ Route::middleware('auth')->group(function () {
             Route::get('/add', [AdminController::class, 'studentAdd'])->name('student-add');
         });
 
+        Route::prefix('teacher')->group(function () {
+            Route::get('/list', [AdminController::class, 'teacherList'])->name('teacher-list');
+            Route::get('/add', [AdminController::class, 'teacherAdd'])->name('teacher-add');
+        });
+
+        Route::prefix('course')->group(function () {
+            Route::get('/list', [AdminController::class, 'courseList'])->name('course-list');
+            Route::get('/add', [AdminController::class, 'courseAdd'])->name('course-add');
+        });
+
         Route::prefix('admin')->group(function () {
             Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
             Route::get('/profile', [AdminController::class, 'profile']);

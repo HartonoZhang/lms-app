@@ -7,7 +7,7 @@
 
     <div class="sidebar">
         <a href="/{{ strtolower(Auth::user()->role->name) }}/profile"
-            class="user-panel mt-3 py-2 mb-3 d-flex align-items-center rounded" style="background-color: #4b49ac">
+            class="user-panel mt-3 py-2 mb-3 d-flex align-items-center rounded">
             <div class="image">
                 <img src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}" class="img-circle elevation-2"
                     alt="User Image" style="width: 35px; height: 35px;">
@@ -40,13 +40,15 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="#" class="{{ request()->is('task') ? 'active' : '' }} nav-link">
+                                <a href="{{ route('teacher-list') }}"
+                                    class="{{ request()->is('teacher/list') ? 'active' : '' }} nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Teacher List</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#" class="{{ request()->is('task/history') ? 'active' : '' }} nav-link">
+                                <a href="{{ route('teacher-add') }}"
+                                    class="{{ request()->is('teacher/add') ? 'active' : '' }} nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Teacher Add</p>
                                 </a>
@@ -114,14 +116,15 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="#" class="{{ request()->is('finance') ? 'active' : '' }} nav-link">
+                                <a href="{{ route('course-list') }}"
+                                    class="{{ request()->is('student/list') ? 'active' : '' }} nav-link">
                                     <i class="fas fa-edit nav-icon"></i>
                                     <p>Subject List</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#"
-                                    class="{{ request()->is('finance/history') ? 'active' : '' }} nav-link">
+                                <a href="{{ route('course-add') }}"
+                                    class="{{ request()->is('student/add') ? 'active' : '' }} nav-link">
                                     <i class="fa fa-history nav-icon"></i>
                                     <p>Subject Add</p>
                                 </a>

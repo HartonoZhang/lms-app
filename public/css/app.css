@@ -30,7 +30,7 @@ body {
 }
 
 a {
-  color: var(--color-dark);
+    color: var(--color-dark);
 }
 
 .brand-link:hover,
@@ -43,7 +43,7 @@ a {
 }
 
 ul.nav a {
-  font-size: 0.87rem;
+    font-size: 0.87rem;
 }
 
 ul.nav a:hover {
@@ -55,4 +55,29 @@ ul.nav a:hover {
 .nav-pills .nav-item .active {
     background-color: var(--color-light);
     color: var(--color-primary);
+}
+
+.btn,
+.card,
+.info-box {
+    border: none;
+    box-shadow: var(--box-shadow) !important;
+    border-radius: var(--border-radius-1);
+}
+
+.btn-primary,
+.user-panel {
+    background-color: var(--color-primary);
+}
+
+.btn-danger {
+    background-color: var(--color-danger);
+}
+
+.btn-success {
+    background-color: var(--color-success);
+}
+
+.btn-warning {
+    background-color: var(--color-warning);
 }
