@@ -2,12 +2,14 @@
 
 :root {
     --color-primary: #7380ec;
+    --color-primary-light: #8f9afb;
+    --color-primary-xlight: #aab2f9;
     --color-danger: #ff7782;
     --color-success: #41f1b6;
     --color-warning: #ffbb55;
     --color-white: #fff;
     --color-info-dark: #7d8da1;
-    --color-info-light: #dceleb;
+    --color-info-light: #afbccc;
     --color-dark: #363949;
     --color-light: rgba(132, 139, 200, 0.18);
     --color-primary-variant: #111e88;
@@ -42,11 +44,7 @@ a {
     color: white;
 }
 
-ul.nav a {
-    font-size: 0.87rem;
-}
-
-ul.nav a:hover {
+.sidebar ul.nav a:hover {
     transition: all 300ms ease !important;
     color: var(--color-info-dark) !important;
     padding-left: 2rem;
@@ -63,6 +61,30 @@ ul.nav a:hover {
     border: none;
     box-shadow: var(--box-shadow) !important;
     border-radius: var(--border-radius-1);
+}
+
+ul.nav a,
+label,
+thead th,
+tbody td,
+.form-control,
+.btn b,
+.select2-selection__rendered,
+.select2-results__option {
+    font-size: 0.87rem !important;
+}
+
+.select2-selection__rendered,
+.select2-selection--multiple {
+    padding-left: 0.75rem;
+    padding-top: 0.10rem;
+}
+
+.breadcrumb-item a {
+    color: var(--color-primary);
+}
+.breadcrumb-item a:hover {
+    color: var(--color-dark);
 }
 
 .btn-primary,

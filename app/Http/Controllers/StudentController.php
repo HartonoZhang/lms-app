@@ -15,4 +15,9 @@ class StudentController extends Controller
     {
         return view('pages.profiles.student');
     }
+
+    public function leaderboards()
+    {
+        return view('pages.leaderboards.student');
+    }
 }

@@ -15,4 +15,9 @@ class TeacherController extends Controller
     {
         return view('pages.profiles.teacher');
     }
+
+    public function leaderboards()
+    {
+        return view('pages.leaderboards.teacher');
+    }
 }

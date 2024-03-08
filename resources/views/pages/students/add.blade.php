@@ -24,21 +24,21 @@
                             <div class="form-label-group in-border">
                                 <input type="text" id="firstName" class="form-control form-control-mb"
                                     placeholder="First Name" />
-                                <label for="firstName">First Name</label>
+                                <label for="firstName">Full Name*</label>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-label-group in-border">
-                                <input type="text" id="lastName" class="form-control form-control-mb"
-                                    placeholder="Last Name" />
-                                <label for="lastName">Last Name</label>
+                                <input type="text" id="email" class="form-control form-control-mb"
+                                    placeholder="Email" />
+                                <label for="email">Email*</label>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-label-group in-border">
                                 <input type="text" id="phoneNumber" class="form-control form-control-mb"
                                     placeholder="Phone Number" />
-                                <label for="phoneNumber">Phone Number</label>
+                                <label for="phoneNumber">Phone Number*</label>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                             <div class="form-label-group in-border">
                                 <input type="date" id="firstName" class="form-control form-control-mb"
                                     placeholder=">Date of Birth" />
-                                <label for="firstName">Date of Birth</label>
+                                <label for="firstName">Date of Birth*</label>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -59,7 +59,7 @@
                                     <option value=''>Perempuan
                                     </option>
                                 </select>
-                                <label for="inputGender">Gender</label>
+                                <label for="inputGender">Gender*</label>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -79,16 +79,16 @@
                                     <option value=''>Confucian
                                     </option>
                                 </select>
-                                <label for="religion">Religion</label>
+                                <label for="religion">Religion*</label>
                             </div>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-sm-4">
                             <div class="form-label-group in-border">
-                                <input type="email" id="email" class="form-control form-control-mb"
+                                <input type="date" id="email" class="form-control form-control-mb"
                                     placeholder=">Email" />
-                                <label for="email">Email</label>
+                                <label for="email">Graduation Date*</label>
                             </div>
                         </div>
                     </div>

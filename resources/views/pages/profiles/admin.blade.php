@@ -40,95 +40,95 @@
             </div>
             <!-- /.col -->
             <div class="col-md-9">
-                <div class="card card-info">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            Profile Information
-                        </h3>
+                <div class="card">
+                    <div class="card-header p-2">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Settings</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="#security" data-toggle="tab">Security</a></li>
+                        </ul>
                     </div>
                     <div class="card-body">
-                        <form class="form-horizontal" action="/admin/updateProfile" method="POST"
-                            enctype="multipart/form-data" data-remote="true">
-                            @csrf
-                            @method('PUT')
-                            <div class="form-group row">
-                                <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                                <div class="col-sm-10">
-                                    <input type="Name" class="form-control" id="inputName" placeholder="Input your name"
-                                        name="name" value="{{ Auth::user()->name }}">
-                                    @error('name')
-                                        <p class="text-danger m-0">{{ $message }}</p>
-                                    @enderror
-                                </div>
+                        <div class="tab-content">
+                            <div class="active tab-pane" id="settings">
+                                <form class="form-horizontal" action="/admin/updateProfile" method="POST"
+                                    enctype="multipart/form-data" data-remote="true">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="form-group row">
+                                        <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+                                        <div class="col-sm-10">
+                                            <input type="Name" class="form-control" id="inputName"
+                                                placeholder="Input your name" name="name"
+                                                value="{{ Auth::user()->name }}">
+                                            @error('name')
+                                                <p class="text-danger m-0">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                                        <div class="col-sm-10">
+                                            <input type="email" class="form-control" id="inputEmail"
+                                                placeholder="Input your email" name="email"
+                                                value="{{ Auth::user()->email }}">
+                                            @error('email')
+                                                <p class="text-danger m-0">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="offset-sm-2 col-sm-10">
+                                            <button type="submit" class="btn btn-primary">Update</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="form-group row">
-                                <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                                <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="inputEmail"
-                                        placeholder="Input your email" name="email" value="{{ Auth::user()->email }}">
-                                    @error('email')
-                                        <p class="text-danger m-0">{{ $message }}</p>
-                                    @enderror
-                                </div>
+                            <div class="tab-pane" id="security">
+                                <form class="form-horizontal" action="/admin/updatePassword" method="POST"
+                                    enctype="multipart/form-data" data-remote="true">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="form-group row">
+                                        <label for="oldPassword" class="col-sm-2 col-form-label">Old Password</label>
+                                        <div class="col-sm-10">
+                                            <input type="password" class="form-control" id="oldPassword" name="oldPassword"
+                                                placeholder="Input old password">
+                                            @error('oldPassword')
+                                                <p class="text-danger m-0">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="newPassword" class="col-sm-2 col-form-label">New Password</label>
+                                        <div class="col-sm-10">
+                                            <input type="password" class="form-control" id="newPassword" name="newPassword"
+                                                placeholder="Input new password">
+                                            @error('newPassword')
+                                                <p class="text-danger m-0">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="confirmPassword" class="col-sm-2 col-form-label">Confirm
+                                            Password</label>
+                                        <div class="col-sm-10">
+                                            <input type="password" class="form-control" id="confirmPassword"
+                                                name="confirmPassword" placeholder="Input confirm password">
+                                            @error('confirmPassword')
+                                                <p class="text-danger m-0">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="offset-sm-2 col-sm-10">
+                                            <button type="submit" class="btn btn-primary">Update</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="form-group row">
-                                <div class="offset-sm-2 col-sm-10">
-                                    <button type="submit" class="btn btn-primary">Update</button>
-                                </div>
-                            </div>
-                        </form>
-                        <!-- /.tab-content -->
-                    </div><!-- /.card-body -->
-                </div>
-                <div class="card card-secondary">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            Change Password
-                        </h3>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <form class="form-horizontal" action="/admin/updatePassword" method="POST"
-                            enctype="multipart/form-data" data-remote="true">
-                            @csrf
-                            @method('PUT')
-                            <div class="form-group row">
-                                <label for="oldPassword" class="col-sm-2 col-form-label">Old Password</label>
-                                <div class="col-sm-10">
-                                    <input type="password" class="form-control" id="oldPassword" name="oldPassword"
-                                        placeholder="Input old password">
-                                    @error('oldPassword')
-                                        <p class="text-danger m-0">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="newPassword" class="col-sm-2 col-form-label">New Password</label>
-                                <div class="col-sm-10">
-                                    <input type="password" class="form-control" id="newPassword" name="newPassword"
-                                        placeholder="Input new password">
-                                    @error('newPassword')
-                                        <p class="text-danger m-0">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="confirmPassword" class="col-sm-2 col-form-label">Confirm Password</label>
-                                <div class="col-sm-10">
-                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                                        placeholder="Input confirm password">
-                                    @error('confirmPassword')
-                                        <p class="text-danger m-0">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="offset-sm-2 col-sm-10">
-                                    <button type="submit" class="btn btn-primary">Update</button>
-                                </div>
-                            </div>
-                        </form>
-                        <!-- /.tab-content -->
-                    </div><!-- /.card-body -->
                 </div>
                 <!-- /.card -->
             </div>
@@ -219,6 +219,7 @@
         }
     </style>
 @endsection
+
 
 @section('js-script')
     <!-- Toastr -->

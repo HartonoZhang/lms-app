@@ -47,7 +47,7 @@
                             </li>
                             <li class="nav-item"><a class="nav-link" href="#security" data-toggle="tab">Security</a></li>
                         </ul>
-                    </div><!-- /.card-header -->
+                    </div>
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="active tab-pane" id="settings">
@@ -94,6 +94,25 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <label for="inputGender" class="col-sm-2 col-form-label">Religion</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control select2" style="width: 100%;" name="gender">
+                                                <option value='' selected>Muslim
+                                                </option>
+                                                <option value=''>Protestant
+                                                </option>
+                                                <option value=''>Catholic
+                                                </option>
+                                                <option value=''>Hindu
+                                                </option>
+                                                <option value=''>Buddhist
+                                                </option>
+                                                <option value=''>Confucian
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <label for="inputAddress" class="col-sm-2 col-form-label">Address</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="inputAddress"
@@ -103,8 +122,7 @@
                                                     <input type="text" class="form-control" placeholder="City">
                                                 </div>
                                                 <div class="col-sm">
-                                                    <input type="text" class="form-control"
-                                                        placeholder="State/Province">
+                                                    <input type="text" class="form-control" placeholder="State/Province">
                                                 </div>
                                             </div>
                                             <div class="form-row">
@@ -121,7 +139,7 @@
                                     <div class="form-group row">
                                         <label for="inputPhoneNumber" class="col-sm-2 col-form-label">Phone Number</label>
                                         <div class="col-sm-10">
-                                            <input type="number" class="form-control" id="inputPhoneNumber"
+                                            <input type="text" class="form-control" id="inputPhoneNumber"
                                                 placeholder="Input your phone number" name="phoneNumber" value="">
                                             @error('phoneNumber')
                                                 <p class="text-danger m-0">{{ $message }}</p>
@@ -230,8 +248,15 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/dist/css/adminlte.min.css">
+    <style>
+        .select2-container--bootstrap4.select2-container--focus .select2-selection {
+            box-shadow: none !important;
+        }
+
+        .select2-container--bootstrap4 .select2-selection {
+            -webkit-transition: none !important;
+        }
+    </style>
 @endsection
 
 @section('js-script')
@@ -242,7 +267,9 @@
 
     <script type="text/javascript">
         $(function() {
-            $('.select2').select2()
+            $('select').select2({
+                theme: 'bootstrap4',
+            });
 
             @if (Session::has('status'))
                 @if (Session::get('status') === 'success')
