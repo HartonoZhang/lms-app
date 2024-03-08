@@ -29,6 +29,31 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-trophy nav-icon"></i>
+                        <p>
+                            Leaderboard
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('teacher-leaderboard') }}"
+                                class="{{ request()->is('leaderboard/teachers') ? 'active' : '' }} nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Teachers</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('student-leaderboard') }}"
+                                class="{{ request()->is('leaderboard/students') ? 'active' : '' }} nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Students</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 @if (Auth::user()->role_id === 1)
                     <li class="nav-item">
                         <a href="#" class="nav-link">
@@ -108,32 +133,32 @@
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
-                            <i class="fa fa-credit-card nav-icon"></i>
+                            <i class="fas fa-book-reader nav-icon"></i>
                             <p>
-                                Subject
+                                Course
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="{{ route('course-list') }}"
-                                    class="{{ request()->is('student/list') ? 'active' : '' }} nav-link">
-                                    <i class="fas fa-edit nav-icon"></i>
-                                    <p>Subject List</p>
+                                    class="{{ request()->is('course/list') ? 'active' : '' }} nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Course List</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('course-add') }}"
-                                    class="{{ request()->is('student/add') ? 'active' : '' }} nav-link">
-                                    <i class="fa fa-history nav-icon"></i>
-                                    <p>Subject Add</p>
+                                    class="{{ request()->is('course/add') ? 'active' : '' }} nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Course Add</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#"
                                     class="{{ request()->is('finance/history') ? 'active' : '' }} nav-link">
-                                    <i class="fa fa-history nav-icon"></i>
-                                    <p>Subject Edit</p>
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Course Edit</p>
                                 </a>
                             </li>
                         </ul>
@@ -141,7 +166,7 @@
                     <li class="nav-item">
                         <a href="{{ route('setting') }}"
                             class="{{ request()->is('setting') ? 'active' : '' }} nav-link">
-                            <i class="fas fa-tachometer-alt nav-icon"></i>
+                            <i class="fas fa-cog nav-icon"></i>
                             <p>Setting</p>
                         </a>
                     </li>
@@ -154,11 +179,11 @@
         var checkElement = false;
         for (let i = 0; i < navParent.length; i++) {
             let navChild = [].slice.call(navParent[i].children);
-            for (let j = 0; j<navChild.length; j++){
-                if(navChild[j].children[0].className.includes("active")){
+            for (let j = 0; j < navChild.length; j++) {
+                if (navChild[j].children[0].className.includes("active")) {
                     navParent[i].parentElement.classList.add("menu-is-opening");
                     navParent[i].parentElement.classList.add("menu-open");
-                    navChild[j].setAttribute("style","display: block");
+                    navChild[j].setAttribute("style", "display: block");
                     break;
                 }
             }

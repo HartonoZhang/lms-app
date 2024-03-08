@@ -2,12 +2,14 @@
 
 :root {
     --color-primary: #7380ec;
+    --color-primary-light: #8f9afb;
+    --color-primary-xlight: #aab2f9;
     --color-danger: #ff7782;
     --color-success: #41f1b6;
     --color-warning: #ffbb55;
     --color-white: #fff;
     --color-info-dark: #7d8da1;
-    --color-info-light: #dceleb;
+    --color-info-light: #afbccc;
     --color-dark: #363949;
     --color-light: rgba(132, 139, 200, 0.18);
     --color-primary-variant: #111e88;

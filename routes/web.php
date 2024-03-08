@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth')->group(function () {
+    Route::get('/leaderboard/students', [StudentController::class, 'leaderboards'])->name('student-leaderboard');
+    Route::get('/leaderboard/teachers', [TeacherController::class, 'leaderboards'])->name('teacher-leaderboard');
+    
     Route::middleware('admin-only')->group(function () {
         Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
         Route::get('/setting', [AdminController::class, 'setting'])->name('setting');
