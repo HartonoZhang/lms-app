@@ -164,6 +164,45 @@
                         </ul>
                     </li>
                     <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-chalkboard nav-icon"></i>
+                            <p>
+                                Class
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('class-list') }}"
+                                    class="{{ request()->is('class/list') ? 'active' : '' }} nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Class List</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('class-add') }}"
+                                    class="{{ request()->is('class/add') ? 'active' : '' }} nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Class Add</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#"
+                                    class="{{ request()->is('task/history') ? 'active' : '' }} nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Class Edit</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#"
+                                    class="{{ request()->is('task/history') ? 'active' : '' }} nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Class Detail</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('setting') }}"
                             class="{{ request()->is('setting') ? 'active' : '' }} nav-link">
                             <i class="fas fa-cog nav-icon"></i>

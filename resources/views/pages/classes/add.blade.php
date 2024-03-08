@@ -1,10 +1,10 @@
 @extends('layouts.template')
 
-@section('title', 'Add Teachers')
+@section('title', 'Add Classes')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin-dashboard') }}">Home</a></li>
-    <li class="breadcrumb-item active">Add Teachers</li>
+    <li class="breadcrumb-item active">Add Classes</li>
 @endsection
 
 @section('content')
@@ -12,11 +12,11 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    Teacher Information
+                    Class Information
                 </h3>
             </div>
             <div class="card-body">
-                <form class="form-horizontal" action="/admin/add-teacher" method="POST" enctype="multipart/form-data"
+                <form class="form-horizontal" action="/admin/add-student" method="POST" enctype="multipart/form-data"
                     data-remote="true">
                     @csrf
                     <div class="form-row">
@@ -24,71 +24,59 @@
                             <div class="form-label-group in-border">
                                 <input type="text" id="firstName" class="form-control form-control-mb"
                                     placeholder="First Name" />
-                                <label for="firstName">First Name*</label>
+                                <label for="firstName">Class Code*</label>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-label-group in-border">
-                                <input type="text" id="email" class="form-control form-control-mb"
-                                    placeholder="Email" />
-                                <label for="email">Email*</label>
+                                <input type="text" id="lastName" class="form-control form-control-mb"
+                                    placeholder="Last Name" />
+                                <label for="lastName">Class Name*</label>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-label-group in-border">
                                 <input type="text" id="phoneNumber" class="form-control form-control-mb"
                                     placeholder="Phone Number" />
-                                <label for="phoneNumber">Phone Number*</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
-                                <input type="date" id="firstName" class="form-control form-control-mb"
-                                    placeholder=">Date of Birth" />
-                                <label for="firstName">Date of Birth*</label>
+                                <label for="phoneNumber">Minimun Score*</label>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-label-group in-border">
                                 <select class="form-control form-control-mb select2" style="width: 100%;" name="gender">
-                                    <option disabled selected>Select a gender</option>
+                                    <option disabled selected>Select a course</option>
                                     <option value=''>Laki laki
                                     </option>
                                     <option value=''>Perempuan
                                     </option>
                                 </select>
-                                <label for="inputGender">Gender*</label>
+                                <label for="inputGender">Course*</label>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-label-group in-border">
-                                <select class="form-control form-control-mb select2" style="width: 100%;" name="religion">
-                                    <option disabled selected>Select a religion</option>
-                                    <option value=''>Muslim
+                                <select class="form-control form-control-mb select2" style="width: 100%;" name="gender">
+                                    <option disabled selected>Select students</option>
+                                    <option value=''>Laki laki
                                     </option>
-                                    <option value=''>Protestant
-                                    </option>
-                                    <option value=''>Catholic
-                                    </option>
-                                    <option value=''>Hindu
-                                    </option>
-                                    <option value=''>Buddhist
-                                    </option>
-                                    <option value=''>Confucian
+                                    <option value=''>Perempuan
                                     </option>
                                 </select>
-                                <label for="religion">Religion*</label>
+                                <label for="inputGender">Students*</label>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-row">
                         <div class="col-sm-4">
                             <div class="form-label-group in-border">
-                                <input type="text" id="lastEducation" class="form-control form-control-mb"
-                                    placeholder=">Last Education" />
-                                <label for="lastEducation">Last Education*</label>
+                                <select class="select2 form-control form-control-mb" multiple="multiple" data-placeholder="Select a State" data-dropdown-css-class="select2-purple" style="width: 100%;">
+                                    <option>Alabama</option>
+                                    <option>Alaska</option>
+                                    <option>California</option>
+                                    <option>Delaware</option>
+                                    <option>Tennessee</option>
+                                    <option>Texas</option>
+                                    <option>Washington</option>
+                                  </select>
+                                <label for="inputGender">Teachers*</label>
                             </div>
                         </div>
                     </div>
@@ -116,6 +104,7 @@
         .select2-container--bootstrap4 .select2-selection {
             -webkit-transition: none !important;
         }
+
         label {
             font-weight: 400 !important;
         }

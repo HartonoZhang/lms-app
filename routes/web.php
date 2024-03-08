@@ -40,6 +40,11 @@ Route::middleware('auth')->group(function () {
             Route::get('/add', [AdminController::class, 'courseAdd'])->name('course-add');
         });
 
+        Route::prefix('class')->group(function () {
+            Route::get('/list', [AdminController::class, 'classList'])->name('class-list');
+            Route::get('/add', [AdminController::class, 'classAdd'])->name('class-add');
+        });
+
         Route::prefix('admin')->group(function () {
             Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
             Route::get('/profile', [AdminController::class, 'profile']);

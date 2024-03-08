@@ -62,6 +62,16 @@ class AdminController extends Controller
         return view('pages.courses.add');
     }
 
+    public function classList()
+    {
+        return view('pages.classes.list');
+    }
+
+    public function classAdd()
+    {
+        return view('pages.classes.add');
+    }
+
     public function saveProfiles(Request $request)
     {
         $validation = $request->validate([
