@@ -53,30 +53,81 @@
                                 <label for="inputGender">Course*</label>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
-                                <select class="form-control form-control-mb select2" style="width: 100%;" name="gender">
-                                    <option disabled selected>Select students</option>
-                                    <option value=''>Laki laki
-                                    </option>
-                                    <option value=''>Perempuan
-                                    </option>
-                                </select>
-                                <label for="inputGender">Students*</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card border">
+                                <div class="card-body">
+                                    <table id="tabel-students" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>test</td>
+                                                <td>test</td>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="3">
+                                                        <label class="custom-control-label" for="3"></label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>test</td>
+                                                <td>test</td>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="2">
+                                                        <label class="custom-control-label" for="2"></label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
-                                <select class="select2 form-control form-control-mb" multiple="multiple" data-placeholder="Select a State" data-dropdown-css-class="select2-purple" style="width: 100%;">
-                                    <option>Alabama</option>
-                                    <option>Alaska</option>
-                                    <option>California</option>
-                                    <option>Delaware</option>
-                                    <option>Tennessee</option>
-                                    <option>Texas</option>
-                                    <option>Washington</option>
-                                  </select>
-                                <label for="inputGender">Teachers*</label>
+                        <div class="col-sm-6">
+                            <div class="card border">
+                                <div class="card-body">
+                                    <table id="tabel-teachers" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>test</td>
+                                                <td>test</td>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input"
+                                                            id="customCheck2">
+                                                        <label class="custom-control-label" for="customCheck2"></label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>test</td>
+                                                <td>test</td>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="tes">
+                                                        <label class="custom-control-label" for="tes"></label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -95,8 +146,16 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
     <style>
+        .table {
+            table-layout: fixed;
+        }
+
         .select2-container--bootstrap4.select2-container--focus .select2-selection {
             box-shadow: none !important;
         }
@@ -116,6 +175,19 @@
     <script src="{{ asset('assets') }}/plugins/toastr/toastr.min.js"></script>
     <!-- Select2 -->
     <script src="{{ asset('assets') }}/plugins/select2/js/select2.full.min.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="{{ asset('assets') }}/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/jszip/jszip.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
     <script type="text/javascript">
         $(function() {
@@ -130,6 +202,34 @@
                     toastr.error('{{ Session::get('message') }}')
                 @endif
             @endif
+
+            $("#tabel-students").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "columnDefs": [{
+                    orderable: false,
+                    targets: 2
+                }],
+                "buttons": [{
+                    extend: 'spacer',
+                    text: 'Add Students'
+                }]
+            }).buttons().container().appendTo('#tabel-students_wrapper .col-md-6:eq(0)');
+
+            $("#tabel-teachers").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "columnDefs": [{
+                    orderable: false,
+                    targets: 2
+                }],
+                "buttons": [{
+                    extend: 'spacer',
+                    text: 'Add Teachers'
+                }]
+            }).buttons().container().appendTo('#tabel-teachers_wrapper .col-md-6:eq(0)');
         })
     </script>
 @endsection
