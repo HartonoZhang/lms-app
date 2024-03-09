@@ -54,8 +54,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6">
+                    
                             <div class="card border">
                                 <div class="card-body">
                                     <table id="tabel-students" class="table table-bordered table-striped">
@@ -91,8 +90,6 @@
                                     </table>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
                             <div class="card border">
                                 <div class="card-body">
                                     <table id="tabel-teachers" class="table table-bordered table-striped">
@@ -129,8 +126,7 @@
                                     </table>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                      
                     <button type="submit" class="btn btn-primary">Add</button>
                 </form>
             </div>
@@ -207,6 +203,7 @@
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
+                "pageLength": 5,
                 "columnDefs": [{
                     orderable: false,
                     targets: 2
@@ -221,6 +218,7 @@
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
+                "pageLength": 5,
                 "columnDefs": [{
                     orderable: false,
                     targets: 2
