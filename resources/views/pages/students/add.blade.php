@@ -16,83 +16,109 @@
                 </h3>
             </div>
             <div class="card-body">
-                <form class="form-horizontal" action="/admin/add-student" method="POST" enctype="multipart/form-data"
+                <form class="form-horizontal" action="/student/add-student" method="POST" enctype="multipart/form-data"
                     data-remote="true">
                     @csrf
                     <div class="form-row">
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
-                                <input type="text" id="firstName" class="form-control form-control-mb"
-                                    placeholder="First Name" />
-                                <label for="firstName">Full Name*</label>
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
+                                <input type="text" id="fullName" class="form-control form-control-mb" name="name"
+                                    placeholder="Full Name" value="{{ old('name', '') }}" />
+                                <label for="fullName">Full Name*</label>
                             </div>
+                            @error('name')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
-                                <input type="text" id="email" class="form-control form-control-mb"
-                                    placeholder="Email" />
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
+                                <input type="text" id="email" class="form-control form-control-mb" name="email"
+                                    placeholder="Email" value="{{ old('email', '') }}" />
                                 <label for="email">Email*</label>
                             </div>
+                            @error('email')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
                                 <input type="text" id="phoneNumber" class="form-control form-control-mb"
-                                    placeholder="Phone Number" />
+                                    name="phone_number" placeholder="Phone Number" value="{{ old('phone_number', '') }}" />
                                 <label for="phoneNumber">Phone Number*</label>
                             </div>
+                            @error('phone_number')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
-                                <input type="date" id="firstName" class="form-control form-control-mb"
-                                    placeholder=">Date of Birth" />
-                                <label for="firstName">Date of Birth*</label>
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
+                                <input type="date" id="dob" class="form-control form-control-mb" name="dob"
+                                    placeholder=">Date of Birth" value="{{ old('dob', '') }}" />
+                                <label for="dob">Date of Birth*</label>
                             </div>
+                            @error('dob')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
-                                <select class="form-control form-control-mb select2" style="width: 100%;" name="gender">
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
+                                <select class="form-control form-control-mb select2" }}" style="width: 100%;"
+                                    name="gender">
                                     <option disabled selected>Select a gender</option>
-                                    <option value=''>Laki laki
+                                    <option value='Laki-laki' {{ old('gender') == 'Laki-laki' ? 'selected' : '' }}>Laki laki
                                     </option>
-                                    <option value=''>Perempuan
+                                    <option value='Perempuan' {{ old('gender') == 'Perempuan' ? 'selected' : '' }}>
+                                        Perempuan
                                     </option>
                                 </select>
-                                <label for="inputGender">Gender*</label>
+                                <label for="gender">Gender*</label>
                             </div>
+                            @error('gender')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
                                 <select class="form-control form-control-mb select2" style="width: 100%;" name="religion">
-                                    <option disabled selected>Select a religion</option>
-                                    <option value=''>Muslim
+                                    <option disabled selected>Select a Religion</option>
+                                    <option value='Muslim' {{ old('religion') == 'Muslim' ? 'selected' : '' }}>Muslim
                                     </option>
-                                    <option value=''>Protestant
+                                    <option value='Protestant' {{ old('religion') == 'Protestant' ? 'selected' : '' }}>
+                                        Protestant
                                     </option>
-                                    <option value=''>Catholic
+                                    <option value='Catholic' {{ old('religion') == 'Catholic' ? 'selected' : '' }}>Catholic
                                     </option>
-                                    <option value=''>Hindu
+                                    <option value='Hindu' {{ old('religion') == 'Hindu' ? 'selected' : '' }}>Hindu
                                     </option>
-                                    <option value=''>Buddhist
+                                    <option value='Buddhist' {{ old('religion') == 'Buddhist' ? 'selected' : '' }}>Buddhist
                                     </option>
-                                    <option value=''>Confucian
+                                    <option value='Confucian' {{ old('religion') == 'Confucian' ? 'selected' : '' }}>
+                                        Confucian
                                     </option>
                                 </select>
                                 <label for="religion">Religion*</label>
                             </div>
+                            @error('religion')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
-                                <input type="date" id="email" class="form-control form-control-mb"
-                                    placeholder=">Email" />
-                                <label for="email">Graduation Date*</label>
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
+                                <input type="date" id="graduation" class="form-control form-control-mb"
+                                    name="gradution_date" placeholder=">Graduation Date*"
+                                    value="{{ old('gradution_date', '') }}" />
+                                <label for="graduation">Graduation Date*</label>
                             </div>
+                            @error('gradution_date')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-primary mt-3">Add</button>
                 </form>
             </div>
         </div>

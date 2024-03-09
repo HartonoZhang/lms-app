@@ -60,7 +60,7 @@
                                         <div class="col-sm-10">
                                             <input type="Name" class="form-control" id="inputName"
                                                 placeholder="Input your name" name="name"
-                                                value="{{ Auth::user()->name }}">
+                                                value="{{ Auth::user()->admin->name }}">
                                             @error('name')
                                                 <p class="text-danger m-0">{{ $message }}</p>
                                             @enderror
