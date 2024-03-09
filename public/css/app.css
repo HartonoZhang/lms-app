@@ -70,7 +70,9 @@ tbody td,
 .form-control,
 .btn b,
 .select2-selection__rendered,
-.select2-results__option {
+.select2-results__option,
+.dataTables_info,
+.pagination {
     font-size: 0.87rem !important;
 }
 

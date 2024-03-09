@@ -17,7 +17,9 @@
                         <div class="text-center">
                             <img class="profile-user-img img-fluid img-circle"
                                 src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}"
-                                alt="User profile picture" style="width: 120px; height: 120px;">
+                                alt="User profile picture">
+                            <img class="profile-user-badge" src="{{ asset('assets') }}/images/badges/bronze.png"
+                                alt="User profile picture">
                         </div>
                         <h3 class="profile-username text-center">{{ Auth::user()->name }}</h3>
                         <p class="text-muted text-center">{{ Auth::user()->email }}</p>
@@ -122,7 +124,8 @@
                                                     <input type="text" class="form-control" placeholder="City">
                                                 </div>
                                                 <div class="col-sm">
-                                                    <input type="text" class="form-control" placeholder="State/Province">
+                                                    <input type="text" class="form-control"
+                                                        placeholder="State/Province">
                                                 </div>
                                             </div>
                                             <div class="form-row">
@@ -249,6 +252,19 @@
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <style>
+        .profile-user-badge {
+            position: absolute;
+            margin-left: auto;
+            left: 0;
+            width: 60px;
+            height: 60px;
+        }
+
+        .profile-user-img {
+            width: 120px;
+            height: 120px;
+        }
+
         .select2-container--bootstrap4.select2-container--focus .select2-selection {
             box-shadow: none !important;
         }
