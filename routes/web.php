@@ -29,6 +29,8 @@ Route::middleware('auth')->group(function () {
         Route::prefix('student')->group(function () {
             Route::get('/list', [AdminController::class, 'studentList'])->name('student-list');
             Route::get('/add', [AdminController::class, 'studentAdd'])->name('student-add');
+
+            Route::post('/add-student', [AdminController::class, 'storeStudent']);
         });
 
         Route::prefix('teacher')->group(function () {

@@ -72,7 +72,8 @@ tbody td,
 .select2-selection__rendered,
 .select2-results__option,
 .dataTables_info,
-.pagination {
+.pagination,
+.text-danger {
     font-size: 0.87rem !important;
 }
 

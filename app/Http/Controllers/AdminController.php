@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
+use App\Models\Profile;
+use App\Models\Student;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,7 +23,10 @@ class AdminController extends Controller
 
     public function home()
     {
-        return view('pages.dashboards.admin');
+        $profile = Admin::with('user')->where('user_id', '=',  Auth::user()->id)->get();
+        return view('pages.dashboards.admin', [
+            'profile' => $profile
+        ]);
     }
 
     public function profile()
@@ -35,7 +41,10 @@ class AdminController extends Controller
 
     public function studentList()
     {
-        return view('pages.students.list');
+        $listStudent = Student::with('profile', 'user')->get();
+        return view('pages.students.list', [
+            'listStudent' => $listStudent
+        ]);
     }
 
     public function studentAdd()
@@ -84,10 +93,13 @@ class AdminController extends Controller
         ]);
 
         if ($validation) {
-            User::find(Auth::user()->id)->update([
-                'name' => $request->name,
-                'email' => $request->email,
-            ]);
+            $user = User::with('admin')->findOrFail(Auth::user()->id);
+            $user->email = $request->email;
+            $user->update();
+            
+            $data = new Admin(['name' => $request->name]);
+            $user->admin()->update($data->toArray());
+    
             $this->message('Profile Successfully Updated!', 'success');
             return back();
         }
@@ -132,6 +144,49 @@ class AdminController extends Controller
             ]);
 
             $this->message('Profile Photo Successfully Updated.', 'success');
+            return back();
+        }
+    }
+
+    public function storeStudent(Request $request)
+    {
+        $validation = $request->validate([
+            'name' => ['required', 'min:3'],
+            'email' => ['required', 'email', 'unique:users,email,' . Auth::user()->id],
+            'phone_number' => ['required', 'integer'],
+            'dob' => ['required'],
+            'gender' => ['required'],
+            'religion' => ['required'],
+            'gradution_date' => ['required']
+        ]);
+
+        if ($validation) {
+            $user = new User();
+            $user->role_id = 3;
+            $user->email = $request->email;
+            $user->image = 'default.png';
+            $user->password = Hash::make($request->password);
+            $user->save();
+
+            $profile = new Profile();
+            $profile->address_id = null;
+            $profile->dob = $request->dob;
+            $profile->gender = $request->gender;
+            $profile->phone_number = $request->phone_number;
+            $profile->religion = $request->religion;
+            $profile->level = 1;
+            $profile->current_exp = 0;
+            $profile->badge_name = 'bronze';
+            $profile->save();
+
+            $student = new Student();
+            $student->user()->associate($user);
+            $student->profile()->associate($profile);
+            $student->name = $request->name;
+            $student->graduation_date = $request->gradution_date;
+            $student->save();
+
+            $this->message('New Student Successfully Added!', 'success');
             return back();
         }
     }

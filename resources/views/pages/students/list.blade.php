@@ -29,69 +29,38 @@
                 <table id="tabel-students" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Progress</th>
-                            <th>Priority</th>
-                            <th>Deadline</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Gender</th>
+                            <th>Religion</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="text-truncate">tes</td>
-                            <td class="text-truncate">test</td>
-                            <td>test</td>
-                            <td>test</td>
-                            <td>test</td>
-                            <td>test</td>
-                            <td>
-                                <ul class="list-inline m-0">
-                                    <li class="list-inline-item">
-                                        <button class="btn btn-success btn-sm rounded-0" type="button"
-                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
-                                                class="fa fa-edit"></i></button>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip"
-                                            data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-truncate">tes</td>
-                            <td class="text-truncate">test</td>
-                            <td>test</td>
-                            <td>test</td>
-                            <td>test</td>
-                            <td>test</td>
-                            <td>
-                                <ul class="list-inline m-0">
-                                    <li class="list-inline-item">
-                                        <button class="btn btn-success btn-sm rounded-0" type="button"
-                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
-                                                class="fa fa-edit"></i></button>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip"
-                                            data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                        {{-- @foreach ($listTask as $item)
+                        @foreach ($listStudent as $student)
                             <tr>
-                                <td class="text-truncate">{{ $item->title }}</td>
-                                <td class="text-truncate">{{ $item->description }}</td>
-                                <td>{{ $item->category->name }}</td>
-                                <td>{{ $item->progress->name }}</td>
-                                <td>{{ $item->priority->name }}</td>
-                                <td>{{ $item->deadline ? date('d-M-Y', strtotime($item->deadline)) : 'There is no deadline' }}
+                                <td class="text-truncate">{{ $student->name }}</td>
+                                <td class="text-truncate">{{ $student->user->email }}</td>
+                                <td>{{ $student->profile->phone_number }}</td>
+                                <td>{{ $student->profile->gender }}</td>
+                                <td>{{ $student->profile->religion }}</td>
+                                <td>
+                                    <ul class="list-inline m-0">
+                                        <li class="list-inline-item">
+                                            <button class="btn btn-success btn-sm rounded-0" type="button"
+                                                data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                    class="fa fa-edit"></i></button>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <button class="btn btn-danger btn-sm rounded-0" type="button"
+                                                data-toggle="tooltip" data-placement="top" title="Delete"><i
+                                                    class="fa fa-trash"></i></button>
+                                        </li>
+                                    </ul>
                                 </td>
                             </tr>
-                        @endforeach --}}
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -135,16 +104,11 @@
                 "autoWidth": false,
                 "columnDefs": [{
                     orderable: false,
-                    targets: 6
+                    targets: 5
                 }],
                 "buttons": [
                     "copy",
                     "print",
-                    {
-                        extend: 'spacer',
-                        style: 'bar',
-                        text: 'Export files:'
-                    },
                     {
                         extend: 'csv',
                         title: "List Students",
