@@ -13,15 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('profile', function (Blueprint $table) {
+        Schema::create('classrooms', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('address_id');
-            $table->foreign('address_id')->nullable()->references('id')->on('user_role')->onDelete('cascade');
-            $table->date('dob');
-            $table->string('gender');
-            $table->string('phone_number');
-            $table->string('religion');
             $table->timestamps();
+            $table->unsignedBigInteger('course_id');
+            $table->foreign('course_id')->references('id')->on('classrooms')->onDelete('restrict');
+            $table->string('code');
         });
     }
 
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profile');
+        Schema::dropIfExists('classrooms');
     }
 };
