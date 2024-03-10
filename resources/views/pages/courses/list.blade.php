@@ -67,7 +67,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <p>Are you sure want to remove this course?</p>
+                                                <p>Are you sure want to remove "{{$data->name}}" course?</p>
                                             </div>
                                             <div class="modal-footer justify-content-between">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
