@@ -78,18 +78,6 @@
                                     <p>Teacher Add</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="#" class="{{ request()->is('task/history') ? 'active' : '' }} nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Teacher Edit</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="{{ request()->is('task/history') ? 'active' : '' }} nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Teacher Detail</p>
-                                </a>
-                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -113,20 +101,6 @@
                                     class="{{ request()->is('student/add') ? 'active' : '' }} nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Student Add</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#"
-                                    class="{{ request()->is('finance/history') ? 'active' : '' }} nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Student Edit</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#"
-                                    class="{{ request()->is('finance/history') ? 'active' : '' }} nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Student Detail</p>
                                 </a>
                             </li>
                         </ul>
