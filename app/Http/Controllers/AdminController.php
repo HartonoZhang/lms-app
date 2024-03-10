@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Profile;
 use App\Models\Student;
 use App\Models\Course;
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -82,7 +83,14 @@ class AdminController extends Controller
 
     public function classAdd()
     {
-        return view('pages.classes.add');
+        $courses = Course::all();
+        $students = Student::all();
+        $teachers = Teacher::all();
+        return view('pages.classes.add')->with([
+            'courses' => $courses,
+            'students'=> $students,
+            'teachers'=> $teachers,
+        ]);
     }
 
     public function saveProfiles(Request $request)

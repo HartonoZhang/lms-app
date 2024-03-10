@@ -36,19 +36,11 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-label-group in-border">
-                                <input type="text" id="phoneNumber" class="form-control form-control-mb"
-                                    placeholder="Phone Number" />
-                                <label for="phoneNumber">Minimun Score*</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
                                 <select class="form-control form-control-mb select2" style="width: 100%;" name="gender">
                                     <option disabled selected>Select a course</option>
-                                    <option value=''>Laki laki
-                                    </option>
-                                    <option value=''>Perempuan
-                                    </option>
+                                    @foreach ($courses as $course)
+                                        <option value='{{$course->id}}' {{old($course->id) ? "selected" : ""}}>{{$course->code == null ? "" : $course->code." - "}}{{$course->name}}</option>
+                                    @endforeach
                                 </select>
                                 <label for="inputGender">Course*</label>
                             </div>

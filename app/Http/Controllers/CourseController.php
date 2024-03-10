@@ -37,7 +37,7 @@ class CourseController extends Controller
     public function delete($id){
         $course = Course::findOrFail($id);
         $this->message('Successfully remove course "'.$course->name.'"', 'success');
-        $course->forceDelete();
+        $course->delete();
         return back();
     }
 }
