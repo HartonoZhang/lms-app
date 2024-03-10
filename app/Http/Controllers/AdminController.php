@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Classroom;
 use App\Models\Student;
 use App\Models\Course;
 use App\Models\Teacher;
@@ -80,14 +81,17 @@ class AdminController extends Controller
 
     public function classList()
     {
-        return view('pages.classes.list');
+        $classrooms = Classroom::with(['course'])->get();
+        return view('pages.classes.list')->with([
+            'classrooms' => $classrooms
+        ]);
     }
 
     public function classAdd()
     {
         $courses = Course::all();
-        $students = Student::all();
-        $teachers = Teacher::all();
+        $students = Student::with(['user'])->get();
+        $teachers = Teacher::with(['user'])->get();
         return view('pages.classes.add')->with([
             'courses' => $courses,
             'students'=> $students,

@@ -17,9 +17,10 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('course_id');
-            $table->foreign('course_id')->references('id')->on('classrooms')->onDelete('restrict');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('restrict');
             $table->string('name');
-            $table->string('code');
+            $table->string('code')->nullable();
+            $table->integer('student_capacity')->nullable();
         });
     }
 

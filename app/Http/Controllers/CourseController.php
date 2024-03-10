@@ -28,7 +28,7 @@ class CourseController extends Controller
                 'code' => strtoupper($request->course_code),
                 'min_score' => $request->min_score,
             ]);
-            return redirect()->route('course-list')->with(['status'=> 'success','message'=> 'Item successfully created.']);
+            return redirect()->route('course-list')->with(['status'=> 'success','message'=> 'Course successfully created.']);
         }
         $request->flash();
         return redirect()->back()->withErrors($validation);

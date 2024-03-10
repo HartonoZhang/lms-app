@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('student_classrooms', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('classroom_id');
-            $table->foreign('classroom_id')->references('id')->on('classrooms')->onDelete('restrict');
+            $table->foreign('classroom_id')->references('id')->on('classrooms')->onDelete('cascade');
             $table->unsignedBigInteger('student_id');
-            $table->foreign('student_id')->references('id')->on('student')->onDelete('restrict');
+            $table->foreign('student_id')->references('id')->on('student')->onDelete('cascade');
             $table->timestamps();
         });
     }
