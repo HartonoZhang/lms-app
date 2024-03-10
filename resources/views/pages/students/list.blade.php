@@ -17,12 +17,13 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    {{-- @if (count($listTask) == 1)
-                        there is 1 task
+                    @if (count($listStudent) == 0)
+                        there is no student
+                    @elseif(count($listStudent) == 1)
+                        there is 1 student
                     @else
-                        there are {{ count($listTask) }} tasks
-                    @endif --}}
-                    there is 1 student
+                        there are {{ count($listStudent) }} students
+                    @endif
                 </h3>
             </div>
             <div class="card-body">
@@ -53,13 +54,41 @@
                                                     class="fa fa-edit"></i></button>
                                         </li>
                                         <li class="list-inline-item">
-                                            <button class="btn btn-danger btn-sm rounded-0" type="button"
-                                                data-toggle="tooltip" data-placement="top" title="Delete"><i
-                                                    class="fa fa-trash"></i></button>
+                                            <a href="#" class="btn btn-danger btn-sm rounded-0" data-toggle="modal"
+                                                data-target="#modal-delete-{{ $student->id }}" data-placement="top"
+                                                title="Delete">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
                                         </li>
                                     </ul>
                                 </td>
                             </tr>
+                            <div class="modal fade" id="modal-delete-{{ $student->id }}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form action={{ route('student-delete', $student->id) }} method="POST"
+                                            enctype="multipart/form-data" data-remote="true">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Remove Student</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure want to remove this student?</p>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Confirm</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         @endforeach
                     </tbody>
                 </table>
@@ -69,6 +98,10 @@
 @endsection
 
 @section('css-link')
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/gh/exacti/floating-labels@latest/floating-labels.min.css" media="screen">
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
@@ -82,6 +115,8 @@
 @endsection
 
 @section('js-script')
+    <!-- Toastr -->
+    <script src="{{ asset('assets') }}/plugins/toastr/toastr.min.js"></script>
     <!-- DataTables  & Plugins -->
     <script src="{{ asset('assets') }}/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="{{ asset('assets') }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -119,6 +154,14 @@
                     }
                 ]
             }).buttons().container().appendTo('#tabel-students_wrapper .col-md-6:eq(0)');
+
+            @if (Session::has('status'))
+                @if (Session::get('status') === 'success')
+                    toastr.success('{{ Session::get('message') }}')
+                @elseif (Session::get('status') === 'fail')
+                    toastr.error('{{ Session::get('message') }}')
+                @endif
+            @endif
         });
     </script>
 @endsection

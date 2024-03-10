@@ -16,7 +16,7 @@
                 </h3>
             </div>
             <div class="card-body">
-                <form class="form-horizontal" action="/student/add-student" method="POST" enctype="multipart/form-data"
+                <form class="form-horizontal" action={{ route('student-add') }} method="POST" enctype="multipart/form-data"
                     data-remote="true">
                     @csrf
                     <div class="form-row">
@@ -67,7 +67,8 @@
                                 <select class="form-control form-control-mb select2" }}" style="width: 100%;"
                                     name="gender">
                                     <option disabled selected>Select a gender</option>
-                                    <option value='Laki-laki' {{ old('gender') == 'Laki-laki' ? 'selected' : '' }}>Laki laki
+                                    <option value='Laki-laki' {{ old('gender') == 'Laki-laki' ? 'selected' : '' }}>Laki
+                                        laki
                                     </option>
                                     <option value='Perempuan' {{ old('gender') == 'Perempuan' ? 'selected' : '' }}>
                                         Perempuan

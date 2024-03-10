@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
-use App\Models\Profile;
 use App\Models\Student;
 use App\Models\Course;
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,7 +54,10 @@ class AdminController extends Controller
 
     public function teacherList()
     {
-        return view('pages.teachers.list');
+        $listTeacher = Teacher::with('profile', 'user')->get();
+        return view('pages.teachers.list', [
+            'listTeacher' => $listTeacher
+        ]);
     }
 
     public function teacherAdd()
@@ -144,49 +147,6 @@ class AdminController extends Controller
             ]);
 
             $this->message('Profile Photo Successfully Updated.', 'success');
-            return back();
-        }
-    }
-
-    public function storeStudent(Request $request)
-    {
-        $validation = $request->validate([
-            'name' => ['required', 'min:3'],
-            'email' => ['required', 'email', 'unique:users,email,' . Auth::user()->id],
-            'phone_number' => ['required', 'integer'],
-            'dob' => ['required'],
-            'gender' => ['required'],
-            'religion' => ['required'],
-            'gradution_date' => ['required']
-        ]);
-
-        if ($validation) {
-            $user = new User();
-            $user->role_id = 3;
-            $user->email = $request->email;
-            $user->image = 'default.png';
-            $user->password = Hash::make($request->password);
-            $user->save();
-
-            $profile = new Profile();
-            $profile->address_id = null;
-            $profile->dob = $request->dob;
-            $profile->gender = $request->gender;
-            $profile->phone_number = $request->phone_number;
-            $profile->religion = $request->religion;
-            $profile->level = 1;
-            $profile->current_exp = 0;
-            $profile->badge_name = 'bronze';
-            $profile->save();
-
-            $student = new Student();
-            $student->user()->associate($user);
-            $student->profile()->associate($profile);
-            $student->name = $request->name;
-            $student->graduation_date = $request->gradution_date;
-            $student->save();
-
-            $this->message('New Student Successfully Added!', 'success');
             return back();
         }
     }
