@@ -30,12 +30,16 @@ Route::middleware('auth')->group(function () {
             Route::get('/list', [AdminController::class, 'studentList'])->name('student-list');
             Route::get('/add', [AdminController::class, 'studentAdd'])->name('student-add');
 
-            Route::post('/add-student', [AdminController::class, 'storeStudent']);
+            Route::post('/add', [StudentController::class, 'create'])->name('student-add');
+            Route::delete('/delete/{id}', [StudentController::class, 'delete'])->name('student-delete');
         });
 
         Route::prefix('teacher')->group(function () {
             Route::get('/list', [AdminController::class, 'teacherList'])->name('teacher-list');
             Route::get('/add', [AdminController::class, 'teacherAdd'])->name('teacher-add');
+
+            Route::post('/add', [TeacherController::class, 'create'])->name('teacher-add');
+            Route::delete('/delete/{id}', [TeacherController::class, 'delete'])->name('teacher-delete');
         });
 
         Route::prefix('course')->group(function () {

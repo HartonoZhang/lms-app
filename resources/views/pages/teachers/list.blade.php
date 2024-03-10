@@ -17,81 +17,80 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    {{-- @if (count($listTask) == 1)
-                        there is 1 task
+                    @if (count($listTeacher) == 0)
+                        there is no teacher
+                    @elseif(count($listTeacher) == 1)
+                        there is 1 teacher
                     @else
-                        there are {{ count($listTask) }} tasks
-                    @endif --}}
-                    there is 1 teacher
+                        there are {{ count($listTeacher) }} teachers
+                    @endif
                 </h3>
             </div>
             <div class="card-body">
                 <table id="tabel-teachers" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Progress</th>
-                            <th>Priority</th>
-                            <th>Deadline</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Gender</th>
+                            <th>Religion</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="text-truncate">tes</td>
-                            <td class="text-truncate">test</td>
-                            <td>test</td>
-                            <td>test</td>
-                            <td>test</td>
-                            <td>test</td>
-                            <td>
-                                <ul class="list-inline m-0">
-                                    <li class="list-inline-item">
-                                        <button class="btn btn-success btn-sm rounded-0" type="button"
-                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
-                                                class="fa fa-edit"></i></button>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip"
-                                            data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-truncate">tes</td>
-                            <td class="text-truncate">test</td>
-                            <td>test</td>
-                            <td>test</td>
-                            <td>test</td>
-                            <td>test</td>
-                            <td>
-                                <ul class="list-inline m-0">
-                                    <li class="list-inline-item">
-                                        <button class="btn btn-success btn-sm rounded-0" type="button"
-                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
-                                                class="fa fa-edit"></i></button>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip"
-                                            data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                        {{-- @foreach ($listTask as $item)
+                        @foreach ($listTeacher as $teacher)
                             <tr>
-                                <td class="text-truncate">{{ $item->title }}</td>
-                                <td class="text-truncate">{{ $item->description }}</td>
-                                <td>{{ $item->category->name }}</td>
-                                <td>{{ $item->progress->name }}</td>
-                                <td>{{ $item->priority->name }}</td>
-                                <td>{{ $item->deadline ? date('d-M-Y', strtotime($item->deadline)) : 'There is no deadline' }}
+                                <td class="text-truncate">{{ $teacher->name }}</td>
+                                <td class="text-truncate">{{ $teacher->user->email }}</td>
+                                <td>{{ $teacher->profile->phone_number }}</td>
+                                <td>{{ $teacher->profile->gender }}</td>
+                                <td>{{ $teacher->profile->religion }}</td>
+                                <td>
+                                    <ul class="list-inline m-0">
+                                        <li class="list-inline-item">
+                                            <button class="btn btn-success btn-sm rounded-0" type="button"
+                                                data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                    class="fa fa-edit"></i></button>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="#" class="btn btn-danger btn-sm rounded-0" data-toggle="modal"
+                                                data-target="#modal-delete-{{ $teacher->id }}" data-placement="top"
+                                                title="Delete">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </td>
                             </tr>
-                        @endforeach --}}
+
+                            <div class="modal fade" id="modal-delete-{{ $teacher->id }}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form action={{ route('teacher-delete', $teacher->id) }} method="POST"
+                                            enctype="multipart/form-data" data-remote="true">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Remove Teacher</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure want to remove this teacher?</p>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Confirm</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -100,6 +99,10 @@
 @endsection
 
 @section('css-link')
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/gh/exacti/floating-labels@latest/floating-labels.min.css" media="screen">
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
@@ -113,6 +116,8 @@
 @endsection
 
 @section('js-script')
+    <!-- Toastr -->
+    <script src="{{ asset('assets') }}/plugins/toastr/toastr.min.js"></script>
     <!-- DataTables  & Plugins -->
     <script src="{{ asset('assets') }}/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="{{ asset('assets') }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -135,10 +140,11 @@
                 "autoWidth": false,
                 "columnDefs": [{
                     orderable: false,
-                    targets: 6
+                    targets: 5
                 }],
                 "buttons": [
                     "copy",
+                    "print",
                     {
                         extend: 'csv',
                         title: "List Teachers"
@@ -146,10 +152,17 @@
                     {
                         extend: 'excel',
                         title: "List Teachers"
-                    },
-                    "print"
+                    }
                 ]
             }).buttons().container().appendTo('#tabel-teachers_wrapper .col-md-6:eq(0)');
+
+            @if (Session::has('status'))
+                @if (Session::get('status') === 'success')
+                    toastr.success('{{ Session::get('message') }}')
+                @elseif (Session::get('status') === 'fail')
+                    toastr.error('{{ Session::get('message') }}')
+                @endif
+            @endif
         });
     </script>
 @endsection
