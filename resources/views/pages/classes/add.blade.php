@@ -16,48 +16,62 @@
                 </h3>
             </div>
             <div class="card-body">
-                <form class="form-horizontal" action="/admin/add-student" method="POST" enctype="multipart/form-data"
+                <form class="form-horizontal" action="{{route('class-add')}}" method="POST" enctype="multipart/form-data"
                     data-remote="true">
                     @csrf
                     <div class="form-row">
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
                                 <input type="text" id="firstName" class="form-control form-control-mb"
-                                    placeholder="First Name" />
+                                    placeholder="First Name" name="code" value="{{old("code")}}" />
                                 <label for="firstName">Class Code*</label>
                             </div>
+                            @error('code')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
                                 <input type="text" id="lastName" class="form-control form-control-mb"
-                                    placeholder="Last Name" />
+                                    placeholder="Last Name" name="name" value="{{old("name")}}" />
                                 <label for="lastName">Class Name*</label>
                             </div>
+                            @error('name')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
-                                <input type="text" id="phoneNumber" class="form-control form-control-mb"
-                                    placeholder="Phone Number" />
-                                <label for="phoneNumber">Minimun Score*</label>
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
+                                <input type="text" id="lastName" class="form-control form-control-mb"
+                                    placeholder="Last Name" name="student_capacity" value="{{old("student_capacity")}}" />
+                                <label for="lastName">Max capacity for student (leave empty value if no limit)*</label>
                             </div>
+                            @error('student_capacity')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
-                                <select class="form-control form-control-mb select2" style="width: 100%;" name="gender">
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
+                                <select class="form-control form-control-mb select2" style="width: 100%;" name="course">
                                     <option disabled selected>Select a course</option>
-                                    <option value=''>Laki laki
-                                    </option>
-                                    <option value=''>Perempuan
-                                    </option>
+                                    @foreach ($courses as $course)
+                                        <option value={{$course->id}} {{old('course') == $course->id ? "selected" : ""}}>{{$course->code == null ? "" : $course->code." - "}}{{$course->name}}</option>
+                                    @endforeach
                                 </select>
                                 <label for="inputGender">Course*</label>
                             </div>
+                            @error('course')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                     <div class="card border">
                         <div class="card-body">
                             <table id="tabel-students" class="table table-bordered table-striped">
                                 <thead>
+                                    @error('students')
+                                        <p class="text-danger mb-1">{{ $message }}</p>
+                                    @enderror   
                                     <tr>
                                         <th>Name</th>
                                         <th>Email</th>
@@ -65,26 +79,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>test</td>
-                                        <td>test</td>
-                                        <td>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="3">
-                                                <label class="custom-control-label" for="3"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>test</td>
-                                        <td>test</td>
-                                        <td>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="2">
-                                                <label class="custom-control-label" for="2"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @foreach ($students as $student)
+                                        <tr>
+                                            <td>{{$student->name}}</td>
+                                            <td>{{$student->user->email}}</td>
+                                            <td>
+                                                @php
+                                                    $isCheckedBefore = false;
+                                                    if(old('students')){
+                                                        if(in_array($student->id,old('students'))){
+                                                            $isCheckedBefore = true;
+                                                        }
+                                                    }
+                                                @endphp
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" name="students[]" value="{{$student->id}}" id="studentid-{{$student->id}}" {{$isCheckedBefore ? "checked" : ""}} >
+                                                    <label class="custom-control-label" for="studentid-{{$student->id}}"></label>
+                                                </div>
+                                            </td>
+                                        </tr>    
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -93,6 +107,9 @@
                         <div class="card-body">
                             <table id="tabel-teachers" class="table table-bordered table-striped">
                                 <thead>
+                                    @error('teachers')
+                                        <p class="text-danger mb-1">{{ $message }}</p>
+                                    @enderror   
                                     <tr>
                                         <th>Name</th>
                                         <th>Email</th>
@@ -100,27 +117,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>test</td>
-                                        <td>test</td>
-                                        <td>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input"
-                                                    id="customCheck2">
-                                                <label class="custom-control-label" for="customCheck2"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>test</td>
-                                        <td>test</td>
-                                        <td>
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="tes">
-                                                <label class="custom-control-label" for="tes"></label>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @foreach ($teachers as $teacher)
+                                        <tr>
+                                            <td>{{$teacher->name}}</td>
+                                            <td>{{$teacher->user->email}}</td>
+                                            <td>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" name="teachers[]" value="{{$teacher->id}}" id="teacherid-{{$teacher->id}}">
+                                                    <label class="custom-control-label" for="teacherid-{{$teacher->id}}"></label>
+                                                </div>
+                                            </td>
+                                        </tr>    
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -203,8 +211,8 @@
                 "autoWidth": false,
                 "pageLength": 5,
                 "columnDefs": [{
-                    orderable: false,
-                    targets: 2
+                    'orderable': false,
+                    'targets': 2,
                 }],
                 "buttons": [{
                     extend: 'spacer',
@@ -219,7 +227,7 @@
                 "pageLength": 5,
                 "columnDefs": [{
                     orderable: false,
-                    targets: 2
+                    targets: 2,
                 }],
                 "buttons": [{
                     extend: 'spacer',

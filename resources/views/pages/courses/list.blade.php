@@ -34,7 +34,9 @@
                         @foreach ($datas as $data)
                             <tr>
                                 <td class="text-truncate">{{$data->name}}</td>
-                                <td class="text-truncate">{{$data->code == null ? "No code" : $data->code}}</td>
+                                <td class="text-truncate {{$data->code == null ? "font-italic" : ""}}">
+                                    {{$data->code == null ? "No code" : $data->code}}
+                                </td>
                                 <td>{{$data->min_score}}</td>
                                 <td>
                                     <ul class="list-inline m-0">
@@ -46,8 +48,8 @@
                                         <li class="list-inline-item">
                                             <a href="#" class="btn btn-danger btn-sm rounded-0" data-toggle="modal"
                                                 data-target="#modal-delete-{{ $data->id }}" data-placement="top" 
-                                                    title="Delete">
-                                                        <i class="fa fa-trash"></i>
+                                                title="Delete">
+                                                    <i class="fa fa-trash"></i>
                                             </a>
                                         </li>
                                     </ul>

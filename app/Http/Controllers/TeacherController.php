@@ -38,7 +38,7 @@ class TeacherController extends Controller
         $validation = $request->validate([
             'name' => ['required', 'min:3'],
             'email' => ['required', 'email', 'unique:users,email,' . Auth::user()->id],
-            'phone_number' => ['required', 'integer'],
+            'phone_number' => ['required', 'regex:/^[0-9]+$/'],
             'dob' => ['required'],
             'gender' => ['required'],
             'religion' => ['required'],

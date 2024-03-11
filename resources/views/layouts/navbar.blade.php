@@ -128,13 +128,6 @@
                                     <p>Course Add</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="#"
-                                    class="{{ request()->is('finance/history') ? 'active' : '' }} nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Course Edit</p>
-                                </a>
-                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -158,20 +151,6 @@
                                     class="{{ request()->is('class/add') ? 'active' : '' }} nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Class Add</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#"
-                                    class="{{ request()->is('task/history') ? 'active' : '' }} nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Class Edit</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#"
-                                    class="{{ request()->is('task/history') ? 'active' : '' }} nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Class Detail</p>
                                 </a>
                             </li>
                         </ul>

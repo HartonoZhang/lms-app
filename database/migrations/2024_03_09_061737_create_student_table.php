@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('profile_id');
             $table->foreign('profile_id')->references('id')->on('profile')->onDelete('cascade');
             $table->string('name');
-            $table->date('graduation_date');
+            $table->date('graduation_date')->nullable();
             $table->timestamps();
         });
     }

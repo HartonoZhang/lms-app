@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
@@ -53,6 +54,9 @@ Route::middleware('auth')->group(function () {
         Route::prefix('class')->group(function () {
             Route::get('/list', [AdminController::class, 'classList'])->name('class-list');
             Route::get('/add', [AdminController::class, 'classAdd'])->name('class-add');
+        
+            Route::post('/add', [ClassroomController::class, 'create'])->name('class-add');
+            Route::delete('/delete/{id}', [ClassroomController::class, 'delete'])->name('class-delete');
         });
 
         Route::prefix('admin')->group(function () {
