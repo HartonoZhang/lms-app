@@ -50,7 +50,7 @@
                                         $totalStudent = $classroom->studentClassroom->count().'/'.$classroom->student_capacity;
                                         if ($classroom->studentClassroom->count() == $classroom->student_capacity) {
                                             $color = "text-danger";
-                                        } else if ($classroom->studentClassroom->count() >= $classroom->student_capacity-10 && $classroom->studentClassroom->count() <= $classroom->student_capacity) {
+                                        } else if ($classroom->studentClassroom->count() >= $classroom->student_capacity-5 && $classroom->studentClassroom->count() <= $classroom->student_capacity) {
                                             $color = "text-warning";
                                         } else {
                                             $color = "text-success";
@@ -64,9 +64,9 @@
                                 <td>
                                     <ul class="list-inline m-0">
                                         <li class="list-inline-item">
-                                            <button class="btn btn-success btn-sm rounded-0" type="button"
+                                            <a class="btn btn-success btn-sm rounded-0" href={{route('class-update',$classroom->id)}} type="button"
                                                 data-toggle="tooltip" data-placement="top" title="Edit"><i
-                                                    class="fa fa-edit"></i></button>
+                                                    class="fa fa-edit"></i></a>
                                         </li>
                                         <li class="list-inline-item">
                                             <a href="#" class="btn btn-danger btn-sm rounded-0" data-toggle="modal"

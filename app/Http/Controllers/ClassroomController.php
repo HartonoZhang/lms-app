@@ -41,7 +41,7 @@ class ClassroomController extends Controller
         foreach ($data->teachers as $teacher) {
             $result = TeacherClassroom::create([
                 "classroom_id"=> $data->classroom_id,
-                "teacher_id"=> $teacher
+                "teacher_id"=> (int)$teacher
             ]);
         }
     }
@@ -51,9 +51,53 @@ class ClassroomController extends Controller
         foreach ($data->students as $student) {
             $result = StudentClassroom::create([
                 "classroom_id"=> $data->classroom_id,
-                "student_id"=> $student
+                "student_id"=> (int)$student
             ]);
         }
+    }
+
+    public function update(Request $request, $id){
+        $oldData = Classroom::find($id);
+        $validation = $request->validate([
+            "code" => ["max:10"],
+            "name" => ["required"],
+            "course" => ["required"],
+            "student_capacity" => ['nullable','integer','min:1'],
+            "studentLists" => [
+                "required",
+                function(string $attribute, mixed $value, Closure $fail) use ($request) {
+                    $studentList = explode(",", $value);
+                    if (count($studentList) == 0) {
+                        $fail("Must be at least 1 student in the class");
+                    } else if ($request->student_capacity != null) {
+                        if (count($studentList) > $request->student_capacity) {
+                            $fail("Total student must not exceed max capacity for student");
+                        }
+                    }
+                }
+            ],
+            "teacherLists"=> [
+                "required",
+            ],
+        ],[
+            "studentLists.required" => "Must be at least 1 student in the class",
+            "teacherLists.required" => "Must be at least 1 teacher in the class"
+        ]);
+
+        if($validation){
+            $request->merge(['id' => $oldData->id]);  
+            $classroom = $this->upsertClassroom($request);
+            $request->merge(['classroom_id' => $oldData->id]);  
+            $request->merge(['students' => explode(",", $request->studentLists)]);
+            $request->merge(['teachers' => explode(",", $request->teacherLists)]);
+
+            $this->upsertTeacherClassroom($request);
+            $this->upsertStudentClassroom($request);
+
+            return redirect()->route('class-list')->with(['status'=> 'success','message'=> 'Class successfully updated.']);
+        }
+        $request->flash();
+        return redirect()->back()->withErrors($validation);
     }
 
     public function create(Request $request){
@@ -61,27 +105,33 @@ class ClassroomController extends Controller
             "code" => ["max:10"],
             "name" => ["required"],
             "course" => ["required"],
-            "student_capacity" => ['integer','nullable','regex:/^[1-9]+$/'],
-            "students" => [
+            "student_capacity" => ['nullable','regex:/^[1-9]+$/'],
+            "studentLists" => [
                 "required",
-                'array',
                 function(string $attribute, mixed $value, Closure $fail) use ($request) {
-                    if ($request->student_capacity != null) {
-                        if (count($value) > $request->student_capacity) {
+                    $studentList = explode(",", $value);
+                    if (count($studentList) == 0) {
+                        $fail("Must be at least 1 student in the class");
+                    } else if ($request->student_capacity != null) {
+                        if (count($studentList) > $request->student_capacity) {
                             $fail("Total student must not exceed max capacity for student");
                         }
                     }
                 }
             ],
-            "teachers"=> ["required"],
+            "teacherLists"=> [
+                "required",
+            ],
         ],[
-            "students.required" => "Must be at least 1 student in the class",
-            "teachers.required" => "Must be at least 1 teacher in the class"
+            "studentLists.required" => "Must be at least 1 student in the class",
+            "teacherLists.required" => "Must be at least 1 teacher in the class"
         ]);
-        if($validation){
 
+        if($validation){
             $classroom = $this->upsertClassroom($request);
             $request->merge(['classroom_id' => $classroom->id]);  
+            $request->merge(['students' => explode(",", $request->studentLists)]);
+            $request->merge(['teachers' => explode(",", $request->teacherLists)]);
 
             $this->upsertTeacherClassroom($request);
             $this->upsertStudentClassroom($request);

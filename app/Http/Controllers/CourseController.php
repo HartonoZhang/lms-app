@@ -14,6 +14,41 @@ class CourseController extends Controller
         Session::flash('message', $msg);
     }
 
+    public function upsert($data){
+        if($data->id == null){
+            $result = Course::create([
+                'name' => str($data->course_name)->title(),
+                'code' => strtoupper($data->course_code),
+                'min_score' => $data->min_score,
+            ]);
+        } else {
+            $result = Course::find($data->id)->update([
+                'name' => str($data->course_name)->title(),
+                'code' => strtoupper($data->course_code),
+                'min_score' => $data->min_score,
+            ]);
+        }
+        return $result;
+    }
+
+    public function update(Request $request, $id){
+        $oldData = Course::find($id);
+        $validation = $request->validate([
+            'course_code' => ['max:10'],
+            'course_name' => ['required','unique:courses,name,'.$id],
+            'min_score' => ['required','integer','min:0','max:100'],
+        ],[
+            'course_name.unique' => '"'.$request->course_name.'" course already has been created',
+        ]);
+        if($validation){
+            $request->merge(['id' => $id]);  
+            $this->upsert($request);
+            return redirect()->route('course-list')->with(['status'=> 'success','message'=> 'Course successfully updated.']);
+        }
+        $request->flash();
+        return redirect()->back()->withErrors($validation);
+    }
+    
     public function create(Request $request){
         $validation = $request->validate([
             'course_code' => ['max:10'],
@@ -23,11 +58,7 @@ class CourseController extends Controller
             'course_name.unique' => '"'.$request->course_name.'" course already has been created',
         ]);
         if($validation){
-            Course::create([
-                'name' => str($request->course_name)->title(),
-                'code' => strtoupper($request->course_code),
-                'min_score' => $request->min_score,
-            ]);
+            $this->upsert($request);
             return redirect()->route('course-list')->with(['status'=> 'success','message'=> 'Course successfully created.']);
         }
         $request->flash();
