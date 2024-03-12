@@ -41,8 +41,7 @@ class StudentController extends Controller
             'phone_number' => ['required', 'regex:/^[0-9]+$/'],
             'dob' => ['required'],
             'gender' => ['required'],
-            'religion' => ['required'],
-            'gradution_date' => ['required']
+            'religion' => ['required']
         ]);
 
         if ($validation) {
@@ -50,7 +49,7 @@ class StudentController extends Controller
             $user->role_id = 3;
             $user->email = $request->email;
             $user->image = 'default.png';
-            $user->password = Hash::make($request->password);
+            $user->password = Hash::make('student123');
             $user->save();
 
             $profile = new Profile();
@@ -68,10 +67,42 @@ class StudentController extends Controller
             $student->user()->associate($user);
             $student->profile()->associate($profile);
             $student->name = $request->name;
-            $student->graduation_date = $request->gradution_date;
+            $student->graduation_date = null;
             $student->save();
 
             return redirect()->route('student-list')->with(['status' => 'success', 'message' => 'New Student Successfully Added!']);
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $student = Student::findOrFail($id);
+        $validation = $request->validate([
+            'name' => ['required', 'min:3'],
+            'email' => ['required', 'email', 'unique:users,email,' . $student->user_id],
+            'phone_number' => ['required', 'regex:/^[0-9]+$/'],
+            'dob' => ['required'],
+            'gender' => ['required'],
+            'religion' => ['required']
+        ]);
+
+        if ($validation) {
+            $user = new User();
+            $user->email = $request->email;
+
+            $profile = new Profile();
+            $profile->dob = $request->dob;
+            $profile->gender = $request->gender;
+            $profile->phone_number = $request->phone_number;
+            $profile->religion = $request->religion;
+
+            $student->user()->update($user->toArray());
+            $student->profile()->update($profile->toArray());
+            $student->name = $request->name;
+            $student->graduation_date = $request->graduation_date;
+            $student->save();
+
+            return redirect()->route('student-list')->with(['status' => 'success', 'message' => 'Student Information Successfully Updated!']);
         }
     }
 

@@ -67,10 +67,10 @@
                                 <select class="form-control form-control-mb select2" }}" style="width: 100%;"
                                     name="gender">
                                     <option disabled selected>Select a gender</option>
-                                    <option value='Laki-laki' {{ old('gender') == 'Laki-laki' ? 'selected' : '' }}>Laki laki
+                                    <option value='Male' {{ old('gender') == 'Male' ? 'selected' : '' }}>Male
                                     </option>
-                                    <option value='Perempuan' {{ old('gender') == 'Perempuan' ? 'selected' : '' }}>
-                                        Perempuan
+                                    <option value='Female' {{ old('gender') == 'Female' ? 'selected' : '' }}>
+                                        Female
                                     </option>
                                 </select>
                                 <label for="gender">Gender*</label>
@@ -108,11 +108,11 @@
                     <div class="form-row">
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
-                                <input type="text" id="lastEducation" class="form-control form-control-mb" name="last_education"
-                                    placeholder=">Last Education" value="{{ old('last_education', '') }}" />
+                                <input type="text" id="lastEducation" class="form-control form-control-mb" name="latest_education"
+                                    placeholder=">Last Education" value="{{ old('latest_education', '') }}" />
                                 <label for="lastEducation">Last Education*</label>
                             </div>
-                            @error('last_education')
+                            @error('latest_education')
                                 <p class="text-danger mb-1">{{ $message }}</p>
                             @enderror
                         </div>
