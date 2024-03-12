@@ -1,10 +1,10 @@
 @extends('layouts.template')
 
-@section('title', 'Add Students')
+@section('title', 'Update Teacher')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin-dashboard') }}">Home</a></li>
-    <li class="breadcrumb-item active">Add Students</li>
+    <li class="breadcrumb-item active">Update Teacher</li>
 @endsection
 
 @section('content')
@@ -12,18 +12,19 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    Student Information
+                    Teacher Information
                 </h3>
             </div>
             <div class="card-body">
-                <form class="form-horizontal" action={{ route('student-add') }} method="POST" enctype="multipart/form-data"
+                <form class="form-horizontal" action={{ route('teacher-edit', $teacher->id) }} method="POST" enctype="multipart/form-data"
                     data-remote="true">
                     @csrf
+                    @method('PUT')
                     <div class="form-row">
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="fullName" class="form-control form-control-mb" name="name"
-                                    placeholder="Full Name" value="{{ old('name', '') }}" />
+                                    placeholder="Full Name" value="{{ old('name', $teacher->name) }}" />
                                 <label for="fullName">Full Name*</label>
                             </div>
                             @error('name')
@@ -33,7 +34,7 @@
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="email" class="form-control form-control-mb" name="email"
-                                    placeholder="Email" value="{{ old('email', '') }}" />
+                                    placeholder="Email" value="{{ old('email', $teacher->user->email) }}" />
                                 <label for="email">Email*</label>
                             </div>
                             @error('email')
@@ -43,7 +44,7 @@
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="phoneNumber" class="form-control form-control-mb"
-                                    name="phone_number" placeholder="Phone Number" value="{{ old('phone_number', '') }}" />
+                                    name="phone_number" placeholder="Phone Number" value="{{ old('phone_number', $teacher->profile->phone_number) }}" />
                                 <label for="phoneNumber">Phone Number*</label>
                             </div>
                             @error('phone_number')
@@ -55,7 +56,7 @@
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="date" id="dob" class="form-control form-control-mb" name="dob"
-                                    placeholder=">Date of Birth" value="{{ old('dob', '') }}" />
+                                    placeholder=">Date of Birth" value="{{ old('dob', $teacher->profile->dob) }}" />
                                 <label for="dob">Date of Birth*</label>
                             </div>
                             @error('dob')
@@ -66,10 +67,9 @@
                             <div class="form-label-group in-border mb-1">
                                 <select class="form-control form-control-mb select2" style="width: 100%;"
                                     name="gender">
-                                    <option disabled selected>Select a gender</option>
-                                    <option value='Male' {{ old('gender') == 'Male' ? 'selected' : '' }}>Male
+                                    <option value='Male' {{ old('gender', $teacher->profile->gender) == 'Male' ? 'selected' : '' }}>Male
                                     </option>
-                                    <option value='Female' {{ old('gender') == 'Female' ? 'selected' : '' }}>
+                                    <option value='Female' {{ old('gender', $teacher->profile->gender) == 'Female' ? 'selected' : '' }}>
                                         Female
                                     </option>
                                 </select>
@@ -83,18 +83,18 @@
                             <div class="form-label-group in-border mb-1">
                                 <select class="form-control form-control-mb select2" style="width: 100%;" name="religion">
                                     <option disabled selected>Select a Religion</option>
-                                    <option value='Muslim' {{ old('religion') == 'Muslim' ? 'selected' : '' }}>Muslim
+                                    <option value='Muslim' {{ old('religion', $teacher->profile->religion) == 'Muslim' ? 'selected' : '' }}>Muslim
                                     </option>
-                                    <option value='Protestant' {{ old('religion') == 'Protestant' ? 'selected' : '' }}>
+                                    <option value='Protestant' {{ old('religion', $teacher->profile->religion) == 'Protestant' ? 'selected' : '' }}>
                                         Protestant
                                     </option>
-                                    <option value='Catholic' {{ old('religion') == 'Catholic' ? 'selected' : '' }}>Catholic
+                                    <option value='Catholic' {{ old('religion', $teacher->profile->religion) == 'Catholic' ? 'selected' : '' }}>Catholic
                                     </option>
-                                    <option value='Hindu' {{ old('religion') == 'Hindu' ? 'selected' : '' }}>Hindu
+                                    <option value='Hindu' {{ old('religion', $teacher->profile->religion) == 'Hindu' ? 'selected' : '' }}>Hindu
                                     </option>
-                                    <option value='Buddhist' {{ old('religion') == 'Buddhist' ? 'selected' : '' }}>Buddhist
+                                    <option value='Buddhist' {{ old('religion', $teacher->profile->religion) == 'Buddhist' ? 'selected' : '' }}>Buddhist
                                     </option>
-                                    <option value='Confucian' {{ old('religion') == 'Confucian' ? 'selected' : '' }}>
+                                    <option value='Confucian' {{ old('religion', $teacher->profile->religion) == 'Confucian' ? 'selected' : '' }}>
                                         Confucian
                                     </option>
                                 </select>
@@ -105,20 +105,20 @@
                             @enderror
                         </div>
                     </div>
-                    {{-- <div class="form-row">
+                    <div class="form-row">
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
-                                <input type="date" id="graduation" class="form-control form-control-mb"
-                                    name="gradution_date" placeholder=">Graduation Date*"
-                                    value="{{ old('gradution_date', '') }}" />
-                                <label for="graduation">Graduation Date</label>
+                                <input type="text" id="lastEducation" class="form-control form-control-mb" name="latest_education"
+                                    placeholder=">Last Education" value="{{ old('latest_education', $teacher->latest_education) }}" />
+                                <label for="lastEducation">Last Education*</label>
                             </div>
-                            @error('gradution_date')
+                            @error('latest_education')
                                 <p class="text-danger mb-1">{{ $message }}</p>
                             @enderror
                         </div>
-                    </div> --}}
-                    <button type="submit" class="btn btn-primary mt-3">Add</button>
+                    </div>
+                    <a href="{{ route('teacher-list') }}" class="btn btn-secondary mt-3">Back</a>
+                    <button type="submit" class="btn btn-primary mt-3">Update</button>
                 </form>
             </div>
         </div>

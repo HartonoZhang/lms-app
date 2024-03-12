@@ -53,6 +53,14 @@ class AdminController extends Controller
         return view('pages.students.add');
     }
 
+    public function studentEdit($id)
+    {
+        $student = Student::with('profile', 'user')->findOrFail($id);
+        return view('pages.students.edit', [
+            'student' => $student
+        ]);
+    }
+
     public function teacherList()
     {
         $listTeacher = Teacher::with('profile', 'user')->get();
@@ -64,6 +72,14 @@ class AdminController extends Controller
     public function teacherAdd()
     {
         return view('pages.teachers.add');
+    }
+
+    public function teacherEdit($id)
+    {
+        $teacher = Teacher::with('profile', 'user')->findOrFail($id);
+        return view('pages.teachers.edit', [
+            'teacher' => $teacher
+        ]);
     }
 
     public function courseList()

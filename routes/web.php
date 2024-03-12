@@ -30,16 +30,20 @@ Route::middleware('auth')->group(function () {
         Route::prefix('student')->group(function () {
             Route::get('/list', [AdminController::class, 'studentList'])->name('student-list');
             Route::get('/add', [AdminController::class, 'studentAdd'])->name('student-add');
+            Route::get('/edit/{id}', [AdminController::class, 'studentEdit'])->name('student-edit');
 
             Route::post('/add', [StudentController::class, 'create'])->name('student-add');
+            Route::put('/edit/{id}', [StudentController::class, 'update'])->name('student-edit');
             Route::delete('/delete/{id}', [StudentController::class, 'delete'])->name('student-delete');
         });
 
         Route::prefix('teacher')->group(function () {
             Route::get('/list', [AdminController::class, 'teacherList'])->name('teacher-list');
             Route::get('/add', [AdminController::class, 'teacherAdd'])->name('teacher-add');
+            Route::get('/edit/{id}', [AdminController::class, 'teacherEdit'])->name('teacher-edit');
 
             Route::post('/add', [TeacherController::class, 'create'])->name('teacher-add');
+            Route::put('/edit/{id}', [TeacherController::class, 'update'])->name('teacher-edit');
             Route::delete('/delete/{id}', [TeacherController::class, 'delete'])->name('teacher-delete');
         });
 
