@@ -74,6 +74,14 @@ class AdminController extends Controller
         return view('pages.teachers.add');
     }
 
+    public function teacherEdit($id)
+    {
+        $teacher = Teacher::with('profile', 'user')->findOrFail($id);
+        return view('pages.teachers.edit', [
+            'teacher' => $teacher
+        ]);
+    }
+
     public function courseList()
     {
         $data = Course::all();

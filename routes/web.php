@@ -40,8 +40,10 @@ Route::middleware('auth')->group(function () {
         Route::prefix('teacher')->group(function () {
             Route::get('/list', [AdminController::class, 'teacherList'])->name('teacher-list');
             Route::get('/add', [AdminController::class, 'teacherAdd'])->name('teacher-add');
+            Route::get('/edit/{id}', [AdminController::class, 'teacherEdit'])->name('teacher-edit');
 
             Route::post('/add', [TeacherController::class, 'create'])->name('teacher-add');
+            Route::put('/edit/{id}', [TeacherController::class, 'update'])->name('teacher-edit');
             Route::delete('/delete/{id}', [TeacherController::class, 'delete'])->name('teacher-delete');
         });
 
