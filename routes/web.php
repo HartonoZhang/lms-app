@@ -30,8 +30,10 @@ Route::middleware('auth')->group(function () {
         Route::prefix('student')->group(function () {
             Route::get('/list', [AdminController::class, 'studentList'])->name('student-list');
             Route::get('/add', [AdminController::class, 'studentAdd'])->name('student-add');
+            Route::get('/edit/{id}', [AdminController::class, 'studentEdit'])->name('student-edit');
 
             Route::post('/add', [StudentController::class, 'create'])->name('student-add');
+            Route::put('/edit/{id}', [StudentController::class, 'update'])->name('student-edit');
             Route::delete('/delete/{id}', [StudentController::class, 'delete'])->name('student-delete');
         });
 
