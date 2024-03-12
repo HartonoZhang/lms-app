@@ -67,10 +67,10 @@
                                 <select class="form-control form-control-mb select2" }}" style="width: 100%;"
                                     name="gender">
                                     <option disabled selected>Select a gender</option>
-                                    <option value='Laki-laki' {{ old('gender') == 'Laki-laki' ? 'selected' : '' }}>Laki laki
+                                    <option value='Male' {{ old('gender') == 'Male' ? 'selected' : '' }}>Male
                                     </option>
-                                    <option value='Perempuan' {{ old('gender') == 'Perempuan' ? 'selected' : '' }}>
-                                        Perempuan
+                                    <option value='Female' {{ old('gender') == 'Female' ? 'selected' : '' }}>
+                                        Female
                                     </option>
                                 </select>
                                 <label for="gender">Gender*</label>
