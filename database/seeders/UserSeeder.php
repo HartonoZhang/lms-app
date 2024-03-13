@@ -23,7 +23,21 @@ class UserSeeder extends Seeder
                 'image' => 'default.png',
                 'password' => Hash::make('admin123'),
                 'role_id' => 1
-            ]
+            ],
+            [
+                'name' => 'Teacher 1',
+                'email' => 'teacher@gmail.com',
+                'image' => 'default.png',
+                'password' => Hash::make('teacher123'),
+                'role_id' => 2
+            ],
+            [
+                'name' => 'Student 1',
+                'email' => 'student@gmail.com',
+                'image' => 'default.png',
+                'password' => Hash::make('student123'),
+                'role_id' => 3
+            ],
         ]);
     }
 }

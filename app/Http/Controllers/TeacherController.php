@@ -20,4 +20,14 @@ class TeacherController extends Controller
     {
         return view('pages.leaderboards.teacher');
     }
+
+    public function courses()
+    {
+        return view('pages.courses.my-courses');
+    }
+
+    public function courseDetail()
+    {
+        return view('pages.courses.detail');
+    }
 }

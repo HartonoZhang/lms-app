@@ -99,7 +99,7 @@
             </section>
 
             <!-- Main content -->
-            <section class="content">
+            <section class="content pb-2">
                 @yield('content')
             </section>
             <!-- /.content -->

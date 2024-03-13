@@ -54,6 +54,14 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="{{route('teacher-courses')}}" class="nav-link">
+                        <i class="fas fa-book nav-icon"></i>
+                        <p>
+                            Courses
+                        </p>
+                    </a>
+                </li>
                 @if (Auth::user()->role_id === 1)
                     <li class="nav-item">
                         <a href="#" class="nav-link">
