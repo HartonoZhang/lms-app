@@ -17,24 +17,36 @@ class OrganizationController extends Controller
     public function update (Request $request)
     {
         $validation = $request->validate([
-            'name' => ['required', 'min:3'],
-            'logo' => ['required'],
-            'favicon' => ['required']
+            'web_name' => ['required', 'min:3', 'max:20'],
+            'name' => ['required', 'min:3', 'max:50'],
+            'logo' => ['mimes:png,jpg,jpeg', 'max:2048'],
+            'favicon' => ['mimes:png,jpg,jpeg', 'max:2048']
         ]);
 
         if ($validation) {
             $organization = Organization::first();
 
-            $logoExtension = $request->file('logo')->getClientOriginalExtension();
-            $logoName = $request->name . '-' . now()->timestamp . '-logo.' . $logoExtension;
-            $request->file('logo')->move('assets/images/organization', $logoName);
+            $imageLogo = $request->hasFile('logo') ? $request->file('logo') : $organization->logo;
+            $imageFavicon = $request->hasFile('favicon') ?  $request->file('favicon') : $organization->favicon;
 
-            $faviconExtension = $request->file('favicon')->getClientOriginalExtension();
-            $faviconName = $request->name . '-' . now()->timestamp . '-favicon.' . $faviconExtension;
-            $request->file('favicon')->move('assets/images/organization', $faviconName);
+            $logoName = $imageLogo;
+            $faviconName = $imageFavicon;
 
+            if(!is_string($imageLogo)){
+                $logoExtension =  $imageLogo->getClientOriginalExtension();
+                $logoName = $request->name . '-' . now()->timestamp . '-logo.' . $logoExtension;
+                $imageLogo->move('assets/images/organization', $logoName);
+            }
+
+            if(!is_string($imageFavicon)){
+                $faviconExtension = $imageFavicon->getClientOriginalExtension();
+                $faviconName = $request->name . '-' . now()->timestamp . '-favicon.' . $faviconExtension;
+                $imageFavicon->move('assets/images/organization', $faviconName);
+            }
+            
             $organization->update([
                 'name' => $request->name,
+                'web_name' => $request->web_name,
                 'logo' => $logoName,
                 'favicon' => $faviconName
             ]);

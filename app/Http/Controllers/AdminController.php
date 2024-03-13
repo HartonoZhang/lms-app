@@ -26,8 +26,16 @@ class AdminController extends Controller
     public function home()
     {
         $profile = Admin::with('user')->where('user_id', '=',  Auth::user()->id)->get();
+        $listTeacher = Teacher::all();
+        $listStudent = Student::all();
+        $listClassroom = Classroom::all();
+        $listCourses = Course::all();
         return view('pages.dashboards.admin', [
-            'profile' => $profile
+            'profile' => $profile,
+            'listTeacher' => $listTeacher,
+            'listStudent' => $listStudent,
+            'listClassroom' => $listClassroom,
+            'listCourses' => $listCourses
         ]);
     }
 

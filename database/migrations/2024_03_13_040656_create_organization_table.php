@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('organization_category')->onDelete('restrict');
+            $table->string('web_name');
             $table->string('name');
             $table->string('logo', 255);
             $table->string('favicon', 255);

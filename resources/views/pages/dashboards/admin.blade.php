@@ -14,10 +14,10 @@
         <div class="row">
             <div class="col-md-3 col-sm-6 col-12">
                 <div class="info-box">
-                    <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+                    <span class="info-box-icon bg-info"><i class="fas fa-graduation-cap"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">Student</span>
-                        <span class="info-box-number">1,410</span>
+                        <span class="info-box-number">{{ count($listStudent) }}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -26,11 +26,11 @@
             <!-- /.col -->
             <div class="col-md-3 col-sm-6 col-12">
                 <div class="info-box">
-                    <span class="info-box-icon bg-success"><i class="far fa-flag"></i></span>
+                    <span class="info-box-icon bg-success"><i class="fas fa-chalkboard-teacher"></i></span>
 
                     <div class="info-box-content">
                         <span class="info-box-text">Teacher</span>
-                        <span class="info-box-number">410</span>
+                        <span class="info-box-number">{{ count($listTeacher) }}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -39,11 +39,11 @@
             <!-- /.col -->
             <div class="col-md-3 col-sm-6 col-12">
                 <div class="info-box">
-                    <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+                    <span class="info-box-icon bg-warning"><i class="fas fa-chalkboard"></i></span>
 
                     <div class="info-box-content">
                         <span class="info-box-text">Classes</span>
-                        <span class="info-box-number">13,648</span>
+                        <span class="info-box-number">{{ count($listClassroom) }}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -52,11 +52,11 @@
             <!-- /.col -->
             <div class="col-md-3 col-sm-6 col-12">
                 <div class="info-box">
-                    <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
+                    <span class="info-box-icon bg-danger"><i class="fas fa-book-reader"></i></span>
 
                     <div class="info-box-content">
                         <span class="info-box-text">Courses</span>
-                        <span class="info-box-number">93,139</span>
+                        <span class="info-box-number">{{ count($listCourses) }}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>

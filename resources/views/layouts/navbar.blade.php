@@ -1,8 +1,8 @@
 <aside class="main-sidebar" style="background-color: #f4f6f9">
-    <a href="#" class="brand-link">
+    <a href="/{{ strtolower(Auth::user()->role->name) }}" class="brand-link">
         <img src="{{ asset('assets') }}/images/organization/{{ $organization->logo }}" alt="Logo"
-            class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">{{ $organization->name }}</span>
+            class="img-circle brand-image mx-2" style="width: 42px; height: 42px">
+        <span class="brand-text font-weight-light">{{ $organization->web_name }}</span>
     </a>
 
     <div class="sidebar">
@@ -13,7 +13,7 @@
                     alt="User Image" style="width: 35px; height: 35px;">
             </div>
             <div class="info test">
-                <div class="d-block">{{ Auth::user()->admin->name }}</div>
+                <div class="d-block text-truncate">{{ Auth::user()->admin->name }}</div>
                 <span class="badge py-1 px-2" style="background-color: #f3797e">{{ Auth::user()->role->name }}</span>
             </div>
         </a>
