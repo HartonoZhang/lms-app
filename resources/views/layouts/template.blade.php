@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Blank Page</title>
+    <title> {{ $organization->name }} </title>
+    <link rel="shortcut icon" href="{{ asset('assets') }}/images/organization/{{ $organization->favicon }}">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -23,7 +24,8 @@
     <!-- Site wrapper -->
     <div class="wrapper">
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light border-0" style="background-color: #f4f6f9">
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light border-0"
+            style="background-color: #f4f6f9">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -78,7 +80,7 @@
         </nav>
         <!-- /.navbar -->
 
-        @include('layouts.navbar')
+        @include('layouts.navbar', ['organization' => $organization])
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">

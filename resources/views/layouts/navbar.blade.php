@@ -1,8 +1,8 @@
 <aside class="main-sidebar" style="background-color: #f4f6f9">
     <a href="#" class="brand-link">
-        <img src="{{ asset('assets') }}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
+        <img src="{{ asset('assets') }}/images/organization/{{ $organization->logo }}" alt="Logo"
             class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">AdminLTE 3</span>
+        <span class="brand-text font-weight-light">{{ $organization->name }}</span>
     </a>
 
     <div class="sidebar">
@@ -13,7 +13,7 @@
                     alt="User Image" style="width: 35px; height: 35px;">
             </div>
             <div class="info test">
-                <div class="d-block">{{ Auth::user()->name }}</div>
+                <div class="d-block">{{ Auth::user()->admin->name }}</div>
                 <span class="badge py-1 px-2" style="background-color: #f3797e">{{ Auth::user()->role->name }}</span>
             </div>
         </a>
@@ -86,18 +86,6 @@
                                     <p>Teacher Add</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="#" class="{{ request()->is('task/history') ? 'active' : '' }} nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Teacher Edit</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="{{ request()->is('task/history') ? 'active' : '' }} nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Teacher Detail</p>
-                                </a>
-                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -121,20 +109,6 @@
                                     class="{{ request()->is('student/add') ? 'active' : '' }} nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Student Add</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#"
-                                    class="{{ request()->is('finance/history') ? 'active' : '' }} nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Student Edit</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#"
-                                    class="{{ request()->is('finance/history') ? 'active' : '' }} nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Student Detail</p>
                                 </a>
                             </li>
                         </ul>
@@ -162,13 +136,6 @@
                                     <p>Course Add</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="#"
-                                    class="{{ request()->is('finance/history') ? 'active' : '' }} nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Course Edit</p>
-                                </a>
-                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -192,20 +159,6 @@
                                     class="{{ request()->is('class/add') ? 'active' : '' }} nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Class Add</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#"
-                                    class="{{ request()->is('task/history') ? 'active' : '' }} nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Class Edit</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#"
-                                    class="{{ request()->is('task/history') ? 'active' : '' }} nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Class Detail</p>
                                 </a>
                             </li>
                         </ul>

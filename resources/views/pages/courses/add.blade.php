@@ -16,32 +16,42 @@
                 </h3>
             </div>
             <div class="card-body">
-                <form class="form-horizontal" action="/admin/add-student" method="POST" enctype="multipart/form-data"
+                <form class="form-horizontal" action={{route('course-add')}} method="POST" enctype="multipart/form-data"
                     data-remote="true">
                     @csrf
                     <div class="form-row">
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
                                 <input type="text" id="firstName" class="form-control form-control-mb"
-                                    placeholder="First Name" />
+                                    placeholder="First Name" name="course_code" value="{{old('course_code')}}"/>
                                 <label for="firstName">Course Code*</label>
                             </div>
+                            @error('course_code')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
                                 <input type="text" id="lastName" class="form-control form-control-mb"
-                                    placeholder="Last Name" />
+                                    placeholder="Last Name" name="course_name" value="{{old('course_name')}}"/>
                                 <label for="lastName">Course Name*</label>
                             </div>
+                            @error('course_name')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-label-group in-border">
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
                                 <input type="text" id="phoneNumber" class="form-control form-control-mb"
-                                    placeholder="Phone Number" />
+                                    placeholder="Phone Number" name="min_score" value="{{old('min_score')}}"/>
                                 <label for="phoneNumber">Minimun Score*</label>
                             </div>
+                            @error('min_score')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
+                    <a type="button" href="{{route('course-list')}}" class="btn btn-danger">Cancel</a>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </form>
             </div>

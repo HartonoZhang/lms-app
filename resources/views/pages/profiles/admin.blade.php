@@ -16,10 +16,10 @@
                     <div class="card-body box-profile">
                         <div class="text-center">
                             <img class="profile-user-img img-fluid img-circle"
-                                src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}"
-                                alt="User profile picture" style="width: 120px; height: 120px;">
+                            src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}"
+                            alt="User profile picture" style="width: 120px; height: 120px;">
                         </div>
-                        <h3 class="profile-username text-center">{{ Auth::user()->name }}</h3>
+                        <h3 class="profile-username text-center">{{ Auth::user()->admin->name }}</h3>
                         <p class="text-muted text-center">{{ Auth::user()->email }}</p>
 
                         <ul class="list-group list-group-unbordered mb-3">
@@ -60,7 +60,7 @@
                                         <div class="col-sm-10">
                                             <input type="Name" class="form-control" id="inputName"
                                                 placeholder="Input your name" name="name"
-                                                value="{{ Auth::user()->name }}">
+                                                value="{{ Auth::user()->admin->name }}">
                                             @error('name')
                                                 <p class="text-danger m-0">{{ $message }}</p>
                                             @enderror
@@ -150,7 +150,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <div class="input-group rounded border border-secondary">
+                            <div class="input-group border">
                                 <input id="upload" type="file" onchange="readURL(this);"
                                     class="form-control border" name="image">
                                 <label id="upload-label" for="upload" class="font-weight-light text-muted">Choose
@@ -183,6 +183,10 @@
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/toastr/toastr.min.css">
 
     <style>
+        #modal-update-photo .input-group {
+            border-radius: var(--border-radius-1);
+        }
+
         #upload {
             opacity: 0;
         }

@@ -52,28 +52,28 @@ class AuthController extends Controller
         return redirect('/' . $role . '/signin');
     }
 
-    public function store(Request $request)
-    {
-        $validation = $request->validate([
-            'name' => ['required', 'min:3'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'min:6'],
-            'confirmPassword' => ['required', 'same:password'],
-        ]);
+    // public function store(Request $request)
+    // {
+    //     $validation = $request->validate([
+    //         'name' => ['required', 'min:3'],
+    //         'email' => ['required', 'email', 'unique:users,email'],
+    //         'password' => ['required', 'min:6'],
+    //         'confirmPassword' => ['required', 'same:password'],
+    //     ]);
 
-        if ($validation) {
-            User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'image' => 'default.png',
-                'role_id' => 1
-            ]);
+    //     if ($validation) {
+    //         User::create([
+    //             'name' => $request->name,
+    //             'email' => $request->email,
+    //             'password' => Hash::make($request->password),
+    //             'image' => 'default.png',
+    //             'role_id' => 1
+    //         ]);
 
-            $this->message('Your account have been created successfully!', 'success');
-            return redirect('/signin');
-        }
-    }
+    //         $this->message('Your account have been created successfully!', 'success');
+    //         return redirect('/signin');
+    //     }
+    // }
 
     public function signout(Request $request)
     {
