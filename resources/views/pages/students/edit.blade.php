@@ -82,7 +82,6 @@
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <select class="form-control form-control-mb select2" style="width: 100%;" name="religion">
-                                    <option disabled selected>Select a Religion</option>
                                     <option value='Muslim' {{ old('religion', $student->profile->religion) == 'Muslim' ? 'selected' : '' }}>Muslim
                                     </option>
                                     <option value='Protestant' {{ old('religion', $student->profile->religion) == 'Protestant' ? 'selected' : '' }}>

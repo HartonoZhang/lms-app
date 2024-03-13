@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Classroom;
 use App\Models\Student;
 use App\Models\Course;
+use App\Models\Organization;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -37,7 +38,10 @@ class AdminController extends Controller
 
     public function setting()
     {
-        return view('pages.setting.index');
+        $organization= Organization::first();
+        return view('pages.setting.index', [
+            'organization' => $organization
+        ]);
     }
 
     public function studentList()
@@ -61,6 +65,14 @@ class AdminController extends Controller
         ]);
     }
 
+    public function studentDetail($id)
+    {
+        $student = Student::with('profile', 'user')->findOrFail($id);
+        return view('pages.students.detail', [
+            'student' => $student
+        ]);
+    }
+
     public function teacherList()
     {
         $listTeacher = Teacher::with('profile', 'user')->get();
@@ -78,6 +90,14 @@ class AdminController extends Controller
     {
         $teacher = Teacher::with('profile', 'user')->findOrFail($id);
         return view('pages.teachers.edit', [
+            'teacher' => $teacher
+        ]);
+    }
+
+    public function teacherDetail($id)
+    {
+        $teacher = Teacher::with('profile', 'user')->findOrFail($id);
+        return view('pages.teachers.detail', [
             'teacher' => $teacher
         ]);
     }
