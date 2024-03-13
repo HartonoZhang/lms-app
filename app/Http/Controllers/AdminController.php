@@ -109,6 +109,18 @@ class AdminController extends Controller
         ]);
     }
 
+    public function classDetail($id)
+    {
+        $data = Classroom::with(['course','teacherClassroom.teacher.user','studentClassroom.student.user'])->where('id', $id)->get()[0];
+        $studentLists = $data->studentClassroom->pluck('student');
+        $teacherLists = $data->teacherClassroom->pluck('teacher');
+        return view('pages.classes.detail')->with([
+            'data' => $data,
+            'studentLists' => $studentLists,
+            'teacherLists' => $teacherLists,
+        ]);
+    }
+
     public function classAdd()
     {
         $courses = Course::all();

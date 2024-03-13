@@ -94,6 +94,96 @@ class UserSeeder extends Seeder
                 "password" => "student123",
                 "image" => "default.png",
                 "role_id" => 3,
+            ],[
+                "email" => "teacher_5@gmail.com",
+                "password" => "teacher123",
+                "image" => "default.png",
+                "role_id" => 2,
+            ],[
+                "email" => "teacher_6@gmail.com",
+                "password" => "teacher123",
+                "image" => "default.png",
+                "role_id" => 2,
+            ],[
+                "email" => "teacher_7@gmail.com",
+                "password" => "teacher123",
+                "image" => "default.png",
+                "role_id" => 2,
+            ],[
+                "email" => "teacher_8@gmail.com",
+                "password" => "teacher123",
+                "image" => "default.png",
+                "role_id" => 2,
+            ],[
+                "email" => "teacher_9@gmail.com",
+                "password" => "teacher123",
+                "image" => "default.png",
+                "role_id" => 2,
+            ],[
+                "email" => "teacher_10@gmail.com",
+                "password" => "teacher123",
+                "image" => "default.png",
+                "role_id" => 2,
+            ],[
+                "email" => "teacher_11@gmail.com",
+                "password" => "teacher123",
+                "image" => "default.png",
+                "role_id" => 2,
+            ],[
+                "email" => "teacher_12@gmail.com",
+                "password" => "teacher123",
+                "image" => "default.png",
+                "role_id" => 2,
+            ],[
+                "email" => "student_11@gmail.com",
+                "password" => "student123",
+                "image" => "default.png",
+                "role_id" => 3,
+            ],[
+                "email" => "student_12@gmail.com",
+                "password" => "student123",
+                "image" => "default.png",
+                "role_id" => 3,
+            ],[
+                "email" => "student_13@gmail.com",
+                "password" => "student123",
+                "image" => "default.png",
+                "role_id" => 3,
+            ],[
+                "email" => "student_14@gmail.com",
+                "password" => "student123",
+                "image" => "default.png",
+                "role_id" => 3,
+            ],[
+                "email" => "student_15@gmail.com",
+                "password" => "student123",
+                "image" => "default.png",
+                "role_id" => 3,
+            ],[
+                "email" => "student_16@gmail.com",
+                "password" => "student123",
+                "image" => "default.png",
+                "role_id" => 3,
+            ],[
+                "email" => "student_17@gmail.com",
+                "password" => "student123",
+                "image" => "default.png",
+                "role_id" => 3,
+            ],[
+                "email" => "student_18@gmail.com",
+                "password" => "student123",
+                "image" => "default.png",
+                "role_id" => 3,
+            ],[
+                "email" => "student_19@gmail.com",
+                "password" => "student123",
+                "image" => "default.png",
+                "role_id" => 3,
+            ],[
+                "email" => "student_20@gmail.com",
+                "password" => "student123",
+                "image" => "default.png",
+                "role_id" => 3,
             ]
         ];
 

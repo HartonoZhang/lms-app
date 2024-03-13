@@ -51,6 +51,7 @@
                             @enderror
                         </div>
                     </div>
+                    <a type="button" href="{{route('course-list')}}" class="btn btn-danger">Cancel</a>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </form>
             </div>
