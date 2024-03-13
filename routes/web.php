@@ -50,17 +50,21 @@ Route::middleware('auth')->group(function () {
         Route::prefix('course')->group(function () {
             Route::get('/list', [AdminController::class, 'courseList'])->name('course-list');
             Route::get('/add', [AdminController::class, 'courseAdd'])->name('course-add');
+            Route::get('/edit/{id}', [AdminController::class, 'courseEdit'])->name('course-update');
 
             Route::post('/add', [CourseController::class, 'create'])->name('course-add');
             Route::delete('/delete/{id}', [CourseController::class, 'delete'])->name('course-delete');
+            Route::put('/edit/{id}', [CourseController::class, 'update'])->name('course-update');
         });
 
         Route::prefix('class')->group(function () {
             Route::get('/list', [AdminController::class, 'classList'])->name('class-list');
             Route::get('/add', [AdminController::class, 'classAdd'])->name('class-add');
-        
+            Route::get('/edit/{id}', [AdminController::class, 'classEdit'])->name('class-update');
+
             Route::post('/add', [ClassroomController::class, 'create'])->name('class-add');
             Route::delete('/delete/{id}', [ClassroomController::class, 'delete'])->name('class-delete');
+            Route::put('/edit/{id}', [ClassroomController::class, 'update'])->name('class-update');
         });
 
         Route::prefix('admin')->group(function () {

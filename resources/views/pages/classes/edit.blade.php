@@ -1,10 +1,10 @@
 @extends('layouts.template')
 
-@section('title', 'Add Classes')
+@section('title', 'Edit Class')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin-dashboard') }}">Home</a></li>
-    <li class="breadcrumb-item active">Add Classes</li>
+    <li class="breadcrumb-item active">Edit Class</li>
 @endsection
 
 @section('content')
@@ -16,14 +16,15 @@
                 </h3>
             </div>
             <div class="card-body">
-                <form class="form-horizontal" id="addClassroomForm" action="{{route('class-add')}}" method="POST" enctype="multipart/form-data"
+                <form class="form-horizontal" id="addClassroomForm" action="{{route('class-update',$data->id)}}" method="POST" enctype="multipart/form-data"
                     data-remote="true">
                     @csrf
+                    @method('PUT')
                     <div class="form-row">
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="firstName" class="form-control form-control-mb"
-                                    placeholder="First Name" name="code" value="{{old("code")}}" />
+                                    placeholder="First Name" name="code" value="{{old("code") ? old("code") : $data->code}}" />
                                 <label for="firstName">Class Code*</label>
                             </div>
                             @error('code')
@@ -33,7 +34,7 @@
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="lastName" class="form-control form-control-mb"
-                                    placeholder="Last Name" name="name" value="{{old("name")}}" />
+                                    placeholder="Last Name" name="name" value="{{old("name") ? old("name") : $data->name}}" />
                                 <label for="lastName">Class Name*</label>
                             </div>
                             @error('name')
@@ -43,7 +44,7 @@
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="lastName" class="form-control form-control-mb"
-                                    placeholder="Last Name" name="student_capacity" value="{{old("student_capacity")}}" />
+                                    placeholder="Last Name" name="student_capacity" value="{{old("student_capacity") ? old("student_capacity") : $data->student_capacity}}" />
                                 <label for="lastName">Max capacity for student (leave empty value if no limit)*</label>
                             </div>
                             @error('student_capacity')
@@ -55,7 +56,17 @@
                                 <select class="form-control form-control-mb select2" style="width: 100%;" name="course">
                                     <option disabled selected>Select a course</option>
                                     @foreach ($courses as $course)
-                                        <option value={{$course->id}} {{old('course') == $course->id ? "selected" : ""}}>{{$course->code == null ? "" : $course->code." - "}}{{$course->name}}</option>
+                                        @php
+                                            $selected = false;
+                                            if (old('course')) {
+                                                if(old ('course')== $course->id){
+                                                    $selected = true;
+                                                }
+                                            } else if ($course->id == $data->course_id){
+                                                $selected = true;
+                                            }
+                                        @endphp
+                                        <option value={{$course->id}} {{$selected ? "selected" : ""}}>{{$course->code == null ? "" : $course->code." - "}}{{$course->name}}</option>
                                     @endforeach
                                 </select>
                                 <label for="inputGender">Course*</label>
@@ -69,12 +80,12 @@
                         if (old('studentLists')) {
                             $oldCheckedStudent = explode(',',old('studentLists'));
                         }else {
-                            $oldCheckedStudent = null;
+                            $oldCheckedStudent = $checkedStudent;
                         }
                         if (old('teacherLists')) {
                             $oldCheckedTeacher = explode(',',old('teacherLists'));
                         }else {
-                            $oldCheckedTeacher = null;
+                            $oldCheckedTeacher = $checkedTeacher;
                         }
                     @endphp
                     <script type="text/javascript">
@@ -127,7 +138,8 @@
                                                     }
                                                 @endphp
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="studentid-{{$student->id}}" onchange=updateStudentCheckbox({{$student->id}}) {{$isChecked ? "checked" : ""}} />
+                                                    <input type="checkbox" class="custom-control-input" id="studentid-{{$student->id}}" 
+                                                        onchange=updateStudentCheckbox({{$student->id}}) {{$isChecked ? "checked" : ""}} />
                                                     <label class="custom-control-label" for="studentid-{{$student->id}}"></label>
                                                 </div>
                                             </td>
@@ -187,7 +199,8 @@
                                                             }
                                                         }
                                                     @endphp
-                                                    <input type="checkbox" class="custom-control-input" id="teacherid-{{$teacher->id}}" onchange=updateTeacherCheckbox({{$teacher->id}}) {{$isChecked ? "checked" : ""}} >
+                                                    <input type="checkbox" class="custom-control-input" id="teacherid-{{$teacher->id}}" 
+                                                        onchange=updateTeacherCheckbox({{$teacher->id}}) {{$isChecked ? "checked" : ""}} >
                                                     <label class="custom-control-label" for="teacherid-{{$teacher->id}}"></label>
                                                 </div>
                                             </td>
@@ -198,7 +211,7 @@
                         </div>
                     </div>
                     <input type="hidden" name="teacherLists"  id="teacherLists"/>
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-primary">Edit</button>
                 </form>
             </div>
         </div>

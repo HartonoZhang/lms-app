@@ -95,6 +95,12 @@ class AdminController extends Controller
         return view('pages.courses.add');
     }
 
+    public function courseEdit($id)
+    {
+        $data = Course::find($id);
+        return view('pages.courses.edit')->with(['data' => $data]);
+    }
+
     public function classList()
     {
         $classrooms = Classroom::with(['course'])->get();
@@ -112,6 +118,24 @@ class AdminController extends Controller
             'courses' => $courses,
             'students'=> $students,
             'teachers'=> $teachers,
+        ]);
+    }
+
+    public function classEdit($id)
+    {
+        $courses = Course::all();
+        $students = Student::with(['user'])->get();
+        $teachers = Teacher::with(['user'])->get();
+        $data = Classroom::with(['course','teacherClassroom','studentClassroom'])->where('id', $id)->get()[0];
+        $checkedStudent = $data->studentClassroom->pluck('student_id')->all();
+        $checkedTeacher = $data->teacherClassroom->pluck('teacher_id')->all();
+        return view('pages.classes.edit')->with([
+            'data' => $data,
+            'courses' => $courses,
+            'students'=> $students,
+            'teachers'=> $teachers,
+            'checkedStudent' => $checkedStudent,
+            'checkedTeacher'=> $checkedTeacher
         ]);
     }
 
