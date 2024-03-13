@@ -61,6 +61,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/list', [AdminController::class, 'classList'])->name('class-list');
             Route::get('/add', [AdminController::class, 'classAdd'])->name('class-add');
             Route::get('/edit/{id}', [AdminController::class, 'classEdit'])->name('class-update');
+            Route::get('/detail/{id}', [AdminController::class, 'classDetail'])->name('class-detail');
 
             Route::post('/add', [ClassroomController::class, 'create'])->name('class-add');
             Route::delete('/delete/{id}', [ClassroomController::class, 'delete'])->name('class-delete');

@@ -198,6 +198,7 @@
                         </div>
                     </div>
                     <input type="hidden" name="teacherLists"  id="teacherLists"/>
+                    <a type="button" href="{{route('class-list')}}" class="btn btn-danger">Cancel</a>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </form>
             </div>

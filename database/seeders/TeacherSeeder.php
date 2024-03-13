@@ -37,6 +37,36 @@ class TeacherSeeder extends Seeder
                 "user_id" => 5,
                 "profile_id" => 4,
                 "latest_education" => "Doctor",
+            ],[
+                "name" => "Yosfelin",
+                "user_id" => 16,
+                "profile_id" => 15,
+                "latest_education" => "Sarjana",
+            ],[
+                "name" => "Arya",
+                "user_id" => 17,
+                "profile_id" => 16,
+                "latest_education" => "Sarjana",
+            ],[
+                "name" => "Nauval",
+                "user_id" => 18,
+                "profile_id" => 17,
+                "latest_education" => "Magister",
+            ],[
+                "name" => "Banyu",
+                "user_id" => 19,
+                "profile_id" => 18,
+                "latest_education" => "Doctor",
+            ],[
+                "name" => "Alva",
+                "user_id" => 20,
+                "profile_id" => 19,
+                "latest_education" => "Magister",
+            ],[
+                "name" => "Iqbal",
+                "user_id" => 21,
+                "profile_id" => 20,
+                "latest_education" => "Doctor",
             ],
         ];
 

@@ -12,7 +12,7 @@ class TeacherClassroom extends Model
         return $this->belongsTo(Classroom::class);
     }
     public function teacher(){
-        return $this->belongsTo(TeacherClassroom::class);
+        return $this->belongsTo(Teacher::class);
     }
     use HasFactory;
 }

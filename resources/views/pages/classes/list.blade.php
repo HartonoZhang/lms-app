@@ -64,6 +64,11 @@
                                 <td>
                                     <ul class="list-inline m-0">
                                         <li class="list-inline-item">
+                                            <a class="btn btn-primary btn-sm rounded-0" href={{route('class-detail',$classroom->id)}} type="button"
+                                                data-toggle="tooltip" data-placement="top" title="Detail"><i
+                                                    class="fa fa-search"></i></a>
+                                        </li>
+                                        <li class="list-inline-item">
                                             <a class="btn btn-success btn-sm rounded-0" href={{route('class-update',$classroom->id)}} type="button"
                                                 data-toggle="tooltip" data-placement="top" title="Edit"><i
                                                     class="fa fa-edit"></i></a>

@@ -53,7 +53,51 @@ class CourseSeeder extends Seeder
                 "code" => "Law",
                 "name" => "Public Relation",
                 "min_score" => 70,
-            ],
+            ],[
+                "code" => "",
+                "name" => "English",
+                "min_score" => 60,
+            ],[
+                "code" => "",
+                "name" => "Basic Mathematic",
+                "min_score" => 50,
+            ],[
+                "code" => "",
+                "name" => "Sports",
+                "min_score" => 45,
+            ],[
+                "code" => "",
+                "name" => "History of Java",
+                "min_score" => 65,
+            ],[
+                "code" => "ART",
+                "name" => "Sculpture",
+                "min_score" => 44,
+            ],[
+                "code" => "Math",
+                "name" => "2D Shapes",
+                "min_score" => 67,
+            ],[
+                "code" => "ART",
+                "name" => "Digital Drawing",
+                "min_score" => 76,
+            ],[
+                "code" => "COMP",
+                "name" => "Introduction of Python Language",
+                "min_score" => 50,
+            ],[
+                "code" => "Cook",
+                "name" => "Western Dish",
+                "min_score" => 55,
+            ],[
+                "code" => "Cook",
+                "name" => "Asia Dish",
+                "min_score" => 65,
+            ],[
+                "code" => "COMP",
+                "name" => "Introduction of Python Language II",
+                "min_score" => 60,
+            ]
         ];
 
         foreach ($data as $value) {
