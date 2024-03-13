@@ -19,7 +19,7 @@
                             src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}"
                             alt="User profile picture" style="width: 120px; height: 120px;">
                         </div>
-                        <h3 class="profile-username text-center">{{ Auth::user()->name }}</h3>
+                        <h3 class="profile-username text-center">{{ Auth::user()->admin->name }}</h3>
                         <p class="text-muted text-center">{{ Auth::user()->email }}</p>
 
                         <ul class="list-group list-group-unbordered mb-3">

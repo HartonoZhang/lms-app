@@ -1,10 +1,10 @@
 @extends('layouts.template')
 
-@section('title', 'Update Teacher')
+@section('title', 'Detail Teacher')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin-dashboard') }}">Home</a></li>
-    <li class="breadcrumb-item active">Update Teacher</li>
+    <li class="breadcrumb-item active">Detail Teacher</li>
 @endsection
 
 @section('content')
@@ -16,108 +16,110 @@
                 </h3>
             </div>
             <div class="card-body">
-                <form class="form-horizontal" action={{ route('teacher-edit', $teacher->id) }} method="POST" enctype="multipart/form-data"
+                <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle"
+                        src="{{ asset('assets') }}/images/profile/{{ $teacher->user->image }}" alt="User profile picture">
+                    <img class="user-badge my-0"
+                        src="{{ asset('assets') }}/images/badges/{{ $teacher->profile->badge_name }}.png"
+                        alt="User profile picture">
+                </div>
+                <h3 class="profile-username text-center mt-4">{{ $teacher->name }} </h3>
+                <p class="text-muted text-center">Level: {{ $teacher->profile->level }}</p>
+                <form class="form-horizontal" action="#" method="POST" enctype="multipart/form-data"
                     data-remote="true">
                     @csrf
-                    @method('PUT')
                     <div class="form-row">
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="fullName" class="form-control form-control-mb" name="name"
-                                    placeholder="Full Name" value="{{ old('name', $teacher->name) }}" />
+                                    placeholder="Full Name" value="{{ $teacher->name }}" readonly />
                                 <label for="fullName">Full Name*</label>
                             </div>
-                            @error('name')
-                                <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
                         </div>
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="email" class="form-control form-control-mb" name="email"
-                                    placeholder="Email" value="{{ old('email', $teacher->user->email) }}" />
+                                    placeholder="Email" value="{{ $teacher->user->email }}" readonly />
                                 <label for="email">Email*</label>
                             </div>
-                            @error('email')
-                                <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
                         </div>
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="phoneNumber" class="form-control form-control-mb"
-                                    name="phone_number" placeholder="Phone Number" value="{{ old('phone_number', $teacher->profile->phone_number) }}" />
+                                    name="phone_number" placeholder="Phone Number"
+                                    value="{{ $teacher->profile->phone_number }}" readonly />
                                 <label for="phoneNumber">Phone Number*</label>
                             </div>
-                            @error('phone_number')
-                                <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="date" id="dob" class="form-control form-control-mb" name="dob"
-                                    placeholder=">Date of Birth" value="{{ old('dob', $teacher->profile->dob) }}" />
+                                    placeholder=">Date of Birth" value="{{ $teacher->profile->dob }}"
+                                    readonly />
                                 <label for="dob">Date of Birth*</label>
                             </div>
-                            @error('dob')
-                                <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
                         </div>
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
-                                <select class="form-control form-control-mb select2" style="width: 100%;"
-                                    name="gender">
-                                    <option value='Male' {{ old('gender', $teacher->profile->gender) == 'Male' ? 'selected' : '' }}>Male
+                                <select class="form-control form-control-mb select2" style="width: 100%;" name="gender"
+                                    disabled>
+                                    <option value='Male'
+                                        {{ $teacher->profile->gender == 'Male' ? 'selected' : '' }}>Male
                                     </option>
-                                    <option value='Female' {{ old('gender', $teacher->profile->gender) == 'Female' ? 'selected' : '' }}>
+                                    <option value='Female'
+                                        {{ $teacher->profile->gender == 'Female' ? 'selected' : '' }}>
                                         Female
                                     </option>
                                 </select>
                                 <label for="gender">Gender*</label>
                             </div>
-                            @error('gender')
-                                <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
                         </div>
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
-                                <select class="form-control form-control-mb select2" style="width: 100%;" name="religion">
-                                    <option value='Muslim' {{ old('religion', $teacher->profile->religion) == 'Muslim' ? 'selected' : '' }}>Muslim
+                                <select class="form-control form-control-mb select2" style="width: 100%;" name="religion"
+                                    disabled>
+                                    <option value='Muslim'
+                                        {{ $teacher->profile->religion == 'Muslim' ? 'selected' : '' }}>
+                                        Muslim
                                     </option>
-                                    <option value='Protestant' {{ old('religion', $teacher->profile->religion) == 'Protestant' ? 'selected' : '' }}>
+                                    <option value='Protestant'
+                                        {{ $teacher->profile->religion == 'Protestant' ? 'selected' : '' }}>
                                         Protestant
                                     </option>
-                                    <option value='Catholic' {{ old('religion', $teacher->profile->religion) == 'Catholic' ? 'selected' : '' }}>Catholic
+                                    <option value='Catholic'
+                                        {{ $teacher->profile->religion == 'Catholic' ? 'selected' : '' }}>
+                                        Catholic
                                     </option>
-                                    <option value='Hindu' {{ old('religion', $teacher->profile->religion) == 'Hindu' ? 'selected' : '' }}>Hindu
+                                    <option value='Hindu'
+                                        {{ $teacher->profile->religion == 'Hindu' ? 'selected' : '' }}>
+                                        Hindu
                                     </option>
-                                    <option value='Buddhist' {{ old('religion', $teacher->profile->religion) == 'Buddhist' ? 'selected' : '' }}>Buddhist
+                                    <option value='Buddhist'
+                                        {{ $teacher->profile->religion == 'Buddhist' ? 'selected' : '' }}>
+                                        Buddhist
                                     </option>
-                                    <option value='Confucian' {{ old('religion', $teacher->profile->religion) == 'Confucian' ? 'selected' : '' }}>
+                                    <option value='Confucian'
+                                        {{ $teacher->profile->religion == 'Confucian' ? 'selected' : '' }}>
                                         Confucian
                                     </option>
                                 </select>
                                 <label for="religion">Religion*</label>
                             </div>
-                            @error('religion')
-                                <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
-                                <input type="text" id="lastEducation" class="form-control form-control-mb" name="latest_education"
-                                    placeholder=">Last Education" value="{{ old('latest_education', $teacher->latest_education) }}" />
+                                <input type="text" id="lastEducation" class="form-control form-control-mb"
+                                    name="latest_education" placeholder=">Last Education"
+                                    value="{{ $teacher->latest_education }}" readonly />
                                 <label for="lastEducation">Last Education*</label>
                             </div>
-                            @error('latest_education')
-                                <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
                         </div>
                     </div>
                     <a href="{{ route('teacher-list') }}" class="btn btn-secondary mt-3">Back</a>
-                    <button type="submit" class="btn btn-primary mt-3">Update</button>
                 </form>
             </div>
         </div>
@@ -125,8 +127,6 @@
 @endsection
 
 @section('css-link')
-    <!-- Toastr -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/toastr/toastr.min.css">
     <link rel="stylesheet" type="text/css"
         href="https://cdn.jsdelivr.net/gh/exacti/floating-labels@latest/floating-labels.min.css" media="screen">
     <!-- Select2 -->
@@ -134,6 +134,23 @@
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 
     <style>
+        .user-badge {
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            margin-left: auto;
+            margin-right: auto;
+            left: 60px;
+            right: 0;
+            top: 150px;
+            text-align: center;
+        }
+
+        .profile-user-img {
+            width: 120px;
+            height: 120px;
+        }
+
         .select2-container--bootstrap4.select2-container--focus .select2-selection {
             box-shadow: none !important;
         }
@@ -149,8 +166,6 @@
 @endsection
 
 @section('js-script')
-    <!-- Toastr -->
-    <script src="{{ asset('assets') }}/plugins/toastr/toastr.min.js"></script>
     <!-- Select2 -->
     <script src="{{ asset('assets') }}/plugins/select2/js/select2.full.min.js"></script>
 

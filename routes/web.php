@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
@@ -25,12 +26,18 @@ Route::middleware('auth')->group(function () {
     
     Route::middleware('admin-only')->group(function () {
         Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
-        Route::get('/setting', [AdminController::class, 'setting'])->name('setting');
+
+        Route::prefix('setting')->group(function () {
+            Route::get('/', [AdminController::class, 'setting'])->name('setting');
+            
+            Route::put('/edit', [OrganizationController::class, 'update'])->name('organization-edit');
+        });
 
         Route::prefix('student')->group(function () {
             Route::get('/list', [AdminController::class, 'studentList'])->name('student-list');
             Route::get('/add', [AdminController::class, 'studentAdd'])->name('student-add');
             Route::get('/edit/{id}', [AdminController::class, 'studentEdit'])->name('student-edit');
+            Route::get('/detail/{id}', [AdminController::class, 'studentDetail'])->name('student-detail');
 
             Route::post('/add', [StudentController::class, 'create'])->name('student-add');
             Route::put('/edit/{id}', [StudentController::class, 'update'])->name('student-edit');
@@ -41,6 +48,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/list', [AdminController::class, 'teacherList'])->name('teacher-list');
             Route::get('/add', [AdminController::class, 'teacherAdd'])->name('teacher-add');
             Route::get('/edit/{id}', [AdminController::class, 'teacherEdit'])->name('teacher-edit');
+            Route::get('/detail/{id}', [AdminController::class, 'teacherDetail'])->name('teacher-detail');
 
             Route::post('/add', [TeacherController::class, 'create'])->name('teacher-add');
             Route::put('/edit/{id}', [TeacherController::class, 'update'])->name('teacher-edit');
