@@ -9,8 +9,10 @@ use App\Models\Course;
 use App\Models\Organization;
 use App\Models\Teacher;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -30,12 +32,44 @@ class AdminController extends Controller
         $listStudent = Student::all();
         $listClassroom = Classroom::all();
         $listCourses = Course::all();
+
+        $studentChartByYear = Student::whereBetween(
+            'created_at',
+            [Carbon::now()->subYear(4), Carbon::now()]
+        )
+            ->select([
+                DB::raw("year(created_at) year, count(*) as count")
+            ])
+            ->orderBy("created_at")
+            ->groupBy(DB::raw("year(created_at)"))
+            ->get()->toArray();
+
+        $graduatedStudentByYear = Student::whereNotNull('graduation_date')
+            ->select(
+                DB::raw("year(graduation_date) year, count(*) as graduated"),
+            )
+            ->orderBy("created_at")
+            ->groupBy(DB::raw("year(graduation_date)"))
+            ->get()->toArray();
+
+        $teacherChartByYear = Teacher::whereBetween(
+            'created_at',
+            [Carbon::now()->subYear(4), Carbon::now()]
+        )
+            ->select(DB::raw("year(created_at) year, count(*) as count"))
+            ->orderBy("created_at")
+            ->groupBy(DB::raw("year(created_at)"))
+            ->get()->toArray();
+
         return view('pages.dashboards.admin', [
             'profile' => $profile,
             'listTeacher' => $listTeacher,
             'listStudent' => $listStudent,
             'listClassroom' => $listClassroom,
-            'listCourses' => $listCourses
+            'listCourses' => $listCourses,
+            'studentChartByYear' => $studentChartByYear,
+            'graduatedStudentByYear' => $graduatedStudentByYear,
+            'teacherChartByYear' => $teacherChartByYear
         ]);
     }
 
@@ -46,7 +80,7 @@ class AdminController extends Controller
 
     public function setting()
     {
-        $organization= Organization::first();
+        $organization = Organization::first();
         return view('pages.setting.index', [
             'organization' => $organization
         ]);
@@ -139,7 +173,7 @@ class AdminController extends Controller
 
     public function classDetail($id)
     {
-        $data = Classroom::with(['course','teacherClassroom.teacher.user','studentClassroom.student.user'])->where('id', $id)->get()[0];
+        $data = Classroom::with(['course', 'teacherClassroom.teacher.user', 'studentClassroom.student.user'])->where('id', $id)->get()[0];
         $studentLists = $data->studentClassroom->pluck('student');
         $teacherLists = $data->teacherClassroom->pluck('teacher');
         return view('pages.classes.detail')->with([
@@ -156,8 +190,8 @@ class AdminController extends Controller
         $teachers = Teacher::with(['user'])->get();
         return view('pages.classes.add')->with([
             'courses' => $courses,
-            'students'=> $students,
-            'teachers'=> $teachers,
+            'students' => $students,
+            'teachers' => $teachers,
         ]);
     }
 
@@ -166,16 +200,16 @@ class AdminController extends Controller
         $courses = Course::all();
         $students = Student::with(['user'])->get();
         $teachers = Teacher::with(['user'])->get();
-        $data = Classroom::with(['course','teacherClassroom','studentClassroom'])->where('id', $id)->get()[0];
+        $data = Classroom::with(['course', 'teacherClassroom', 'studentClassroom'])->where('id', $id)->get()[0];
         $checkedStudent = $data->studentClassroom->pluck('student_id')->all();
         $checkedTeacher = $data->teacherClassroom->pluck('teacher_id')->all();
         return view('pages.classes.edit')->with([
             'data' => $data,
             'courses' => $courses,
-            'students'=> $students,
-            'teachers'=> $teachers,
+            'students' => $students,
+            'teachers' => $teachers,
             'checkedStudent' => $checkedStudent,
-            'checkedTeacher'=> $checkedTeacher
+            'checkedTeacher' => $checkedTeacher
         ]);
     }
 
@@ -190,10 +224,10 @@ class AdminController extends Controller
             $user = User::with('admin')->findOrFail(Auth::user()->id);
             $user->email = $request->email;
             $user->update();
-            
+
             $data = new Admin(['name' => $request->name]);
             $user->admin()->update($data->toArray());
-    
+
             $this->message('Profile Successfully Updated!', 'success');
             return back();
         }
