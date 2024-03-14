@@ -13,7 +13,7 @@
                     alt="User Image" style="width: 35px; height: 35px;">
             </div>
             <div class="info test">
-                <div class="d-block">{{ Auth::user()->admin->name }}</div>
+                <div class="d-block">{{ Auth::user()->admin->name ?? 'Name' }}</div>
                 <span class="badge py-1 px-2" style="background-color: #f3797e">{{ Auth::user()->role->name }}</span>
             </div>
         </a>
