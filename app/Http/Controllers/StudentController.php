@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
 use App\Models\Profile;
 use App\Models\Student;
 use App\Models\User;
@@ -26,9 +27,11 @@ class StudentController extends Controller
 
     public function profile()
     {
-        $student = Student::with('profile', 'user')->where('user_id', '=', Auth::user()->id)->get();
+        $student = Student::with('profile', 'user')->where('user_id', '=', Auth::user()->id)->first();
+        $address = Address::where('id', '=', $student->profile->address_id)->first();
         return view('pages.profiles.student', [
-            'student' => $student[0]
+            'student' => $student,
+            'address' => $address
         ]);
     }
 
@@ -118,6 +121,50 @@ class StudentController extends Controller
         $student->profile->delete();
         $student->delete();
         return back();
+    }
+
+    public function saveProfiles(Request $request)
+    {
+        $validation = $request->validate([
+            'name' => ['required', 'min:3'],
+            'phone_number' => ['required', 'regex:/^[0-9]+$/'],
+        ]);
+
+        if ($validation) {
+            $profile = Profile::with(['student', 'address'])->whereHas('student', function($q) {
+                $q->where('user_id', Auth::user()->id);
+            })->first();
+
+            $profile->dob = $request->dob;
+            $profile->gender = $request->gender;
+            $profile->phone_number = $request->phone_number;
+            $profile->religion = $request->religion;
+            $profile->save();
+
+            $student = new Student([
+                'name' => $request->name
+            ]);
+            $profile->student()->update($student->toArray());
+
+            $address = new Address([
+                'line' => $request->line,
+                'city' => $request->city,
+                'province' => $request->province,
+                'zip' => $request->zip,
+                'country' => $request->country
+            ]);
+            
+            if($profile->address === null) {
+                $address->save();
+                $profile->address()->associate($address);
+                $profile->save();
+            } else {
+                $profile->address()->update($address->toArray());
+            }
+
+            $this->message('Profile Successfully Updated!', 'success');
+            return back();
+        }
     }
 
     public function savePhoto(Request $request)

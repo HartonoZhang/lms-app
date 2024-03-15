@@ -54,22 +54,22 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="active tab-pane" id="settings">
-                                <form class="form-horizontal" action="/admin/updateProfile" method="POST"
+                                <form class="form-horizontal" action={{ route('update-student-profile') }} method="POST"
                                     enctype="multipart/form-data" data-remote="true">
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group row">
-                                        <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+                                        <label for="inputName" class="col-sm-2 col-form-label">Name*</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="inputName"
-                                                placeholder="Input your name" name="name" value="{{ $student->name }}">
+                                                placeholder="Input your name" name="name" value="{{ old('name', $student->name) }}">
                                             @error('name')
                                                 <p class="text-danger m-0">{{ $message }}</p>
                                             @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                                        <label for="inputEmail" class="col-sm-2 col-form-label">Email*</label>
                                         <div class="col-sm-10">
                                             <input type="email" class="form-control" id="inputEmail"
                                                 placeholder="Input your email" name="email"
@@ -77,31 +77,34 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputGender" class="col-sm-2 col-form-label">Gender</label>
+                                        <label for="inputGender" class="col-sm-2 col-form-label">Gender*</label>
                                         <div class="col-sm-10">
                                             <select class="form-control select2" style="width: 100%;" name="gender">
-                                                <option value='' selected>Laki laki
+                                                <option value='Male' {{ old('gender', $student->profile->gender) == 'Male' ? 'selected' : '' }}>Male
                                                 </option>
-                                                <option value=''>Perempuan
+                                                <option value='Female' {{ old('gender', $student->profile->gender) == 'Female' ? 'selected' : '' }}>
+                                                    Female
                                                 </option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputGender" class="col-sm-2 col-form-label">Religion</label>
+                                        <label for="inputReligion" class="col-sm-2 col-form-label">Religion*</label>
                                         <div class="col-sm-10">
-                                            <select class="form-control select2" style="width: 100%;" name="gender">
-                                                <option value='' selected>Muslim
+                                            <select class="form-control select2" style="width: 100%;" name="religion">
+                                                <option value='Muslim' {{ old('religion', $student->profile->religion) == 'Muslim' ? 'selected' : '' }}>Muslim
                                                 </option>
-                                                <option value=''>Protestant
+                                                <option value='Protestant' {{ old('religion', $student->profile->religion) == 'Protestant' ? 'selected' : '' }}>
+                                                    Protestant
                                                 </option>
-                                                <option value=''>Catholic
+                                                <option value='Catholic' {{ old('religion', $student->profile->religion) == 'Catholic' ? 'selected' : '' }}>Catholic
                                                 </option>
-                                                <option value=''>Hindu
+                                                <option value='Hindu' {{ old('religion', $student->profile->religion) == 'Hindu' ? 'selected' : '' }}>Hindu
                                                 </option>
-                                                <option value=''>Buddhist
+                                                <option value='Buddhist' {{ old('religion', $student->profile->religion) == 'Buddhist' ? 'selected' : '' }}>Buddhist
                                                 </option>
-                                                <option value=''>Confucian
+                                                <option value='Confucian' {{ old('religion', $student->profile->religion) == 'Confucian' ? 'selected' : '' }}>
+                                                    Confucian
                                                 </option>
                                             </select>
                                         </div>
@@ -110,43 +113,43 @@
                                         <label for="inputAddress" class="col-sm-2 col-form-label">Address</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="inputAddress"
-                                                placeholder="Input your address line" name="address" value="">
+                                                placeholder="Input your address line" name="line" value="{{ old('line', $address->line) }}">
                                             <div class="form-row my-2">
                                                 <div class="col-sm">
-                                                    <input type="text" class="form-control" placeholder="City">
+                                                    <input type="text" class="form-control" placeholder="City" name="city" value="{{ old('city', $address->city) }}">
                                                 </div>
                                                 <div class="col-sm">
                                                     <input type="text" class="form-control"
-                                                        placeholder="State/Province">
+                                                        placeholder="State/Province" name="province" value="{{ old('province', $address->province) }}">
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="col-sm">
                                                     <input type="text" class="form-control"
-                                                        placeholder="Zip/Postal code">
+                                                        placeholder="Zip/Postal code" name="zip" value="{{ old('zip', $address->zip) }}">
                                                 </div>
                                                 <div class="col-sm">
-                                                    <input type="text" class="form-control" placeholder="Country">
+                                                    <input type="text" class="form-control" placeholder="Country" name="country" value="{{ old('country', $address->country) }}">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputPhoneNumber" class="col-sm-2 col-form-label">Phone Number</label>
+                                        <label for="inputPhoneNumber" class="col-sm-2 col-form-label">Phone Number*</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="inputPhoneNumber"
-                                                placeholder="Input your phone number" name="phoneNumber" value="">
-                                            @error('phoneNumber')
+                                                placeholder="Input your phone number" name="phone_number" value="{{ old('phone_number', $student->profile->phone_number) }}">
+                                            @error('phone_number')
                                                 <p class="text-danger m-0">{{ $message }}</p>
                                             @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputBirthDate" class="col-sm-2 col-form-label">DOB</label>
+                                        <label for="inputBirthDate" class="col-sm-2 col-form-label">DOB*</label>
                                         <div class="col-sm-10">
                                             <input type="date" class="form-control" id="inputBirthDate"
-                                                placeholder="Input your birth date" name="birthDate" value="">
-                                            @error('birthDate')
+                                                placeholder="Input your birth date" name="dob" value="{{ old('dob', $student->profile->dob) }}">
+                                            @error('dob')
                                                 <p class="text-danger m-0">{{ $message }}</p>
                                             @enderror
                                         </div>

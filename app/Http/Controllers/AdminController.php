@@ -254,17 +254,17 @@ class AdminController extends Controller
     public function savePhoto(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'image' => ['required']
+            'image' => ['required', 'mimes:png,jpg,jpeg', 'max:2048']
         ]);
 
         if ($validate->fails()) {
             Session::flash('failUpload');
             return back()
-                ->withErrors($validate);;
+                ->withErrors($validate);
         } else {
             $user = User::find(Auth::user()->id);
             $extension = $request->file('image')->getClientOriginalExtension();
-            $imgName = Auth::user()->name . '-' . now()->timestamp . '.' . $extension;
+            $imgName = $user->admin->name . '-' . now()->timestamp . '.' . $extension;
             $request->file('image')->move('assets/images/profile', $imgName);
 
             $user->update([

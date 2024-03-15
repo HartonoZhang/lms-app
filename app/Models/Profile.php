@@ -30,4 +30,10 @@ class Profile extends Model
     {
         return $this->hasOne(Student::class);
     }
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
+
 }

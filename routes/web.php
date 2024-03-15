@@ -96,6 +96,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [StudentController::class, 'home'])->name('student-dashboard');
             Route::get('/profile', [StudentController::class, 'profile']);
 
+            Route::put('/updateProfile', [StudentController::class, 'saveProfiles'])->name('update-student-profile');
             Route::put('/updatePhoto', [StudentController::class, 'savePhoto'])->name('update-student-photo');
         });
     });
