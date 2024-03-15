@@ -17,6 +17,7 @@ class OrganizationSeeder extends Seeder
     public function run()
     {
         Organization::insert([
+            'web_name' => 'Sekolah.mu',
             'name' => 'SMA Santo Yusuf',
             'category_id' => 1,
             'logo' => 'logo.png',

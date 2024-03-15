@@ -26,7 +26,15 @@
                             @csrf
                             @method('PUT')
                             <div class="form-group">
-                                <label for="inputName">Website Name *</label>
+                                <label for="inputWebName">Website Name *</label>
+                                <input type="text" id="inputWebName" class="form-control" value="{{ $organization->web_name }}"
+                                    name="web_name">
+                                @error('web_name')
+                                    <p class="text-danger mt-0">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName">Organization Name *</label>
                                 <input type="text" id="inputName" class="form-control" value="{{ $organization->name }}"
                                     name="name">
                                 @error('name')
@@ -37,7 +45,7 @@
                                 <label for="inputDescription">Logo *</label>
                                 <div class="input-group border-upload">
                                     <input id="logo" type="file" onchange="readURL(this);" class="form-control"
-                                        name="logo" value="{{ $organization->logo }}">
+                                        name="logo">
                                     <label id="logo-label" for="logo" class="font-weight-light text-muted">
                                         {{ $organization->logo ? 'File name: ' . $organization->logo : 'Choose file' }}
                                     </label>
@@ -54,22 +62,24 @@
                                 @enderror
                                 <div class="row mt-2">
                                     <div
-                                        class="current-logo col-md-6 d-flex flex-column align-items-center justify-content-center">
+                                        class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
                                         <span>Current Logo</span>
                                         <img class="img-fluid img-circle mt-2"
                                             src="{{ asset('assets') }}/images/organization/{{ $organization->logo }}"
                                             alt="User profile picture" style="width: 150px; height: 150px;">
                                     </div>
-
-                                    <div class="image-area col-md-6"><img id="logo-result" src="#" alt=""
-                                            class="img-fluid rounded shadow-sm mx-auto d-block"></div>
+                                    <div
+                                        class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
+                                        <span>New Logo</span>
+                                        <img id="logo-result" src="#" alt=""
+                                            class="img-fluid img-circle mt-2">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="inputDescription">Favicon *</label>
                                 <div class="input-group border-upload">
-                                    <input id="favicon" type="file" onchange="readURL(this);" class="form-control"
-                                        name="favicon" value="{{ $organization->favicon }}">
+                                    <input id="favicon" type="file" onchange="readURL(this);" class="form-control" name="favicon">
                                     <label id="favicon-label" for="favicon" class="font-weight-light text-muted">
                                         {{ $organization->favicon ? 'File name: ' . $organization->favicon : 'Choose file' }}
                                     </label>
@@ -87,14 +97,18 @@
                                 @enderror
                                 <div class="row mt-2">
                                     <div
-                                        class="current-logo col-md-6 d-flex flex-column align-items-center justify-content-center">
+                                        class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
                                         <span>Current Favicon</span>
                                         <img class="img-fluid img-circle mt-2"
                                             src="{{ asset('assets') }}/images/organization/{{ $organization->favicon }}"
                                             alt="favicon" style="width: 150px; height: 150px;">
                                     </div>
-                                    <div class="image-area col-md-6"><img id="favicon-result" src="#" alt=""
-                                            class="img-fluid rounded shadow-sm mx-auto d-block"></div>
+                                    <div
+                                        class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
+                                        <span>New Favicon</span>
+                                        <img id="favicon-result" src="#" alt=""
+                                            class="img-fluid img-circle mt-2">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -131,28 +145,9 @@
             transform: translateY(-50%);
         }
 
-        .image-area,
-        .current-logo {
+        .image-area {
             border: 2px dashed rgba(161, 141, 141, 0.7);
             padding: 1rem;
-            position: relative;
-        }
-
-        .image-area::before {
-            content: 'Uploaded image result';
-            color: gray;
-            font-weight: bold;
-            text-transform: uppercase;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 0.8rem;
-            z-index: 1;
-        }
-
-        .image-area img {
-            z-index: 2;
             position: relative;
         }
     </style>
@@ -169,6 +164,8 @@
                 reader.onload = function(e) {
                     $(`#${place}`)
                         .attr('src', e.target.result);
+                    $(`#${place}`)
+                        .attr('style', 'width:150px; height:150px');
                 };
                 reader.readAsDataURL(input.files[0]);
             }
