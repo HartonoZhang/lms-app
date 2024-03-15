@@ -1,19 +1,19 @@
 <aside class="main-sidebar" style="background-color: #f4f6f9">
-    <a href="#" class="brand-link">
+    <a href="/{{ $role }}" class="brand-link">
         <img src="{{ asset('assets') }}/images/organization/{{ $organization->logo }}" alt="Logo"
-            class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">{{ $organization->name }}</span>
+            class="img-circle brand-image mx-2" style="width: 42px; height: 42px">
+        <span class="brand-text font-weight-light">{{ $organization->web_name }}</span>
     </a>
 
     <div class="sidebar">
-        <a href="/{{ strtolower(Auth::user()->role->name) }}/profile"
+        <a href="/{{ $role }}/profile"
             class="user-panel mt-3 py-2 mb-3 d-flex align-items-center rounded">
             <div class="image">
                 <img src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}" class="img-circle elevation-2"
                     alt="User Image" style="width: 35px; height: 35px;">
             </div>
-            <div class="info test">
-                <div class="d-block">{{ Auth::user()->admin->name ?? 'Name' }}</div>
+            <div class="info">
+                <div class="d-block text-truncate">{{ $name }}</div>
                 <span class="badge py-1 px-2" style="background-color: #f3797e">{{ Auth::user()->role->name }}</span>
             </div>
         </a>
@@ -23,7 +23,7 @@
                 data-accordion="false">
                 <li class="nav-header">MAIN MENU</li>
                 <li class="nav-item">
-                    <a href="/{{ strtolower(Auth::user()->role->name) }}"
+                    <a href="/{{ $role }}"
                         class="{{ request()->is('/') || request()->is('admin') ? 'active' : '' }} nav-link">
                         <i class="fas fa-tachometer-alt nav-icon"></i>
                         <p>Dashboard</p>

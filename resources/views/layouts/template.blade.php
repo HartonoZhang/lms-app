@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> {{ $organization->name }} </title>
+    <title> {{ $organization->web_name }} </title>
     <link rel="shortcut icon" href="{{ asset('assets') }}/images/organization/{{ $organization->favicon }}">
 
     <!-- Google Font: Source Sans Pro -->
@@ -80,7 +80,11 @@
         </nav>
         <!-- /.navbar -->
 
-        @include('layouts.navbar', ['organization' => $organization])
+        @include('layouts.navbar', [
+            'organization' => $organization,
+            'role' => strtolower(Auth::user()->role->name),
+            'name' => $name
+        ])
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">

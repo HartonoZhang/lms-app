@@ -90,19 +90,27 @@ tbody td,
     color: var(--color-dark);
 }
 
+.bg-primary,
 .btn-primary,
 .user-panel {
-    background-color: var(--color-primary);
+    background-color: var(--color-primary) !important;
 }
 
+.bg-info {
+    background-color: var(--color-info-dark) !important;
+}
+
+.bg-danger,
 .btn-danger {
-    background-color: var(--color-danger);
+    background-color: var(--color-danger) !important;
 }
 
+.bg-success,
 .btn-success {
-    background-color: var(--color-success);
+    background-color: var(--color-success) !important;
 }
 
+.bg-warning,
 .btn-warning {
-    background-color: var(--color-warning);
+    background-color: var(--color-warning) !important;
 }

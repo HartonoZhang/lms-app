@@ -12,6 +12,7 @@ class Organization extends Model
 
     protected $fillable = [
         'name',
+        'web_name',
         'category_id',
         'logo',
         'favicon'

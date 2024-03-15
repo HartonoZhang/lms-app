@@ -28,7 +28,7 @@
         hr.hr-text::before {
             content: attr(data-content);
             display: inline-block;
-            background: #fff;
+            background: #f4f6f9;
             font-weight: bold;
             font-size: 0.85rem;
             color: #999;
