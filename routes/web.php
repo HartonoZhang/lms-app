@@ -95,6 +95,8 @@ Route::middleware('auth')->group(function () {
         Route::prefix('student')->group(function () {
             Route::get('/', [StudentController::class, 'home'])->name('student-dashboard');
             Route::get('/profile', [StudentController::class, 'profile']);
+
+            Route::put('/updatePhoto', [StudentController::class, 'savePhoto'])->name('update-student-photo');
         });
     });
     Route::get('/logout', [AuthController::class, 'signout'])->name('logout');

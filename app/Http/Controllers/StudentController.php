@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
@@ -25,7 +26,10 @@ class StudentController extends Controller
 
     public function profile()
     {
-        return view('pages.profiles.student');
+        $student = Student::with('profile', 'user')->where('user_id', '=', Auth::user()->id)->get();
+        return view('pages.profiles.student', [
+            'student' => $student[0]
+        ]);
     }
 
     public function leaderboards()
@@ -114,5 +118,30 @@ class StudentController extends Controller
         $student->profile->delete();
         $student->delete();
         return back();
+    }
+
+    public function savePhoto(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'image' => ['required']
+        ]);
+
+        if ($validate->fails()) {
+            Session::flash('failUpload');
+            return back()
+                ->withErrors($validate);;
+        } else {
+            $user = User::find(Auth::user()->id);
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $imgName = $user->student[0]->name . '-' . now()->timestamp . '.' . $extension;
+            $request->file('image')->move('assets/images/profile', $imgName);
+
+            $user->update([
+                'image' => $imgName
+            ]);
+
+            $this->message('Profile Photo Successfully Updated.', 'success');
+            return back();
+        }
     }
 }

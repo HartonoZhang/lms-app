@@ -80,7 +80,11 @@
         </nav>
         <!-- /.navbar -->
 
-        @include('layouts.navbar', ['organization' => $organization])
+        @include('layouts.navbar', [
+            'organization' => $organization,
+            'role' => strtolower(Auth::user()->role->name),
+            'name' => $name
+        ])
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
