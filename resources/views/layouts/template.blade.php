@@ -82,8 +82,7 @@
 
         @include('layouts.navbar', [
             'organization' => $organization,
-            'role' => strtolower(Auth::user()->role->name),
-            'name' => $name
+            'role' => strtolower(Auth::user()->role->name)
         ])
 
         <!-- Content Wrapper. Contains page content -->

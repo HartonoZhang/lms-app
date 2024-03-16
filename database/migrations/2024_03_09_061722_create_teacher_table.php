@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('profile_id');
             $table->foreign('profile_id')->references('id')->on('profile')->onDelete('cascade');
-            $table->string('name');
             $table->string('latest_education');
             $table->timestamps();
         });

@@ -41,7 +41,7 @@
                     <tbody>
                         @foreach ($listTeacher as $teacher)
                             <tr>
-                                <td class="text-truncate">{{ $teacher->name }}</td>
+                                <td class="text-truncate">{{ $teacher->user->name }}</td>
                                 <td class="text-truncate">{{ $teacher->user->email }}</td>
                                 <td>{{ $teacher->profile->phone_number }}</td>
                                 <td>{{ $teacher->profile->gender }}</td>

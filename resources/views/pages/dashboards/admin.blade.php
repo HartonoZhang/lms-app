@@ -1,7 +1,7 @@
 @extends('layouts.template')
 
 @section('title')
-    Welcome to The Dashboard, {{ $profile[0]->name }}!
+    Welcome to The Dashboard, {{ Auth::user()->name }}!
 @endsection
 
 @section('breadcrumb')

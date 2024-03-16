@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('profile', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('address_id')->nullable()->constrained();
-            $table->foreign('address_id')->references('id')->on('user_role')->onDelete('cascade');
+            $table->unsignedBigInteger('address_id')->nullable()->constrained()->unsigned();
+            $table->foreign('address_id')->references('id')->on('user_role')->onDelete('cascade')->onUpdate('cascade');
             $table->date('dob');
             $table->string('gender');
             $table->string('phone_number');

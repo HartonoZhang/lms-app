@@ -223,10 +223,8 @@ class AdminController extends Controller
         if ($validation) {
             $user = User::with('admin')->findOrFail(Auth::user()->id);
             $user->email = $request->email;
+            $user->name = $request->name;
             $user->update();
-
-            $data = new Admin(['name' => $request->name]);
-            $user->admin()->update($data->toArray());
 
             $this->message('Profile Successfully Updated!', 'success');
             return back();
@@ -254,17 +252,17 @@ class AdminController extends Controller
     public function savePhoto(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'image' => ['required']
+            'image' => ['required', 'mimes:png,jpg,jpeg', 'max:2048']
         ]);
 
         if ($validate->fails()) {
             Session::flash('failUpload');
             return back()
-                ->withErrors($validate);;
+                ->withErrors($validate);
         } else {
             $user = User::find(Auth::user()->id);
             $extension = $request->file('image')->getClientOriginalExtension();
-            $imgName = Auth::user()->name . '-' . now()->timestamp . '.' . $extension;
+            $imgName = $user->name . '-' . now()->timestamp . '.' . $extension;
             $request->file('image')->move('assets/images/profile', $imgName);
 
             $user->update([
