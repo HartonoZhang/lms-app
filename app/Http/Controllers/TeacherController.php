@@ -48,6 +48,7 @@ class TeacherController extends Controller
         if ($validation) {
             $user = new User();
             $user->role_id = 3;
+            $user->name = $request->name;
             $user->email = $request->email;
             $user->image = 'default.png';
             $user->password = Hash::make('teacher123');
@@ -67,7 +68,6 @@ class TeacherController extends Controller
             $teacher = new Teacher();
             $teacher->user()->associate($user);
             $teacher->profile()->associate($profile);
-            $teacher->name = $request->name;
             $teacher->latest_education = $request->latest_education;
             $teacher->save();
 
@@ -91,6 +91,7 @@ class TeacherController extends Controller
         if ($validation) {
             $user = new User();
             $user->email = $request->email;
+            $user->name = $request->name;
 
             $profile = new Profile();
             $profile->dob = $request->dob;
@@ -100,7 +101,6 @@ class TeacherController extends Controller
 
             $teacher->user()->update($user->toArray());
             $teacher->profile()->update($profile->toArray());
-            $teacher->name = $request->name;
             $teacher->latest_education = $request->latest_education;
             $teacher->save();
 
@@ -111,7 +111,7 @@ class TeacherController extends Controller
     public function delete($id)
     {
         $teacher = Teacher::with('user', 'profile')->findOrFail($id);
-        $this->message('Successfully Remove Teacher "' . $teacher->name . '"', 'success');
+        $this->message('Successfully Remove Teacher "' . $teacher->user->name . '"', 'success');
         $teacher->user->delete();
         $teacher->profile->delete();
         $teacher->delete();

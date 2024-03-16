@@ -19,7 +19,7 @@
                             src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}"
                             alt="User profile picture" style="width: 120px; height: 120px;">
                         </div>
-                        <h3 class="profile-username text-center">{{ Auth::user()->admin->name }}</h3>
+                        <h3 class="profile-username text-center">{{ Auth::user()->name }}</h3>
                         <p class="text-muted text-center">{{ Auth::user()->email }}</p>
 
                         <ul class="list-group list-group-unbordered mb-3">
@@ -60,7 +60,7 @@
                                         <div class="col-sm-10">
                                             <input type="Name" class="form-control" id="inputName"
                                                 placeholder="Input your name" name="name"
-                                                value="{{ Auth::user()->admin->name }}">
+                                                value="{{ Auth::user()->name }}">
                                             @error('name')
                                                 <p class="text-danger m-0">{{ $message }}</p>
                                             @enderror

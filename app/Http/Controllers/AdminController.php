@@ -223,10 +223,8 @@ class AdminController extends Controller
         if ($validation) {
             $user = User::with('admin')->findOrFail(Auth::user()->id);
             $user->email = $request->email;
+            $user->name = $request->name;
             $user->update();
-
-            $data = new Admin(['name' => $request->name]);
-            $user->admin()->update($data->toArray());
 
             $this->message('Profile Successfully Updated!', 'success');
             return back();
@@ -264,7 +262,7 @@ class AdminController extends Controller
         } else {
             $user = User::find(Auth::user()->id);
             $extension = $request->file('image')->getClientOriginalExtension();
-            $imgName = $user->admin->name . '-' . now()->timestamp . '.' . $extension;
+            $imgName = $user->name . '-' . now()->timestamp . '.' . $extension;
             $request->file('image')->move('assets/images/profile', $imgName);
 
             $user->update([

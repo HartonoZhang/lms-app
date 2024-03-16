@@ -23,7 +23,7 @@
                         src="{{ asset('assets') }}/images/badges/{{ $student->profile->badge_name }}.png"
                         alt="User profile picture">
                 </div>
-                <h3 class="profile-username text-center mt-4">{{ $student->name }} </h3>
+                <h3 class="profile-username text-center mt-4">{{ $student->user->name }} </h3>
                 <p class="text-muted text-center">Level: {{ $student->profile->level }}</p>
                 <form class="form-horizontal" action="#" method="POST" enctype="multipart/form-data"
                     data-remote="true">
@@ -32,7 +32,7 @@
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="fullName" class="form-control form-control-mb" name="name"
-                                    placeholder="Full Name" value="{{ $student->name }}" readonly />
+                                    placeholder="Full Name" value="{{ $student->user->name }}" readonly />
                                 <label for="fullName">Full Name*</label>
                             </div>
                         </div>
