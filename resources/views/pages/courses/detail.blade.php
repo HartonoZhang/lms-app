@@ -13,37 +13,44 @@
         <div class="card course-detail-card overflow-hidden">
             <div class="course-detail-header px-4 pt-4 pb-2 d-flex flex-column justify-content-between">
                 <div class="">
-                    <h3>Web Prog</h3>
-                    <div class="mb-2">COMP0012</div>
+                    <h3>{{$class->name}}</h3>
+                    <div class="mb-2">{{$class->code}}</div>
                     <div class="course-teacher-profile d-flex align-items-center" style="font-size: 0.8rem">
                         <div>
                             <img loading="lazy" src="{{ url('/assets/img/dummy_course.jpg') }}" alt="Teacher">
                         </div>
-                        <div class="ml-2">
-                            <p class="m-0">Kenneth Vincent Kwan, S.Kom., M.TI</p>
-                            <p class="m-0">D1234 - Primary Instructor</p>
+                        @foreach ($class->TeacherClassroom as $tc)
+                            <div class="ml-2">
+                                <p class="m-0">{{$tc->Teacher->name}}</p>
+                                {{-- <p class="m-0">D1234 - Primary Instructor</p> --}}
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @if ($userRole == 3)
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="progress progress-xs rounded w-100">
+                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar"
+                                style="width: 33%" aria-valuenow="33" aria-valuemax="100"></div>
                         </div>
+                        <span class="ml-2" style="font-size: 0.8rem">33%</span>
                     </div>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div class="progress progress-xs rounded w-100">
-                        <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar"
-                            style="width: 33%" aria-valuenow="33" aria-valuemax="100"></div>
-                    </div>
-                    <span class="ml-2" style="font-size: 0.8rem">33%</span>
-                </div>
+                @endif
                 <div class="mt-3 mb-2 mx-0 px-0">
                     <a class="content-link mr-2 py-1 px-3 active" href="">Sessions</a>
                     <a class="content-link mr-2 py-1 px-3" href="">Assignments</a>
                     <a class="content-link mr-2 py-1 px-3" href="">People</a>
+                    @if ($userRole == 3)
+                        <a class="content-link mr-2 py-1 px-3" href="">Attendance</a>
+                    @endif
                 </div>
             </div>
             <div class="card-body course-detail-body py-2 px-2">
                 <div class="row">
-                    <div class="col-4 canvas-wrapper p-0 m-0">
+                    <div class="col-3 canvas-wrapper p-0 m-0">
                         <canvas id="session-roadmap" width="100" height="100"></canvas>
                     </div>
-                    <div class="col-8 px-3">
+                    <div class="col-9 px-3">
                         <nav>
                             <div class="nav nav-tabs" role="tablist">
                                 <button class="nav-link active" data-toggle="tab" data-target="#nav-description"
@@ -54,8 +61,10 @@
                                     aria-selected="false">Learning Material</button>
                                 <button class="nav-link" data-toggle="tab" data-target="#nav-forum" type="button"
                                     role="tab" aria-controls="nav-forum" aria-selected="false">Forum</button>
-                                <button class="nav-link" data-toggle="tab" data-target="#nav-attendance" type="button"
-                                    role="tab" aria-controls="nav-attendance" aria-selected="false">Attendance</button>
+                                @if ($userRole == 2)
+                                    <button class="nav-link" data-toggle="tab" data-target="#nav-attendance" type="button"
+                                        role="tab" aria-controls="nav-attendance" aria-selected="false">Attendance</button>
+                                @endif
                             </div>
                         </nav>
                         <h3 class="my-2 pb-2">
@@ -470,9 +479,18 @@
 
             resetCanvas()
         })
+    </script>
 
-        function calcXY(coordinate, div) {
-            return coordinate / div;
+    {{-- canvas scripts --}}
+    <script>
+        let canvasListeners = {};
+
+        $(window).resize(function() {
+            resetCanvas();
+        });
+
+        function resetCanvas() {
+            makeCanvas();
         }
 
         function drawLevel(ctx, x, y, level) {
@@ -485,10 +503,48 @@
             ctx.fillText(level, x - ctx.measureText(level).width / 2, y + 6);
         }
 
-        function resetCanvas() {
-            //not working yet
-            $("#session-roadmap").off("click", "**");
-            makeCanvas();
+        function circleClickEvent(event, canvas, ctx, circleCoords) {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+            circleCoords.forEach(coord => {
+                const distance = Math.sqrt((mouseX - coord.x) ** 2 + (mouseY - coord.y) ** 2);
+                if (distance <= 30) {
+                    console.log('Level:', coord.level);
+                }
+            });
+        }
+
+        function circleHighlightInEvent(event, canvas, ctx, circleCoords) {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+            circleCoords.forEach(coord => {
+                const distance = Math.sqrt((mouseX - coord.x) ** 2 + (mouseY - coord.y) ** 2);
+                if (distance <= 30) {
+                    console.log('in');
+                    ctx.beginPath();
+                    ctx.arc(coord.x, coord.y, 30, 0, Math.PI * 2);
+                    ctx.fillStyle = 'yellow';
+                    ctx.fill();
+                }
+            });
+        }
+
+        function circleHighlightOutEvent(event, canvas, ctx, circleCoords) {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+            circleCoords.forEach(coord => {
+                const distance = Math.sqrt((mouseX - coord.x) ** 2 + (mouseY - coord.y) ** 2);
+                if (distance <= 30) {
+                    console.log('out');
+                    ctx.beginPath();
+                    ctx.arc(coord.x, coord.y, 30, 0, Math.PI * 2);
+                    ctx.fillStyle = '#7d8da1';
+                    ctx.fill();
+                }
+            });
         }
 
         function makeCanvas() {
@@ -504,9 +560,8 @@
                 canvas.width = parentWidth;
                 canvas.height = height;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.strokeStyle = '#1F2B37';
-                ctx.lineWidth = 12;
 
+                //background style
                 canvas.style.backgroundImage = `url('${backgroundImage.src}')`;
                 canvas.style.backgroundSize = 'cover';
                 canvas.style.backgroundPosition = 'center';
@@ -521,7 +576,11 @@
                 let direction = false;
                 let level = 1;
                 let circleCoords = [];
+                ctx.setLineDash([50, 20]);
+                ctx.strokeStyle = '#FFF';
+                ctx.lineWidth = 12;
 
+                // draw line and circle
                 ctx.beginPath();
                 ctx.moveTo(midX, 0);
                 ctx.lineTo(midX, 25);
@@ -545,22 +604,24 @@
                 circleCoords.forEach(coord => {
                     drawLevel(ctx, coord.x, coord.y, coord.level);
                 });
-                canvas.addEventListener('click', function(event) {
-                    const rect = canvas.getBoundingClientRect();
-                    const mouseX = event.clientX - rect.left;
-                    const mouseY = event.clientY - rect.top;
-                    circleCoords.forEach(coord => {
-                        const distance = Math.sqrt((mouseX - coord.x) ** 2 + (mouseY - coord.y) ** 2);
-                        if (distance <= 30) {
-                            console.log('Level:', coord.level);
-                        }
-                    });
-                });
+
+                //add events
+                canvas.removeEventListener('click', canvasListeners.circleClickEvent);
+                // canvas.removeEventListener('mouseenter', canvasListeners.circleHighlightInEvent);
+                // canvas.removeEventListener('mouseout', canvasListeners.circleHighlightOutEvent);
+                canvasListeners.circleClickEvent = function(event) {
+                    circleClickEvent(event, canvas, ctx, circleCoords);
+                }
+                // canvasListeners.circleHighlightInEvent = function(event) {
+                //     circleHighlightInEvent(event, canvas, ctx, circleCoords);
+                // }
+                // canvasListeners.circleHighlightOutEvent = function(event) {
+                //     circleHighlightOutEvent(event, canvas, ctx, circleCoords);
+                // }
+                canvas.addEventListener('click', canvasListeners.circleClickEvent);
+                // canvas.addEventListener('mouseenter', canvasListeners.circleHighlightInEvent);
+                // canvas.addEventListener('mouseout', canvasListeners.circleHighlightOutEvent);
             }
         }
-
-        $(window).resize(function() {
-            resetCanvas();
-        });
     </script>
 @endsection

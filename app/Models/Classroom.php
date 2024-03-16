@@ -19,5 +19,9 @@ class Classroom extends Model
     public function studentClassroom(){
         return $this->hasMany(StudentClassroom::class);
     }
+
+    public function Sessions(){
+        return $this->hasMany(Session::class);
+    }
     use HasFactory;
 }

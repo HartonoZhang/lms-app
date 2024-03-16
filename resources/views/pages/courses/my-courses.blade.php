@@ -3,57 +3,47 @@
 @section('title', 'Courses')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('teacher-dashboard') }}">Home</a></li>
+    @if ($userRole == 2)
+        <li class="breadcrumb-item"><a href="{{ route('teacher-dashboard') }}">Home</a></li>
+    @else
+
+    @endif
     <li class="breadcrumb-item active">Courses</li>
 @endsection
 
 @section('content')
     <div class="container-fluid h-100">
         <div class="row row-cols-xl-4 row-cols-3">
-            @for ($i=0;$i<5;$i++)
+            @foreach ($classrooms as $class)
                 <div class="px-3">
-                    <a href="{{route('teacher-course-detail', ['id' => 1])}}">
+                    @if ($userRole == 2)
+                        <a href="{{route('teacher-course-detail', ['id' => $class->id])}}">
+                    @else
+                        {{-- <a href="{route('student-course-detail', ['id' => 1])}"> --}}
+                        <a href="">
+                    @endif
                         <div class="courses-card card overflow-hidden">
-                            <div class="courses-card-users-icon p-1" style="font-size: 0.7rem"><i class="fa fa-user mx-1" aria-hidden="true"></i>67</div>
+                            <div class="courses-card-users-icon p-1" style="font-size: 0.7rem"><i class="fa fa-user mx-1" aria-hidden="true"></i>{{$class->StudentClassroom->count()}}</div>
                             <img loading="lazy" class="courses-card-img card-img-top img-fluid" src="{{url('/assets/img/dummy_course.jpg')}}" alt="course">
                             <div class="courses-card-body card-body py-2 px-2">
                                 <div class="">
-                                    <div class="" style="font-size: 1rem">Web Prog</div>
-                                    <div class="" style="font-size: 0.8rem">COMP0012</div>
+                                    <div class="" style="font-size: 1rem">{{$class->name}}</div>
+                                    <div class="" style="font-size: 0.8rem">{{$class->code}}</div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="progress progress-xs rounded w-100">
-                                        <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemax="100"></div>
+                                @if ($userRole == 3)
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="progress progress-xs rounded w-100">
+                                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemax="100"></div>
+                                        </div>
+                                        <span class="ml-2" style="font-size: 0.8rem">33%</span>
                                     </div>
-                                    <span class="ml-2" style="font-size: 0.8rem">33%</span>
-                                </div>
-                                <div class="" style="font-size: 0.6rem">3 out of 10 sessions completed</div>
+                                    <div class="" style="font-size: 0.6rem">3 out of 10 sessions completed</div>
+                                @endif
                             </div>
                         </div>
                     </a>
                 </div>
-            @endfor
-            <div class="px-3">
-                <a href="{{route('teacher-course-detail', ['id' => 1])}}">
-                    <div class="courses-card card overflow-hidden">
-                        <div class="courses-card-users-icon p-1" style="font-size: 0.7rem"><i class="fa fa-user mx-1" aria-hidden="true"></i>67</div>
-                        <img loading="lazy" class="courses-card-img card-img-top img-fluid" src="{{url('/assets/img/dummy_course.jpg')}}" alt="course">
-                        <div class="courses-card-body card-body py-2 px-2">
-                            <div class="">
-                                <div class="" style="font-size: 1rem">Web Prog</div>
-                                <div class="" style="font-size: 0.8rem">COMP0012</div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="progress progress-xs rounded w-100">
-                                    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemax="100"></div>
-                                </div>
-                                <span class="ml-2" style="font-size: 0.8rem">100%</span>
-                            </div>
-                            <div class="" style="font-size: 0.6rem">10 out of 10 sessions completed</div>
-                        </div>
-                    </div>
-                </a>
-            </div>
+            @endforeach
         </div>
     </div>
 @endsection
@@ -93,7 +83,7 @@
 
         .courses-card-img {
             width: 100%;
-            max-height: 8rem;
+            max-height: 9rem;
         }
 
         .courses-card-users-icon {

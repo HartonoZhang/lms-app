@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classroom;
+use App\Models\Course;
 use App\Models\Profile;
 use App\Models\Teacher;
 use App\Models\User;
@@ -120,11 +122,22 @@ class TeacherController extends Controller
 
     public function courses()
     {
-        return view('pages.courses.my-courses');
+        //TODO get class per period
+        $classrooms = Classroom::all();
+        $data = [
+            'classrooms' => $classrooms,
+            'userRole' => auth()->user()->role_id
+        ];
+        return view('pages.courses.my-courses', $data);
     }
 
-    public function courseDetail()
+    public function courseDetail($id)
     {
-        return view('pages.courses.detail');
+        $class = Classroom::find($id);
+        $data = [
+            'class' => $class,
+            'userRole' => auth()->user()->role_id
+        ];
+        return view('pages.courses.detail', $data);
     }
 }
