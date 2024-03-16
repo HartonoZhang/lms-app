@@ -26,11 +26,11 @@ class StudentController extends Controller
         return view('pages.dashboards.student');
     }
 
-    public function profile()
+    public function profile($id)
     {
-        $student = Student::with('profile', 'user')->where('user_id', '=', Auth::user()->id)->first();
+        $student = Student::with('profile', 'user')->where('user_id', '=', $id)->first();
         $address = Address::where('id', '=', $student->profile->address_id)->first();
-        $posts = Post::with('comment')->where('user_id', '=', Auth::user()->id)->get();
+        $posts = Post::with('comment')->where('user_id', '=', $id)->paginate(5);
         return view('pages.profiles.student', [
             'student' => $student,
             'address' => $address,
