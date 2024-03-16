@@ -18,7 +18,6 @@ class AdminSeeder extends Seeder
     {
         $data = [
             [
-                "name"=> "Akun Admin Namanya Budi",
                 "user_id"=> 1,
             ]
         ];
@@ -26,7 +25,6 @@ class AdminSeeder extends Seeder
         foreach ($data as $value) {
             Admin::insert([
                 'user_id' => $value['user_id'],
-                'name'=> $value['name'],
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);

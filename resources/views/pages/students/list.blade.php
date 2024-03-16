@@ -41,7 +41,7 @@
                     <tbody>
                         @foreach ($listStudent as $student)
                             <tr>
-                                <td class="text-truncate">{{ $student->name }}</td>
+                                <td class="text-truncate">{{ $student->user->name }}</td>
                                 <td class="text-truncate">{{ $student->user->email }}</td>
                                 <td>{{ $student->profile->phone_number }}</td>
                                 <td>{{ $student->profile->gender }}</td>

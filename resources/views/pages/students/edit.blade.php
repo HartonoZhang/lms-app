@@ -24,7 +24,7 @@
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="fullName" class="form-control form-control-mb" name="name"
-                                    placeholder="Full Name" value="{{ old('name', $student->name) }}" />
+                                    placeholder="Full Name" value="{{ old('name', $student->user->name) }}" />
                                 <label for="fullName">Full Name*</label>
                             </div>
                             @error('name')

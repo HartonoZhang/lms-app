@@ -29,14 +29,7 @@ class AppServiceProvider extends ServiceProvider
             'layouts.template',
             function ($view) {
                 $roleName = strtolower(Auth::user()->role->name);
-                $name = '';
-                if($roleName !== 'admin'){
-                    $name = Auth::user()->$roleName[0]->name;
-                } else {
-                    $name = Auth::user()->$roleName->name;
-                }
                 $view->with('organization', Organization::first());
-                $view->with('name', $name);
             }
         );
     }

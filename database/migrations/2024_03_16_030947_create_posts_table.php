@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('address', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('line')->nullable();
-            $table->string('city')->nullable();
-            $table->string('province')->nullable();
-            $table->string('zip')->nullable();
-            $table->string('country')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
+            $table->string('title');
+            $table->string('description');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('address');
+        Schema::dropIfExists('posts');
     }
 };

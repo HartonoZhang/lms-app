@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
+use App\Models\Post;
 use App\Models\Profile;
 use App\Models\Student;
 use App\Models\User;
@@ -26,9 +28,13 @@ class StudentController extends Controller
 
     public function profile()
     {
-        $student = Student::with('profile', 'user')->where('user_id', '=', Auth::user()->id)->get();
+        $student = Student::with('profile', 'user')->where('user_id', '=', Auth::user()->id)->first();
+        $address = Address::where('id', '=', $student->profile->address_id)->first();
+        $posts = Post::with('comment')->where('user_id', '=', Auth::user()->id)->get();
         return view('pages.profiles.student', [
-            'student' => $student[0]
+            'student' => $student,
+            'address' => $address,
+            'posts' => $posts
         ]);
     }
 
@@ -51,6 +57,7 @@ class StudentController extends Controller
         if ($validation) {
             $user = new User();
             $user->role_id = 3;
+            $user->name = $request->name;
             $user->email = $request->email;
             $user->image = 'default.png';
             $user->password = Hash::make('student123');
@@ -70,7 +77,6 @@ class StudentController extends Controller
             $student = new Student();
             $student->user()->associate($user);
             $student->profile()->associate($profile);
-            $student->name = $request->name;
             $student->graduation_date = null;
             $student->save();
 
@@ -93,6 +99,7 @@ class StudentController extends Controller
         if ($validation) {
             $user = new User();
             $user->email = $request->email;
+            $user->name = $request->name;
 
             $profile = new Profile();
             $profile->dob = $request->dob;
@@ -102,7 +109,6 @@ class StudentController extends Controller
 
             $student->user()->update($user->toArray());
             $student->profile()->update($profile->toArray());
-            $student->name = $request->name;
             $student->graduation_date = $request->graduation_date;
             $student->save();
 
@@ -113,11 +119,54 @@ class StudentController extends Controller
     public function delete($id)
     {
         $student = Student::with('user', 'profile')->findOrFail($id);
-        $this->message('Successfully Remove Student "' . $student->name . '"', 'success');
+        $this->message('Successfully Remove Student "' . $student->user->name . '"', 'success');
         $student->user->delete();
         $student->profile->delete();
         $student->delete();
         return back();
+    }
+
+    public function saveProfiles(Request $request)
+    {
+        $validation = $request->validate([
+            'name' => ['required', 'min:3'],
+            'phone_number' => ['required', 'regex:/^[0-9]+$/'],
+        ]);
+
+        if ($validation) {
+            $profile = Profile::with(['student', 'address'])->whereHas('student', function($q) {
+                $q->where('user_id', Auth::user()->id);
+            })->first();
+            $user = User::findOrFail(Auth::user()->id);
+
+            $profile->dob = $request->dob;
+            $profile->gender = $request->gender;
+            $profile->phone_number = $request->phone_number;
+            $profile->religion = $request->religion;
+            $profile->save();
+
+            $user->name =  $request->name;
+            $user->save();
+
+            $address = new Address([
+                'line' => $request->line,
+                'city' => $request->city,
+                'province' => $request->province,
+                'zip' => $request->zip,
+                'country' => $request->country
+            ]);
+            
+            if($profile->address === null) {
+                $address->save();
+                $profile->address()->associate($address);
+                $profile->save();
+            } else {
+                $profile->address()->update($address->toArray());
+            }
+
+            $this->message('Profile Successfully Updated!', 'success');
+            return back();
+        }
     }
 
     public function savePhoto(Request $request)
@@ -133,7 +182,7 @@ class StudentController extends Controller
         } else {
             $user = User::find(Auth::user()->id);
             $extension = $request->file('image')->getClientOriginalExtension();
-            $imgName = $user->student[0]->name . '-' . now()->timestamp . '.' . $extension;
+            $imgName = $user->name . '-' . now()->timestamp . '.' . $extension;
             $request->file('image')->move('assets/images/profile', $imgName);
 
             $user->update([
