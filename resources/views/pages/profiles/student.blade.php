@@ -33,10 +33,12 @@
                                 <b>EXP</b> <a class="float-right">{{ $student->profile->current_exp }}</a>
                             </li>
                         </ul>
-                        <button class="btn btn-primary btn-block" data-toggle="modal"
-                            data-target="#modal-update-photo"><b>Change Profile Photo</b></button>
-                        <a href="{{ route('post-form') }}" class="btn btn-info btn-block"><b>Create Post</b></a>
-                        <a href="{{ route('logout') }}" class="btn btn-danger btn-block"><b>Logout</b></a>
+                        @if (Auth::user()->id === $student->user_id)
+                            <button class="btn btn-primary btn-block" data-toggle="modal"
+                                data-target="#modal-update-photo"><b>Change Profile Photo</b></button>
+                            <a href="{{ route('post-form') }}" class="btn btn-info btn-block"><b>Create Post</b></a>
+                            <a href="{{ route('logout') }}" class="btn btn-danger btn-block"><b>Logout</b></a>
+                        @endif
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -49,217 +51,234 @@
                         <ul class="nav nav-pills">
                             <li class="nav-item"><a class="nav-link active" href="#posts" data-toggle="tab">Posts</a>
                             </li>
-                            <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a>
-                            </li>
-                            <li class="nav-item"><a class="nav-link" href="#security" data-toggle="tab">Security</a></li>
+                            @if (Auth::user()->id === $student->user_id)
+                                <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link" href="#security" data-toggle="tab">Security</a>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="active tab-pane" id="posts">
-                                @foreach ($posts as $item)
-                                    <div class="post">
-                                        <div class="user-block">
-                                            <img class="img-circle img-bordered-sm"
-                                                src="{{ asset('assets') }}/images/profile/{{ $student->user->image }}"
-                                                alt="user image">
-                                            <span class="username">
-                                                <a href="#">{{ $student->user->name }}</a>
-                                                <a href="#" class="float-right btn-tool"><i
-                                                        class="fas fa-times"></i></a>
-                                            </span>
-                                            <span class="description">{{ $item->created_at->format('g:i A d-m-y') }}</span>
-                                        </div>
-                                        <h6>{{ $item->title }}</h6>
-                                        <p class="post-description">
-                                            {{ $item->description }}
-                                        </p>
-
-                                        <p class="d-flex justify-content-end">
-                                            <a href="{{ route('post-detail', $item->id) }}" class="link-black text-sm">
-                                                <i class="far fa-comments mr-1"></i> Comments ({{ count($item->comment) }})
+                                @if (count($posts) == 0)
+                                    <p>There is no posts yet</p>
+                                @else
+                                    @foreach ($posts as $item)
+                                        <div class="post">
+                                            <div class="user-block">
+                                                <img class="img-circle img-bordered-sm"
+                                                    src="{{ asset('assets') }}/images/profile/{{ $student->user->image }}"
+                                                    alt="user image">
+                                                <span class="username">
+                                                    {{ $student->user->name }}
+                                                </span>
+                                                <span
+                                                    class="description">{{ $item->created_at->format('g:i, A d-m-y') }}</span>
+                                            </div>
+                                            <a href="{{ route('post-detail', $item->id) }}">
+                                                <h6>{{ $item->title }}</h6>
                                             </a>
-                                        </p>
-                                        <input class="form-control form-control-sm" type="text"
-                                            placeholder="Type a comment">
-                                    </div>
-                                @endforeach
+                                            <p class="post-description">
+                                                {{ $item->description }}
+                                            </p>
+
+                                            <p class="d-flex justify-content-end">
+                                                <a href="{{ route('post-detail', $item->id) }}" class="text-sm">
+                                                    <i class="far fa-comments mr-1"></i> Comments
+                                                    ({{ count($item->comment) }})
+                                                </a>
+                                            </p>
+                                            <form class="mb-4" action={{ route('post-comment-create', $item->id) }}
+                                                method="POST" enctype="multipart/form-data" data-remote="true">
+                                                @csrf
+                                                <input class="form-control form-control-sm" type="text" name="comment"
+                                                    placeholder="Type a comment">
+                                            </form>
+                                        </div>
+                                    @endforeach
+                                    {{ $posts->links() }}
+                                @endif
                             </div>
-                            <div class="tab-pane" id="settings">
-                                <form class="form-horizontal" action={{ route('update-student-profile') }} method="POST"
-                                    enctype="multipart/form-data" data-remote="true">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="form-group row">
-                                        <label for="inputName" class="col-sm-2 col-form-label">Name*</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="inputName"
-                                                placeholder="Input your name" name="name"
-                                                value="{{ old('name', $student->user->name) }}">
-                                            @error('name')
-                                                <p class="text-danger m-0">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputEmail" class="col-sm-2 col-form-label">Email*</label>
-                                        <div class="col-sm-10">
-                                            <input type="email" class="form-control" id="inputEmail"
-                                                placeholder="Input your email" name="email"
-                                                value="{{ $student->user->email }}" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputGender" class="col-sm-2 col-form-label">Gender*</label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control select2" style="width: 100%;" name="gender">
-                                                <option value='Male'
-                                                    {{ old('gender', $student->profile->gender) == 'Male' ? 'selected' : '' }}>
-                                                    Male
-                                                </option>
-                                                <option value='Female'
-                                                    {{ old('gender', $student->profile->gender) == 'Female' ? 'selected' : '' }}>
-                                                    Female
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputReligion" class="col-sm-2 col-form-label">Religion*</label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control select2" style="width: 100%;" name="religion">
-                                                <option value='Muslim'
-                                                    {{ old('religion', $student->profile->religion) == 'Muslim' ? 'selected' : '' }}>
-                                                    Muslim
-                                                </option>
-                                                <option value='Protestant'
-                                                    {{ old('religion', $student->profile->religion) == 'Protestant' ? 'selected' : '' }}>
-                                                    Protestant
-                                                </option>
-                                                <option value='Catholic'
-                                                    {{ old('religion', $student->profile->religion) == 'Catholic' ? 'selected' : '' }}>
-                                                    Catholic
-                                                </option>
-                                                <option value='Hindu'
-                                                    {{ old('religion', $student->profile->religion) == 'Hindu' ? 'selected' : '' }}>
-                                                    Hindu
-                                                </option>
-                                                <option value='Buddhist'
-                                                    {{ old('religion', $student->profile->religion) == 'Buddhist' ? 'selected' : '' }}>
-                                                    Buddhist
-                                                </option>
-                                                <option value='Confucian'
-                                                    {{ old('religion', $student->profile->religion) == 'Confucian' ? 'selected' : '' }}>
-                                                    Confucian
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputAddress" class="col-sm-2 col-form-label">Address</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="inputAddress"
-                                                placeholder="Input your address line" name="line"
-                                                value="{{ $address ? old('line', $address->line) : '' }}">
-                                            <div class="form-row">
-                                                <div class="col-md mt-2">
-                                                    <input type="text" class="form-control" placeholder="City"
-                                                        name="city"
-                                                        value="{{ $address ? old('city', $address->city) : '' }}">
-                                                </div>
-                                                <div class="col-md mt-2">
-                                                    <input type="text" class="form-control"
-                                                        placeholder="State/Province" name="province"
-                                                        value="{{ $address ? old('province', $address->province) : '' }}">
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="col-md mt-2">
-                                                    <input type="text" class="form-control"
-                                                        placeholder="Zip/Postal code" name="zip"
-                                                        value="{{ $address ? old('zip', $address->zip) : '' }}">
-                                                </div>
-                                                <div class="col-md mt-2">
-                                                    <input type="text" class="form-control" placeholder="Country"
-                                                        name="country"
-                                                        value="{{ $address ? old('country', $address->country) : '' }}">
-                                                </div>
+                            @if (Auth::user()->id === $student->user_id)
+                                <div class="tab-pane" id="settings">
+                                    <form class="form-horizontal" action={{ route('update-student-profile') }}
+                                        method="POST" enctype="multipart/form-data" data-remote="true">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="form-group row">
+                                            <label for="inputName" class="col-sm-2 col-form-label">Name*</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="inputName"
+                                                    placeholder="Input your name" name="name"
+                                                    value="{{ old('name', $student->user->name) }}">
+                                                @error('name')
+                                                    <p class="text-danger m-0">{{ $message }}</p>
+                                                @enderror
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputPhoneNumber" class="col-sm-2 col-form-label">Phone
-                                            Number*</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="inputPhoneNumber"
-                                                placeholder="Input your phone number" name="phone_number"
-                                                value="{{ old('phone_number', $student->profile->phone_number) }}">
-                                            @error('phone_number')
-                                                <p class="text-danger m-0">{{ $message }}</p>
-                                            @enderror
+                                        <div class="form-group row">
+                                            <label for="inputEmail" class="col-sm-2 col-form-label">Email*</label>
+                                            <div class="col-sm-10">
+                                                <input type="email" class="form-control" id="inputEmail"
+                                                    placeholder="Input your email" name="email"
+                                                    value="{{ $student->user->email }}" readonly>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputBirthDate" class="col-sm-2 col-form-label">DOB*</label>
-                                        <div class="col-sm-10">
-                                            <input type="date" class="form-control" id="inputBirthDate"
-                                                placeholder="Input your birth date" name="dob"
-                                                value="{{ old('dob', $student->profile->dob) }}">
-                                            @error('dob')
-                                                <p class="text-danger m-0">{{ $message }}</p>
-                                            @enderror
+                                        <div class="form-group row">
+                                            <label for="inputGender" class="col-sm-2 col-form-label">Gender*</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control select2" style="width: 100%;" name="gender">
+                                                    <option value='Male'
+                                                        {{ old('gender', $student->profile->gender) == 'Male' ? 'selected' : '' }}>
+                                                        Male
+                                                    </option>
+                                                    <option value='Female'
+                                                        {{ old('gender', $student->profile->gender) == 'Female' ? 'selected' : '' }}>
+                                                        Female
+                                                    </option>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="offset-sm-2 col-sm-10">
-                                            <button type="submit" class="btn btn-primary">Update</button>
+                                        <div class="form-group row">
+                                            <label for="inputReligion" class="col-sm-2 col-form-label">Religion*</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control select2" style="width: 100%;"
+                                                    name="religion">
+                                                    <option value='Muslim'
+                                                        {{ old('religion', $student->profile->religion) == 'Muslim' ? 'selected' : '' }}>
+                                                        Muslim
+                                                    </option>
+                                                    <option value='Protestant'
+                                                        {{ old('religion', $student->profile->religion) == 'Protestant' ? 'selected' : '' }}>
+                                                        Protestant
+                                                    </option>
+                                                    <option value='Catholic'
+                                                        {{ old('religion', $student->profile->religion) == 'Catholic' ? 'selected' : '' }}>
+                                                        Catholic
+                                                    </option>
+                                                    <option value='Hindu'
+                                                        {{ old('religion', $student->profile->religion) == 'Hindu' ? 'selected' : '' }}>
+                                                        Hindu
+                                                    </option>
+                                                    <option value='Buddhist'
+                                                        {{ old('religion', $student->profile->religion) == 'Buddhist' ? 'selected' : '' }}>
+                                                        Buddhist
+                                                    </option>
+                                                    <option value='Confucian'
+                                                        {{ old('religion', $student->profile->religion) == 'Confucian' ? 'selected' : '' }}>
+                                                        Confucian
+                                                    </option>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="tab-pane" id="security">
-                                <form class="form-horizontal" action="/admin/updatePassword" method="POST"
-                                    enctype="multipart/form-data" data-remote="true">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="form-group row">
-                                        <label for="oldPassword" class="col-sm-2 col-form-label">Old Password*</label>
-                                        <div class="col-sm-10">
-                                            <input type="password" class="form-control" id="oldPassword"
-                                                name="oldPassword" placeholder="Input old password">
-                                            @error('oldPassword')
-                                                <p class="text-danger m-0">{{ $message }}</p>
-                                            @enderror
+                                        <div class="form-group row">
+                                            <label for="inputAddress" class="col-sm-2 col-form-label">Address</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="inputAddress"
+                                                    placeholder="Input your address line" name="line"
+                                                    value="{{ $address ? old('line', $address->line) : '' }}">
+                                                <div class="form-row">
+                                                    <div class="col-md mt-2">
+                                                        <input type="text" class="form-control" placeholder="City"
+                                                            name="city"
+                                                            value="{{ $address ? old('city', $address->city) : '' }}">
+                                                    </div>
+                                                    <div class="col-md mt-2">
+                                                        <input type="text" class="form-control"
+                                                            placeholder="State/Province" name="province"
+                                                            value="{{ $address ? old('province', $address->province) : '' }}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-md mt-2">
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Zip/Postal code" name="zip"
+                                                            value="{{ $address ? old('zip', $address->zip) : '' }}">
+                                                    </div>
+                                                    <div class="col-md mt-2">
+                                                        <input type="text" class="form-control" placeholder="Country"
+                                                            name="country"
+                                                            value="{{ $address ? old('country', $address->country) : '' }}">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="newPassword" class="col-sm-2 col-form-label">New Password*</label>
-                                        <div class="col-sm-10">
-                                            <input type="password" class="form-control" id="newPassword"
-                                                name="newPassword" placeholder="Input new password">
-                                            @error('newPassword')
-                                                <p class="text-danger m-0">{{ $message }}</p>
-                                            @enderror
+                                        <div class="form-group row">
+                                            <label for="inputPhoneNumber" class="col-sm-2 col-form-label">Phone
+                                                Number*</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="inputPhoneNumber"
+                                                    placeholder="Input your phone number" name="phone_number"
+                                                    value="{{ old('phone_number', $student->profile->phone_number) }}">
+                                                @error('phone_number')
+                                                    <p class="text-danger m-0">{{ $message }}</p>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="confirmPassword" class="col-sm-2 col-form-label">Confirm
-                                            Password*</label>
-                                        <div class="col-sm-10">
-                                            <input type="password" class="form-control" id="confirmPassword"
-                                                name="confirmPassword" placeholder="Input confirm password">
-                                            @error('confirmPassword')
-                                                <p class="text-danger m-0">{{ $message }}</p>
-                                            @enderror
+                                        <div class="form-group row">
+                                            <label for="inputBirthDate" class="col-sm-2 col-form-label">DOB*</label>
+                                            <div class="col-sm-10">
+                                                <input type="date" class="form-control" id="inputBirthDate"
+                                                    placeholder="Input your birth date" name="dob"
+                                                    value="{{ old('dob', $student->profile->dob) }}">
+                                                @error('dob')
+                                                    <p class="text-danger m-0">{{ $message }}</p>
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="offset-sm-2 col-sm-10">
-                                            <button type="submit" class="btn btn-primary">Update</button>
+                                        <div class="form-group row">
+                                            <div class="offset-sm-2 col-sm-10">
+                                                <button type="submit" class="btn btn-primary">Update</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
-                            </div>
+                                    </form>
+                                </div>
+                                <div class="tab-pane" id="security">
+                                    <form class="form-horizontal" action="/admin/updatePassword" method="POST"
+                                        enctype="multipart/form-data" data-remote="true">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="form-group row">
+                                            <label for="oldPassword" class="col-sm-2 col-form-label">Old Password*</label>
+                                            <div class="col-sm-10">
+                                                <input type="password" class="form-control" id="oldPassword"
+                                                    name="oldPassword" placeholder="Input old password">
+                                                @error('oldPassword')
+                                                    <p class="text-danger m-0">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="newPassword" class="col-sm-2 col-form-label">New Password*</label>
+                                            <div class="col-sm-10">
+                                                <input type="password" class="form-control" id="newPassword"
+                                                    name="newPassword" placeholder="Input new password">
+                                                @error('newPassword')
+                                                    <p class="text-danger m-0">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="confirmPassword" class="col-sm-2 col-form-label">Confirm
+                                                Password*</label>
+                                            <div class="col-sm-10">
+                                                <input type="password" class="form-control" id="confirmPassword"
+                                                    name="confirmPassword" placeholder="Input confirm password">
+                                                @error('confirmPassword')
+                                                    <p class="text-danger m-0">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="offset-sm-2 col-sm-10">
+                                                <button type="submit" class="btn btn-primary">Update</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -383,6 +402,10 @@
 
         .post-description {
             font-size: 0.87rem !important;
+        }
+
+        .page-item.active .page-link {
+            background-color: var(--color-primary);
         }
     </style>
 @endsection

@@ -6,7 +6,7 @@
     </a>
 
     <div class="sidebar">
-        <a href="/{{ $role }}/profile"
+        <a href="/{{ $role }}/profile/{{Auth::user()->id}}"
             class="user-panel mt-3 py-2 mb-3 d-flex align-items-center rounded">
             <div class="image">
                 <img src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}" class="img-circle elevation-2"

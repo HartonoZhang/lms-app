@@ -23,7 +23,7 @@ class TeacherController extends Controller
         return view('pages.dashboards.teacher');
     }
 
-    public function profile()
+    public function profile($id)
     {
         return view('pages.profiles.teacher');
     }
