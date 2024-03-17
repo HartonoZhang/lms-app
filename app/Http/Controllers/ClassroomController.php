@@ -23,14 +23,16 @@ class ClassroomController extends Controller
                 "code"=> $data->code,
                 "name"=> $data->name,
                 "course_id" => $data->course,
-                "student_capacity" => $data->student_capacity
+                "student_capacity" => $data->student_capacity,
+                "period_id" => $data->period,
             ]);
         } else {
             $result = Classroom::find($data->id)->update([
                 "code"=> $data->code,
                 "name"=> $data->name,
                 "course_id"=> $data->course,
-                "student_capacity" => $data->student_capacity
+                "student_capacity" => $data->student_capacity,
+                "period_id" => $data->period,
             ]);
         }
         return $result;
@@ -62,6 +64,7 @@ class ClassroomController extends Controller
             "code" => ["max:10"],
             "name" => ["required"],
             "course" => ["required"],
+            'period' => ['required'],
             "student_capacity" => ['nullable','integer','min:1'],
             "studentLists" => [
                 "required",
@@ -105,6 +108,7 @@ class ClassroomController extends Controller
             "code" => ["max:10"],
             "name" => ["required"],
             "course" => ["required"],
+            'period' => ['required'],
             "student_capacity" => ['nullable','regex:/^[1-9]+$/'],
             "studentLists" => [
                 "required",

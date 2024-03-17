@@ -1,83 +1,51 @@
 @extends('layouts.template')
 
-@section('title', 'List Classrooms')
+@section('title', 'List Periods')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('admin-dashboard') }}">Home</a></li>
-    <li class="breadcrumb-item active">List Classrooms</li>
+    <li class="breadcrumb-item active">List Periods</li>
 @endsection
 
 @section('content')
     <div class="container-fluid h-100">
         <div class="d-flex justify-content-end mb-2">
-            <a href="{{ route('class-add')}}" class="btn btn-primary">
-                Add classroom
+            <a href="{{ route('period-add') }}" class="btn btn-primary">
+                Add Period
             </a>
         </div>
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    There are {{$classrooms->count()}} classrooms
+                    There are {{$datas->count()}} periods
                 </h3>
             </div>
             <div class="card-body">
-                <table id="tabel-classrooms" class="table table-bordered table-striped">
+                <table id="tabel-periods" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Classroom Name</th>
-                            <th>Classroom Code</th>
-                            <th>Course</th>
-                            <th>Period</th>
-                            <th>Total student</th>
-                            <th>Total teacher</th>
+                            <th>Period name</th>
+                            <th>Total classroom on this period</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($classrooms as $classroom)
+                        @foreach ($datas as $data)
                             <tr>
-                                <td class="text-truncate">{{$classroom->name}}</td>
-                                <td class="text-truncate {{$classroom->code == null ? "font-italic" : ""}}">
-                                    {{$classroom->code == null ? "No code" : $classroom->code}}
-                                </td>                                
-                                <td class="text-truncate">{{$classroom->course->name}}</td>
-                                <td>{{$classroom->period->name}}</td>
-                                @php
-                                    $color = "";
-                                    $totalStudent = "";
-                                    if ($classroom->student_capacity == null) {
-                                        $color = "text-dark";
-                                        $totalStudent = $classroom->studentClassroom->count();
-                                    } else {
-                                        $totalStudent = $classroom->studentClassroom->count().'/'.$classroom->student_capacity;
-                                        if ($classroom->studentClassroom->count() == $classroom->student_capacity) {
-                                            $color = "text-danger";
-                                        } else if ($classroom->studentClassroom->count() >= $classroom->student_capacity-5 && $classroom->studentClassroom->count() <= $classroom->student_capacity) {
-                                            $color = "text-warning";
-                                        } else {
-                                            $color = "text-success";
-                                        }
-                                    }
-                                @endphp
-                                <td class="text-truncate font-weight-bold {{$color}}">
-                                    {{$totalStudent}}
+                                <td class="text-truncate">{{$data->name}}</td>
+                                <td class="text-truncate">
+                                    {{$data->classroom->count()}}
                                 </td>
-                                <td class="text-truncate">{{$classroom->teacherClassroom->count()}}</td>
                                 <td>
                                     <ul class="list-inline m-0">
                                         <li class="list-inline-item">
-                                            <a class="btn btn-primary btn-sm rounded-0" href={{route('class-detail',$classroom->id)}} type="button"
-                                                data-toggle="tooltip" data-placement="top" title="Detail"><i
-                                                    class="fa fa-search"></i></a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a class="btn btn-success btn-sm rounded-0" href={{route('class-update',$classroom->id)}} type="button"
+                                            <a class="btn btn-success btn-sm rounded-0" href={{route('period-update',$data->id)}} type="button"
                                                 data-toggle="tooltip" data-placement="top" title="Edit"><i
                                                     class="fa fa-edit"></i></a>
                                         </li>
                                         <li class="list-inline-item">
                                             <a href="#" class="btn btn-danger btn-sm rounded-0" data-toggle="modal"
-                                                data-target="#modal-delete-{{ $classroom->id }}" data-placement="top" 
+                                                data-target="#modal-delete-{{ $data->id }}" data-placement="top" 
                                                 title="Delete">
                                                     <i class="fa fa-trash"></i>
                                             </a>
@@ -86,20 +54,22 @@
                                 </td>
                             </tr>
                             {{-- Modal delete start --}}
-                            <div class="modal fade" id="modal-delete-{{ $classroom->id }}">
+                            <div class="modal fade" id="modal-delete-{{ $data->id }}">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                        <form action={{route('class-delete',$classroom->id)}} method="POST" enctype="multipart/form-data" data-remote="true">
+                                        <form action={{route('period-delete',$data->id)}} method="POST" enctype="multipart/form-data" data-remote="true">
                                             @csrf
                                             @method('DELETE')
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Remove Class</h4>
+                                                <h4 class="modal-title">Remove Period</h4>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <p>Are you sure want to remove "{{$classroom->name}}" class?</p>
+                                                <p>Are you sure want to remove "{{$data->name}}" period?</p>
+                                                <p class="text-danger">WARNING : All classrooms with this period will also be deleted!</p>
+
                                             </div>
                                             <div class="modal-footer justify-content-between">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -123,24 +93,22 @@
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-
     <style>
         .table {
             table-layout: fixed;
         }
     </style>
 
-    <!-- Toastr -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/toastr/toastr.min.css">
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.jsdelivr.net/gh/exacti/floating-labels@latest/floating-labels.min.css" media="screen">
-
-    <style>
-        label {
-            font-weight: 400 !important;
-        }
-    </style>
-
+     <!-- Toastr -->
+     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/toastr/toastr.min.css">
+     <link rel="stylesheet" type="text/css"
+         href="https://cdn.jsdelivr.net/gh/exacti/floating-labels@latest/floating-labels.min.css" media="screen">
+ 
+     <style>
+         label {
+             font-weight: 400 !important;
+         }
+     </style>
 @endsection
 
 @section('js-script')
@@ -160,27 +128,27 @@
 
     <script>
         $(function() {
-            $("#tabel-classrooms").DataTable({
+            $("#tabel-periods").DataTable({
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
                 "columnDefs": [{
                     orderable: false,
-                    targets: 5
+                    targets: 2
                 }],
                 "buttons": [
                     "copy",
                     {
                         extend: 'csv',
-                        title: "List Classrooms"
+                        title: "List Periods"
                     },
                     {
                         extend: 'excel',
-                        title: "List Classrooms"
+                        title: "List Periods"
                     },
                     "print"
                 ]
-            }).buttons().container().appendTo('#tabel-courses_wrapper .col-md-6:eq(0)');
+            }).buttons().container().appendTo('#tabel-periods_wrapper .col-md-6:eq(0)');
         });
     </script>
 

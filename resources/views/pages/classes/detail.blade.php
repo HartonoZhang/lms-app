@@ -45,6 +45,13 @@
                             <label for="Course">Course*</label>
                         </div>
                     </div>
+                    <div class="col-sm-4 mb-3">
+                        <div class="form-label-group in-border mb-1">
+                            <input type="text" id="period" class="form-control form-control-mb"
+                                placeholder="Period" value="{{$data->period->name}}" disabled/>
+                            <label for="Period">Period*</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="card border">
                     <div class="card-body">
@@ -59,12 +66,13 @@
                             <tbody>
                                 @foreach ($studentLists as $student)
                                     <tr>
-                                        <td>{{$student->name}}</td>
+                                        <td>{{$student->user->name}}</td>
                                         <td>{{$student->user->email}}</td>
                                         <td>
-                                            <a class="btn btn-primary btn-sm rounded-0"  type="button"
-                                                data-toggle="tooltip" data-placement="top" title="Detail"><i
-                                                    class="fa fa-search"></i></a>
+                                            <a href={{route('student-detail',$student->id)}} class="btn btn-primary btn-sm rounded-0"  type="button"
+                                                data-toggle="tooltip" data-placement="top" title="Detail">
+                                                <i class="fa fa-search"></i>
+                                            </a>
                                         </td>
                                     </tr>    
                                 @endforeach
@@ -85,14 +93,15 @@
                             <tbody>
                                 @foreach ($teacherLists as $teacher)
                                     <tr>
-                                        <td>{{$teacher->name}}</td>
+                                        <td>{{$teacher->user->name}}</td>
                                         <td>{{$teacher->user->email}}</td>
                                         <td>
                                             <ul class="list-inline m-0">
                                                 <li class="list-inline-item">
-                                                    <a class="btn btn-primary btn-sm rounded-0"  type="button"
-                                                        data-toggle="tooltip" data-placement="top" title="Detail"><i
-                                                            class="fa fa-search"></i></a>
+                                                    <a href={{route('teacher-detail',$teacher->id)}} class="btn btn-primary btn-sm rounded-0"  type="button"
+                                                        data-toggle="tooltip" data-placement="top" title="Detail">
+                                                        <i class="fa fa-search"></i>
+                                                    </a>
                                                 </li>
                                             </ul>
                                         </td>
@@ -102,7 +111,7 @@
                         </table>
                     </div>
                 </div>
-                <a type="button" href={{URL::previous()}} class="btn btn-secondary">Back</a>
+                <a type="button" href={{route('class-list')}} class="btn btn-secondary">Back</a>
                 <a type="button" href={{route('class-update',$data->id)}} class="btn btn-primary">Edit this classroom</a>
             </div>
         </div>
