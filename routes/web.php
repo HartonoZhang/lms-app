@@ -94,6 +94,11 @@ Route::middleware('auth')->group(function () {
             Route::get('/profile', 'profile');
             Route::get('/courses', 'courses')->name('courses');
             Route::get('/course/{id}', 'courseDetail')->name('course-detail');
+            Route::get('/course/{id}/session/', 'getSessionData')->name('course-session');
+            Route::get('/course/{id}/session/material', 'getMaterialFile')->name('course-material-download');
+            Route::post('/course/{id}/session/material/add', 'addMaterial')->name('course-material-add');
+            Route::put('/course/{id}/session/material/edit', 'editMaterial')->name('course-material-edit');
+            Route::delete('/course/{id}/session/material/delete', 'deleteMaterial')->name('course-material-delete');
         });
     });
     Route::middleware('student-only')->group(function () {

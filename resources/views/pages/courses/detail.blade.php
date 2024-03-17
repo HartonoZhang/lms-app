@@ -13,15 +13,15 @@
         <div class="card course-detail-card overflow-hidden">
             <div class="course-detail-header px-4 pt-4 pb-2 d-flex flex-column justify-content-between">
                 <div class="">
-                    <h3>{{$class->name}}</h3>
-                    <div class="mb-2">{{$class->code}}</div>
+                    <h3>{{ $class->name }}</h3>
+                    <div class="mb-2">{{ $class->code }}</div>
                     <div class="course-teacher-profile d-flex align-items-center" style="font-size: 0.8rem">
-                        <div>
-                            <img loading="lazy" src="{{ url('/assets/img/dummy_course.jpg') }}" alt="Teacher">
-                        </div>
                         @foreach ($class->TeacherClassroom as $tc)
-                            <div class="ml-2">
-                                <p class="m-0">{{$tc->Teacher->name}}</p>
+                            <div>
+                                <img loading="lazy" src="{{ url('/assets/img/dummy_course.jpg') }}" alt="Teacher">
+                            </div>
+                            <div class="ml-2 mr-3">
+                                <p class="m-0">{{ $tc->Teacher->User->name }}</p>
                                 {{-- <p class="m-0">D1234 - Primary Instructor</p> --}}
                             </div>
                         @endforeach
@@ -30,8 +30,8 @@
                 @if ($userRole == 3)
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <div class="progress progress-xs rounded w-100">
-                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar"
-                                style="width: 33%" aria-valuenow="33" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
+                                role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemax="100"></div>
                         </div>
                         <span class="ml-2" style="font-size: 0.8rem">33%</span>
                     </div>
@@ -48,7 +48,7 @@
             <div class="card-body course-detail-body py-2 px-2">
                 <div class="row">
                     <div class="col-3 canvas-wrapper p-0 m-0">
-                        <canvas id="session-roadmap" width="100" height="100"></canvas>
+                        <canvas id="session-roadmap" width="0" height="0"></canvas>
                     </div>
                     <div class="col-9 px-3">
                         <nav>
@@ -63,85 +63,23 @@
                                     role="tab" aria-controls="nav-forum" aria-selected="false">Forum</button>
                                 @if ($userRole == 2)
                                     <button class="nav-link" data-toggle="tab" data-target="#nav-attendance" type="button"
-                                        role="tab" aria-controls="nav-attendance" aria-selected="false">Attendance</button>
+                                        role="tab" aria-controls="nav-attendance"
+                                        aria-selected="false">Attendance</button>
                                 @endif
                             </div>
                         </nav>
-                        <h3 class="my-2 pb-2">
+                        <h3 id="session-title" class="my-2 pb-2">
                             {{-- isi custom content --}}
-                            Session 1
                         </h3>
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="nav-description" role="tabpanel"
                                 aria-labelledby="nav-description-tab">
                                 {{-- isi custom content --}}
-                                Disini kita belajar membuat web laravel.
-                                <br>
-                                Learning points:
-                                <ul>
-                                    <li>pintar</li>
-                                    <li>hebat</li>
-                                    <li>sukses</li>
-                                </ul>
                             </div>
                             <div class="tab-pane fade" id="nav-learning-material" role="tabpanel"
                                 aria-labelledby="nav-learning-material-tab">
-                                {{-- isi custom content --}}
-                                <div class="row">
-                                    @for ($i = 0; $i < 4; $i++)
-                                        <div class="col-6 py-2">
-                                            <a class="material-link row mx-2 my-1 py-2 px-3" href="#">
-                                                <div class="col-4">
-                                                    <div class="link-icon-container">
-                                                        <i class="fas fa-link"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="col-8 d-flex flex-column justify-content-center align-items-">
-                                                    <p class="p-0 m-0">Learning material 1</p>
-                                                    <div>
-                                                        <button class="btn btn-warning rounded-circle material-action-btn">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                        <button class="btn btn-danger rounded-circle material-action-btn">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    @endfor
-                                    <div class="col-6 py-2">
-                                        <a class="material-link row mx-2 my-1 py-2 px-3" href="#">
-                                            <div class="col-4">
-                                                <div class="link-icon-container">
-                                                    <i class="fas fa-file"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-8 d-flex flex-column justify-content-center align-items-">
-                                                <p class="p-0 m-0">File material 1</p>
-                                                <div>
-                                                    <button class="btn btn-warning rounded-circle material-action-btn">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger rounded-circle material-action-btn">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    <div class="col-6 py-2">
-                                        <div class="material-link add-material row mx-2 my-1 py-2 px-3">
-                                            <div class="col-4">
-                                                <div class="link-icon-container">
-                                                    <i class="fas fa-plus"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-8 d-flex flex-column justify-content-center align-items-">
-                                                <p class="p-0 m-0">Add more...</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div id="nav-learning-material-content" class="row">
+                                    {{-- isi custom content --}}
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="nav-forum" role="tabpanel" aria-labelledby="nav-forum-tab">
@@ -150,8 +88,8 @@
                                     <div class="card card-widget border collapsed-card">
                                         <div class="card-header sticky-top">
                                             <div class="user-block">
-                                                <img loading="lazy" class="img-circle" src="{{ url('/assets/img/dummy_course.jpg') }}"
-                                                    alt="User Image">
+                                                <img loading="lazy" class="img-circle"
+                                                    src="{{ url('/assets/img/dummy_course.jpg') }}" alt="User Image">
                                                 <span class="username">Jonathan Burke Jr.</span>
                                                 <span class="description">13 March 2024, 12:13</span>
                                             </div>
@@ -177,8 +115,8 @@
                                         {{-- comments --}}
                                         <div class="card-footer card-comments">
                                             <div class="card-comment">
-                                                <img loading="lazy" class="img-circle img-sm" src="{{ url('/assets/img/dummy_course.jpg') }}"
-                                                    alt="User Image">
+                                                <img loading="lazy" class="img-circle img-sm"
+                                                    src="{{ url('/assets/img/dummy_course.jpg') }}" alt="User Image">
                                                 <div class="comment-text">
                                                     <span class="username">
                                                         Maria Gonzales
@@ -189,8 +127,8 @@
                                                 </div>
                                             </div>
                                             <div class="card-comment">
-                                                <img loading="lazy" class="img-circle img-sm" src="{{ url('/assets/img/dummy_course.jpg') }}"
-                                                    alt="User Image">
+                                                <img loading="lazy" class="img-circle img-sm"
+                                                    src="{{ url('/assets/img/dummy_course.jpg') }}" alt="User Image">
                                                 <div class="comment-text">
                                                     <span class="username">
                                                         Nora Havisham
@@ -223,26 +161,32 @@
                                     <form action="">
                                         <div class="row">
                                             <div class="col-md-5 my-1">
-                                                <input type="text" class="mx-1 form-control" placeholder="Search Student Name..." />
+                                                <input type="text" class="mx-1 form-control"
+                                                    placeholder="Search Student Name..." />
                                             </div>
                                             <div class="col-md-5 my-1">
-                                                <input type="text" class="mx-1 form-control" placeholder="Search Student Id..." />
+                                                <input type="text" class="mx-1 form-control"
+                                                    placeholder="Search Student Id..." />
                                             </div>
                                             <div class="col-md-2 my-1">
                                                 <button class="mx-2 btn btn-primary float-right">Search</button>
                                             </div>
                                             <div class="col-md-12 my-2">
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="attendanceFilter" id="filterAll" value="all" checked>
+                                                    <input class="form-check-input" type="radio"
+                                                        name="attendanceFilter" id="filterAll" value="all" checked>
                                                     <label class="form-check-label" for="filterAll">All</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="attendanceFilter" id="filterPresent" value="present">
+                                                    <input class="form-check-input" type="radio"
+                                                        name="attendanceFilter" id="filterPresent" value="present">
                                                     <label class="form-check-label" for="filterPresent">Present</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="attendanceFilter" id="filterNotPresent" value="notPresent">
-                                                    <label class="form-check-label" for="filterNotPresent">Not Present</label>
+                                                    <input class="form-check-input" type="radio"
+                                                        name="attendanceFilter" id="filterNotPresent" value="notPresent">
+                                                    <label class="form-check-label" for="filterNotPresent">Not
+                                                        Present</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -250,20 +194,24 @@
                                     <form action="">
                                         <div class="attendance-list">
                                             <div class="row">
-                                                @for ($i=1;$i<6;$i++)
+                                                @for ($i = 1; $i < 6; $i++)
                                                     <div class="col-lg-6 my-2">
-                                                        <div class="student-attendance d-flex align-items-center justify-content-between rounded border px-2">
+                                                        <div
+                                                            class="student-attendance d-flex align-items-center justify-content-between rounded border px-2">
                                                             <div class="d-flex justify-content-start align-items-center">
-                                                                <img loading="lazy" class="img-circle img-sm" src="{{ url('/assets/img/dummy_course.jpg') }}"
-                                                                alt="User Image">
+                                                                <img loading="lazy" class="img-circle img-sm"
+                                                                    src="{{ url('/assets/img/dummy_course.jpg') }}"
+                                                                    alt="User Image">
                                                                 <div class="ml-2">
                                                                     <p class="mb-0">Kenneth Vincent Kwandou</p>
                                                                     <small class="text-muted">2440026780</small>
                                                                 </div>
                                                             </div>
                                                             <div class="custom-control custom-checkbox">
-                                                                <input type="checkbox" class="custom-control-input" id="student_{{$i}}" checked>
-                                                                <label class="custom-control-label" for="student_{{$i}}"></label>
+                                                                <input type="checkbox" class="custom-control-input"
+                                                                    id="student_{{ $i }}" checked>
+                                                                <label class="custom-control-label"
+                                                                    for="student_{{ $i }}"></label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -280,6 +228,115 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="add-material-modal" tabindex="-1" role="dialog" aria-labelledby="add-material-modal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Material</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span class="text-danger" id="add-material-error"></span>
+                    <div class="form-group">
+                        <label for="addMaterialType">Select Material Type</label>
+                        <select class="form-control" id="addMaterialType">
+                            <option selected value="link">URL</option>
+                            <option value="file">File</option>
+                        </select>
+                    </div>
+                    <form class="add-material-form" id="add-material-link" data-sessionId="" method="POST" action="{{route('teacher-course-material-add', ['id' => $class->id])}}">
+                        @csrf
+                        <input type="text" value="link" name="type" readonly hidden>
+                        <div class="form-group">
+                            <label for="materialLink">URL</label>
+                            <input type="text" class="form-control" name="link" id="materialLink"
+                                placeholder="https://www.google.com">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Link</button>
+                    </form>
+                    <form class="add-material-form" id="add-material-file" data-sessionId="" method="POST" action="{{route('teacher-course-material-add', ['id' => $class->id])}}" style="display: none;" enctype="multipart/form-data">
+                        @csrf
+                        <input type="text" value="file" name="type" readonly hidden>
+                        <div class="form-group">
+                            <label for="materialFile">Upload File</label>
+                            <input type="file" class="form-control" name="file" id="materialFile">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload File</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="edit-material-modal" tabindex="-1" role="dialog" aria-labelledby="edit-material-modal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Material</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span class="text-danger" id="edit-material-error"></span>
+                    <div class="form-group">
+                        <label for="editMaterialType">Select Material Type</label>
+                        <select class="form-control materialType" id="editMaterialType">
+                            <option selected value="link">URL</option>
+                            <option value="file">File</option>
+                        </select>
+                    </div>
+                    <form class="edit-material-form" id="edit-material-link" data-sessionId="" data-materialId="" method="POST" action="{{route('teacher-course-material-edit', ['id' => $class->id])}}">
+                        @csrf
+                        @method('PUT')
+                        <input type="text" value="link" name="type" readonly hidden>
+                        <div class="form-group">
+                            <label for="materialLink">URL</label>
+                            <input type="text" class="form-control" name="link" id="materialLink"
+                                placeholder="https://www.google.com">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Edit Link</button>
+                    </form>
+                    <form class="edit-material-form" id="edit-material-file" data-sessionId="" data-materialId="" method="POST" action="{{route('teacher-course-material-edit', ['id' => $class->id])}}" style="display: none;" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <input type="text" value="file" name="type" readonly hidden>
+                        <div class="form-group">
+                            <label for="materialFile">Upload File</label>
+                            <input type="file" class="form-control" name="file" id="materialFile">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload File</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirm-popup" tabindex="-1" role="dialog" aria-labelledby="confirm-popup-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirm-popup-label">Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{-- custom message --}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-primary" id="confirm-delete-btn">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('css-link')
@@ -293,20 +350,21 @@
 
     <style>
         /* .select2-container--bootstrap4.select2-container--focus .select2-selection {
-                box-shadow: none !important;
-            }
+                        box-shadow: none !important;
+                    }
 
-            .select2-container--bootstrap4 .select2-selection {
-                -webkit-transition: none !important;
-            }
-            label {
-                font-weight: 400 !important;
-            } */
+                    .select2-container--bootstrap4 .select2-selection {
+                        -webkit-transition: none !important;
+                    }
+                    label {
+                        font-weight: 400 !important;
+                    } */
 
         :root {
             --courseColor: #1F2B37;
             --courseHeaderGradient1: rgba(0, 0, 0, 0.8);
             --courseHeaderGradient2: rgba(31, 43, 55, 0.8);
+            --courseBodyHeight: 40rem;
         }
 
         .course-teacher-profile {
@@ -351,8 +409,8 @@
         }
 
         .course-detail-body {
-            min-height: 40rem;
-            height: auto;
+            /* min-height: var(--courseBodyHeight); */
+            max-height: var(--courseBodyHeight);
         }
 
         .course-detail-body .nav-link {
@@ -365,6 +423,12 @@
             border-top: 1px solid var(--color-primary);
         }
 
+        .tab-content{
+            max-height: 33rem;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
         .material-link {
             background-color: var(--color-light);
             border: 1px solid var(--color-info-light);
@@ -372,7 +436,7 @@
             transition: 0.3s;
         }
 
-        .material-link:hover:not(.add-material) {
+        .material-link:hover {
             color: var(--color-primary);
             background-color: var(--color-background);
             border-color: var(--color-primary);
@@ -391,26 +455,31 @@
             margin: auto;
         }
 
-        .forum-container{
-            max-height: 30rem;
+        .add-material {
+            cursor: pointer;
+        }
+
+        .forum-container {
+            max-height: var(--courseBodyHeight);
             overflow-y: auto;
         }
 
-        .forum-container .card{
+        .forum-container .card {
             box-shadow: 5px var(--color-background) !important;
         }
 
-        .forum-container .card-header{
+        .forum-container .card-header {
             position: sticky;
             background-color: white;
         }
 
-        .student-attendance{
+        .student-attendance {
             background-color: var(--color-light);
         }
 
         .canvas-wrapper {
-            max-height: 40rem;
+            min-height: var(--courseBodyHeight);
+            max-height: var(--courseBodyHeight);
             border-radius: 3rem;
             overflow-x: hidden;
             overflow-y: scroll;
@@ -423,13 +492,6 @@
         .canvas-wrapper {
             -ms-overflow-style: none;
             scrollbar-width: none;
-        }
-
-        canvas {
-            /* background-color: black;
-            position: absolute;
-            top: 0;
-            left: 0; */
         }
     </style>
 @endsection
@@ -454,17 +516,14 @@
                 @endif
             @endif
 
-            // edit / delete session material
-            $('.material-action-btn').on('click', function(e) {
-                event.stopPropagation();
-                event.preventDefault();
-                console.log(this);
-            })
-
+            //resize canvas id navbar collapsed
             var targetNode = document.querySelector('body');
-            var config = { attributes: true, attributeFilter: ['class'] };
+            var config = {
+                attributes: true,
+                attributeFilter: ['class']
+            };
             var callback = function(mutationsList, observer) {
-                for(var mutation of mutationsList) {
+                for (var mutation of mutationsList) {
                     if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
                         if (targetNode.classList.contains('sidebar-collapse')) {
                             setTimeout(resetCanvas, 1000);
@@ -477,8 +536,247 @@
             var observer = new MutationObserver(callback);
             observer.observe(targetNode, config);
 
-            resetCanvas()
+            @if ($class->Sessions->first()->id ?? false)
+                getSession({{ $class->Sessions->first()->id }});
+            @endif
+            resetCanvas();
         })
+
+        function showConfirmModal(message, customFunction, data){
+            $('#confirm-popup .modal-body').text(message);
+            $('#confirm-popup').modal('show');
+            $('#confirm-delete-btn').one('click', function() {
+                customFunction(data);
+                $('#confirm-popup').modal('hide');
+            });
+        }
+    </script>
+
+    {{-- session --}}
+    <script>
+        $(document).ready(function(){
+            $('#addMaterialType').change(function() {
+                var selectedType = $(this).val();
+                if (selectedType === 'link') {
+                    $('#add-material-link').show();
+                    $('#add-material-file').hide();
+                } else {
+                    $('#add-material-file').show();
+                    $('#add-material-link').hide();
+                }
+            });
+
+            $('#editMaterialType').change(function() {
+                var selectedType = $(this).val();
+                if (selectedType === 'link') {
+                    $('#edit-material-link').show();
+                    $('#edit-material-file').hide();
+                } else {
+                    $('#edit-material-file').show();
+                    $('#edit-material-link').hide();
+                }
+            });
+
+            $('.add-material-form').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+                var sessionId = $(this).data('sessionId');
+                formData.append('sessionId', sessionId);
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        if(res.success){
+                            $('#add-material-modal').modal('hide');
+                            getSession(sessionId);
+                            toastr.success('New material added!');
+                            $('.add-material-form .form-control').val('');
+                        } else {
+                            let errors = '';
+                            res.errors.forEach((err) => {
+                                errors += err + '<br>';
+                            });
+                            $('#add-material-error').html(errors);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+
+            $('.edit-material-form').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+                var sessionId = $(this).data('sessionId');
+                var materialId = $(this).data('materialId');
+                formData.append('sessionId', sessionId);
+                formData.append('materialId', materialId);
+                console.log(formData, formData.get('_token'))
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        if(res.success){
+                            $('#edit-material-modal').modal('hide');
+                            getSession(sessionId);
+                            toastr.success('Material successfully edited!');
+                            $('.edit-material-form .form-control').val('');
+                        } else {
+                            let errors = '';
+                            res.errors.forEach((err) => {
+                                errors += err + '<br>';
+                            });
+                            $('#edit-material-error').html(errors);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+
+        function getSession(sessionId) {
+            $.ajax({
+                url: "{{ route('teacher-course-session', ['id' => $class->id]) }}",
+                type: 'GET',
+                data: {
+                    sessionId: sessionId
+                },
+                success: function(res) {
+                    let session = res.session;
+                    $('#session-title').html(`${session.title}`);
+                    $('#nav-description').html(`${session.description}`);
+                    let materialContent = '';
+                    res.materials.forEach((material) => {
+                        materialContent += `
+                            <div class="col-6 py-2">
+                                <a class="material-link row mx-2 my-1 py-2 px-3" href="#" data-isFile="${material.is_file}" data-value="${material.value}">
+                                    <div class="col-4">
+                                        <div class="link-icon-container">
+                                            ${material.is_file ? '<i class="fas fa-file"></i>' : '<i class="fas fa-link"></i>'}
+                                        </div>
+                                    </div>
+                                    <div class="col-8 d-flex flex-column justify-content-center align-items-">
+                                        <p class="p-0 m-0">${material.value}</p>
+                                        @if ($userRole == 2)
+                                            <div>
+                                                <button class="btn btn-warning rounded-circle material-edit-btn" data-sessionId="${session.id}" data-materialId="${material.id}">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-danger rounded-circle material-delete-btn" data-sessionId="${session.id}" data-materialId="${material.id}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </a>
+                            </div>
+                        `;
+                    });
+                    materialContent += `
+                        <div class="col-6 py-2">
+                            <div class="material-link add-material row mx-2 my-1 py-2 px-3">
+                                <div class="col-4">
+                                    <div class="link-icon-container">
+                                        <i class="fas fa-plus"></i>
+                                    </div>
+                                </div>
+                                <div class="col-8 d-flex flex-column justify-content-center align-items-">
+                                    <p class="p-0 m-0">Add more...</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    $('#nav-learning-material-content').html(materialContent);
+
+                    // initialize edit / delete session material
+                    $(".add-material-form").data('sessionId', session.id);
+                    $(".edit-material-form").data('sessionId', session.id);
+
+                    $('a.material-link').on('click', function(e) {
+                        event.stopPropagation();
+                        event.preventDefault();
+                        if (this.dataset.isfile == 1) {
+                            downloadMaterial(this.dataset.value, sessionId);
+                        } else {
+                            window.open(this.dataset.value, '_blank', 'noopener', 'noreferrer')
+                        }
+                    })
+
+                    $('.add-material').on('click', function(e) {
+                        $('#add-material-error').html('');
+                        $('#add-material-modal').modal('show');
+                    })
+
+                    $('.material-edit-btn').on('click', function(e) {
+                        event.stopPropagation();
+                        event.preventDefault();
+                        $(".edit-material-form").data('materialId', this.dataset.materialid);
+                        $('#edit-material-error').html('');
+                        $('#edit-material-modal').modal('show');
+                    })
+
+                    $('.material-delete-btn').on('click', function(e) {
+                        event.stopPropagation();
+                        event.preventDefault();
+                        showConfirmModal('Are you sure you want to delete this material?', deleteMaterial, {sessionId: this.dataset.sessionid, materialId: this.dataset.materialid});
+                    })
+                }
+            });
+        }
+
+        function downloadMaterial(fileName, sessionId) {
+            var url = "{{ route('teacher-course-material-download', ['id' => $class->id]) }}"
+            $.ajax({
+                url: url,
+                type: 'GET',
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                data: {
+                    sessionId: sessionId,
+                    fileName: fileName
+                },
+                success: function(res) {
+                    var url = window.URL.createObjectURL(new Blob([res]));
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            })
+        }
+
+        function deleteMaterial(data){
+            data._token = '{{csrf_token()}}';
+            $.ajax({
+                url: "{{route('teacher-course-material-delete', $class->id)}}",
+                type: 'DELETE',
+                data: data,
+                success: function(res) {
+                    if(res.success){
+                        getSession(data.sessionId);
+                        toastr.success('Material successfully deleted!');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
     </script>
 
     {{-- canvas scripts --}}
@@ -510,7 +808,7 @@
             circleCoords.forEach(coord => {
                 const distance = Math.sqrt((mouseX - coord.x) ** 2 + (mouseY - coord.y) ** 2);
                 if (distance <= 30) {
-                    console.log('Level:', coord.level);
+                    getSession(coord.sessionId);
                 }
             });
         }
@@ -556,9 +854,12 @@
                 const parentWidth = canvas.parentElement.clientWidth;
                 const parentHeight = canvas.parentElement.clientHeight;
                 const width = 800;
-                const height = 800;
+                // const height = 650;
+                let height = canvas.parentElement.clientHeight;
                 canvas.width = parentWidth;
-                canvas.height = height;
+                // calculate extra height per session
+                canvas.height = height + (150 *
+                    {{ $class->Sessions->count() > 4 ? $class->Sessions->count() - 4 : 0 }});
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 //background style
@@ -578,32 +879,52 @@
                 let circleCoords = [];
                 ctx.setLineDash([50, 20]);
                 ctx.strokeStyle = '#FFF';
-                ctx.lineWidth = 12;
+                ctx.lineWidth = 10;
 
                 // draw line and circle
-                ctx.beginPath();
-                ctx.moveTo(midX, 0);
-                ctx.lineTo(midX, 25);
-                ctx.bezierCurveTo(midX, ctrlY1, midX - scaleX, ctrlY2, midX - scaleX, currY);
-                circleCoords.push({ x: midX - scaleX, y: currY, level: level });
-                while (currY < height) {
-                    currY += scaleY;
-                    ctrlY1 += scaleY;
-                    ctrlY2 += scaleY;
-                    direction = !direction;
-                    level++;
-                    if (direction) {
-                        ctx.bezierCurveTo(midX - scaleX, ctrlY1, midX + scaleX, ctrlY2, midX + scaleX, currY);
-                        circleCoords.push({ x: midX + scaleX, y: currY, level: level });
-                    } else {
-                        ctx.bezierCurveTo(midX + scaleX, ctrlY1, midX - scaleX, ctrlY2, midX - scaleX, currY);
-                        circleCoords.push({ x: midX - scaleX, y: currY, level: level });
-                    }
-                }
-                ctx.stroke();
-                circleCoords.forEach(coord => {
-                    drawLevel(ctx, coord.x, coord.y, coord.level);
-                });
+                @if ($class->Sessions->count() > 0)
+                    ctx.beginPath();
+                    ctx.moveTo(midX, 0);
+                    ctx.lineTo(midX, 25);
+                    @foreach ($class->Sessions as $session)
+                        @if ($loop->first)
+                            ctx.bezierCurveTo(midX, ctrlY1, midX - scaleX, ctrlY2, midX - scaleX, currY);
+                            circleCoords.push({
+                                x: midX - scaleX,
+                                y: currY,
+                                level: level,
+                                sessionId: {{ $session->id }}
+                            });
+                        @else
+                            currY += scaleY;
+                            ctrlY1 += scaleY;
+                            ctrlY2 += scaleY;
+                            direction = !direction;
+                            level++;
+                            if (direction) {
+                                ctx.bezierCurveTo(midX - scaleX, ctrlY1, midX + scaleX, ctrlY2, midX + scaleX, currY);
+                                circleCoords.push({
+                                    x: midX + scaleX,
+                                    y: currY,
+                                    level: level,
+                                    sessionId: {{ $session->id }}
+                                });
+                            } else {
+                                ctx.bezierCurveTo(midX + scaleX, ctrlY1, midX - scaleX, ctrlY2, midX - scaleX, currY);
+                                circleCoords.push({
+                                    x: midX - scaleX,
+                                    y: currY,
+                                    level: level,
+                                    sessionId: {{ $session->id }}
+                                });
+                            }
+                        @endif
+                    @endforeach
+                    ctx.stroke();
+                    circleCoords.forEach(coord => {
+                        drawLevel(ctx, coord.x, coord.y, coord.level);
+                    });
+                @endif
 
                 //add events
                 canvas.removeEventListener('click', canvasListeners.circleClickEvent);
