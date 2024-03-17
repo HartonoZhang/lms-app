@@ -70,6 +70,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <p>Are you sure want to remove "{{$data->name}}" course?</p>
+                                                <p class="text-danger">WARNING : All classrooms with this course will also be deleted!</p>
                                             </div>
                                             <div class="modal-footer justify-content-between">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

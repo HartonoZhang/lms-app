@@ -112,7 +112,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="{{ route('student-list') }}" class="btn btn-secondary mt-3">Back</a>
+                    <a href="{{ URL::previous() }}" class="btn btn-secondary mt-3">Back</a>
                 </form>
             </div>
         </div>
