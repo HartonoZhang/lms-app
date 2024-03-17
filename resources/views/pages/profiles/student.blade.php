@@ -236,7 +236,7 @@
                                     </form>
                                 </div>
                                 <div class="tab-pane" id="security">
-                                    <form class="form-horizontal" action="/admin/updatePassword" method="POST"
+                                    <form class="form-horizontal" action={{ route('update-student-password') }} method="POST"
                                         enctype="multipart/form-data" data-remote="true">
                                         @csrf
                                         @method('PUT')

@@ -73,9 +73,12 @@ class AdminController extends Controller
         ]);
     }
 
-    public function profile()
+    public function profile($id)
     {
-        return view('pages.profiles.admin');
+        $admin = Admin::with('user')->where('user_id', '=', $id)->first();
+        return view('pages.profiles.admin', [
+            'admin' => $admin
+        ]);
     }
 
     public function setting()

@@ -15,8 +15,13 @@
                     <img class="img-circle img-bordered-sm"
                         src="{{ asset('assets') }}/images/profile/{{ $post->user->image }}" alt="user image">
                     <span class="username">
-                        <a
-                            href="/{{ strtolower(Auth::user()->role->name) }}/profile/{{ $post->user->id }}">{{ $post->user->name }}</a>
+                        @if ($post->user->role_id === 2)
+                            <a
+                                href="/teacher/profile/{{ $post->user->id }}">{{ $post->user->name }}</a>
+                        @else
+                            <a
+                                href="/student/profile/{{ $post->user->id }}">{{ $post->user->name }}</a>
+                        @endif
                         @if (Auth::user()->id === $post->user->id)
                             <a href="#" class="float-right btn-tool" data-toggle="modal" data-target="#modal-delete"
                                 data-placement="top" title="Delete"><i class="fas fa-times"></i></a>

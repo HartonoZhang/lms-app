@@ -24,6 +24,9 @@ class PostController extends Controller
     public function postUpdate($id)
     {
         $post = Post::findOrFail($id);
+        if($post->user_id !== Auth::user()->id) {
+            return back();
+        }
         return view('pages.posts.edit', [
             'post' => $post
         ]);
@@ -43,7 +46,8 @@ class PostController extends Controller
                 'title' => $request->title,
                 'image' => null
             ]);
-            return redirect()->route('student-profile', Auth::user()->id)->with(['status' => 'success', 'message' => 'New Post Successfully Created!']);
+            $routeName = strtolower(Auth::user()->role->name);
+            return redirect()->route($routeName.'-profile', Auth::user()->id)->with(['status' => 'success', 'message' => 'New Post Successfully Created!']);
         }
     }
 
@@ -97,6 +101,7 @@ class PostController extends Controller
     public function delete($id){
         $post = Post::findOrFail($id);
         $post->delete();
-        return redirect()->route('student-profile', Auth::user()->id)->with(['status' => 'success', 'message' => 'Post Successfully Deleted!']);
+        $routeName = strtolower(Auth::user()->role->name);
+        return redirect()->route($routeName.'-profile', Auth::user()->id)->with(['status' => 'success', 'message' => 'Post Successfully Deleted!']);
     }
 }

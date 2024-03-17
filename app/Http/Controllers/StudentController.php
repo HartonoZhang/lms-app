@@ -172,7 +172,7 @@ class StudentController extends Controller
     public function savePhoto(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'image' => ['required']
+            'image' => ['required', 'mimes:png,jpg,jpeg', 'max:2048']
         ]);
 
         if ($validate->fails()) {
@@ -190,6 +190,24 @@ class StudentController extends Controller
             ]);
 
             $this->message('Profile Photo Successfully Updated.', 'success');
+            return back();
+        }
+    }
+
+    public function savePassword(Request $request)
+    {
+        $validation = $request->validate([
+            'oldPassword' => ['required', 'current_password'],
+            'newPassword' => ['required', 'min:6'],
+            'confirmPassword' => ['required', 'same:newPassword'],
+        ]);
+
+        if ($validation) {
+            User::find(Auth::user()->id)->update([
+                'password' => Hash::make($request->newPassword),
+            ]);
+
+            $this->message('Password Successfully Updated!', 'success');
             return back();
         }
     }
