@@ -24,13 +24,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::get('/leaderboard/students', [StudentController::class, 'leaderboards'])->name('student-leaderboard');
     Route::get('/leaderboard/teachers', [TeacherController::class, 'leaderboards'])->name('teacher-leaderboard');
+    Route::get('teacher/profile/{id}', [TeacherController::class, 'profile'])->name('teacher-profile');
+    Route::get('student/profile/{id}', [StudentController::class, 'profile'])->name('student-profile');
 
     Route::middleware('admin-only')->group(function () {
         Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
 
         Route::prefix('setting')->group(function () {
             Route::get('/', [AdminController::class, 'setting'])->name('setting');
-            
+
             Route::put('/edit', [OrganizationController::class, 'update'])->name('organization-edit');
         });
 
@@ -97,7 +99,6 @@ Route::middleware('auth')->group(function () {
     Route::middleware('student-only')->group(function () {
         Route::prefix('student')->group(function () {
             Route::get('/', [StudentController::class, 'home'])->name('student-dashboard');
-            Route::get('/profile', [StudentController::class, 'profile'])->name('student-profile');
             Route::put('/updateProfile', [StudentController::class, 'saveProfiles'])->name('update-student-profile');
             Route::put('/updatePhoto', [StudentController::class, 'savePhoto'])->name('update-student-photo');
         });
@@ -105,8 +106,12 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('post')->group(function () {
         Route::get('/', [PostController::class, 'index'])->name('post-form');
+        Route::get('/edit/{id}', [PostController::class, 'postUpdate'])->name('post-update');
 
         Route::post('/create', [PostController::class, 'create'])->name('post-create');
+        Route::put('/edit/{id}', [PostController::class, 'update'])->name('post-update');
+        Route::delete('/delete/{id}', [PostController::class, 'delete'])->name('post-delete');
+        Route::post('/comment/{id}', [PostController::class, 'comment'])->name('post-comment-create');
         Route::get('/detail/{id}', [PostController::class, 'detail'])->name('post-detail');
     });
 
