@@ -33,23 +33,41 @@ class PostController extends Controller
         ]);
     }
 
+    public function checkFile($request, $requestImage)
+    {
+        if($request->hasFile($requestImage)) {
+            $extension = $request->file($requestImage)->getClientOriginalExtension();
+            $imgName = $requestImage . '-post-' . now()->timestamp . '.' . $extension;
+            $request->file($requestImage)->move('assets/images/posts/'.$requestImage, $imgName);
+            return $imgName;
+        }
+        return null;
+    }
+
     public function create(Request $request)
     {
         $validation = $request->validate([
             'title' => ['required', 'min:3'],
             'description' => ['required'],
+            'image' => ['mimes:png,jpg,jpeg', 'max:2048'],
+            'image_2' => ['mimes:png,jpg,jpeg', 'max:2048'],
+            'file' => ['mimes:pdf,zip,ppt,pptx,xlx,xlsx,docx,doc', 'max:2048'],
         ]);
 
         if ($validation) {
+            $image = $this->checkFile($request, 'image');
+            $image_2 = $this->checkFile($request, 'image_2');
+            $file = $this->checkFile($request, 'file');
+            
             Post::create([
                 'user_id' => Auth::user()->id,
                 'description' => $request->description,
                 'title' => $request->title,
-                'image' => null,
-                'image_2' => null,
-                'link' => null,
-                'link_2' => null,
-                'file' => null,
+                'image' => $image,
+                'image_2' => $image_2,
+                'link' => $request->link,
+                'link_2' => $request->link_2,
+                'file' => $file,
             ]);
             $routeName = strtolower(Auth::user()->role->name);
             return redirect()->route($routeName . '-profile', Auth::user()->id)->with(['status' => 'success', 'message' => 'New post successfully created!']);

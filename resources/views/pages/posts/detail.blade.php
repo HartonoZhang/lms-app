@@ -51,8 +51,31 @@
                 </div>
             </div>
             <div class="card-body">
-                <h5 class="card-title">{{ $post->title }}</h5>
+                <h5 class="card-title mb-2">{{ $post->title }}</h5>
+                <div class="row mb-2">
+                    @if ($post->image)
+                        <div class="image-area col-md-6">
+                            <img src="{{ asset('assets') }}/images/posts/image/{{ $post->image }}" alt="image-1"
+                                class="img-fluid">
+                        </div>
+                    @endif
+                    @if ($post->image_2)
+                        <div class="image-area col-md-6">
+                            <img src="{{ asset('assets') }}/images/posts/image_2/{{ $post->image_2 }}" alt="image-2"
+                                class="img-fluid">
+                        </div>
+                    @endif
+                </div>
                 <p class="card-text">{{ $post->description }}</p>
+                <p class="card-text">
+                    <a href="{{ $post->link }}" target="_blank">{{ $post->link }}</a> <br>
+                    <a href="{{ $post->link_2 }}" target="_blank">{{ $post->link_2 }}</a>
+                </p>
+                @if ($post->file)
+                    <p class="card-text">
+                        <a href="{{ asset('assets/images/posts/file') }}/{{ $post->file }}" target="_blank">{{ $post->file }}</a>
+                    </p>
+                @endif
             </div>
         </div>
         <div class="card">
@@ -141,19 +164,25 @@
                         <p>Why would you like to report this "{{ $post->title }}" post?</p>
                         <div class="form-group">
                             <div class="form-check">
-                                <input class="form-check-input" id="abusive" type="radio" name="report" value="This is abusive or harmful" checked>
+                                <input class="form-check-input" id="abusive" type="radio" name="report"
+                                    value="This is abusive or harmful" checked>
                                 <label class="form-check-label" for="abusive">This is abusive or harmful</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" id="private-info" type="radio" value="This contains private information" name="report">
-                                <label class="form-check-label" for="private-info">This contains private information</label>
+                                <input class="form-check-input" id="private-info" type="radio"
+                                    value="This contains private information" name="report">
+                                <label class="form-check-label" for="private-info">This contains private
+                                    information</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input"id="break-rule"  type="radio" value="This break community/organization rules" name="report">
-                                <label class="form-check-label" for="break-rule">This break community/organization rules</label>
+                                <input class="form-check-input"id="break-rule" type="radio"
+                                    value="This break community/organization rules" name="report">
+                                <label class="form-check-label" for="break-rule">This break community/organization
+                                    rules</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" id="other" type="radio" value="Other issues" name="report">
+                                <input class="form-check-input" id="other" type="radio" value="Other issues"
+                                    name="report">
                                 <label class="form-check-label" for="other">Other issues</label>
                             </div>
                         </div>
