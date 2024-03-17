@@ -90,12 +90,15 @@
                                                     ({{ count($item->comment) }})
                                                 </a>
                                             </p>
-                                            <form class="mb-4" action={{ route('post-comment-create', $item->id) }}
-                                                method="POST" enctype="multipart/form-data" data-remote="true">
-                                                @csrf
-                                                <input class="form-control form-control-sm" type="text" name="comment"
-                                                    placeholder="Type a comment">
-                                            </form>
+
+                                            @if (Auth::user()->role_id !== 1)
+                                                <form class="mb-4" action={{ route('post-comment-create', $item->id) }}
+                                                    method="POST" enctype="multipart/form-data" data-remote="true">
+                                                    @csrf
+                                                    <input class="form-control form-control-sm" type="text"
+                                                        name="comment" placeholder="Type a comment">
+                                                </form>
+                                            @endif
                                         </div>
                                     @endforeach
                                     {{ $posts->links() }}
@@ -236,8 +239,8 @@
                                     </form>
                                 </div>
                                 <div class="tab-pane" id="security">
-                                    <form class="form-horizontal" action={{ route('update-student-password') }} method="POST"
-                                        enctype="multipart/form-data" data-remote="true">
+                                    <form class="form-horizontal" action={{ route('update-student-password') }}
+                                        method="POST" enctype="multipart/form-data" data-remote="true">
                                         @csrf
                                         @method('PUT')
                                         <div class="form-group row">

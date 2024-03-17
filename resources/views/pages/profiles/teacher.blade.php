@@ -83,19 +83,21 @@
                                             <p class="post-description">
                                                 {{ $item->description }}
                                             </p>
-
                                             <p class="d-flex justify-content-end">
                                                 <a href="{{ route('post-detail', $item->id) }}" class="text-sm">
                                                     <i class="far fa-comments mr-1"></i> Comments
                                                     ({{ count($item->comment) }})
                                                 </a>
                                             </p>
-                                            <form class="mb-4" action={{ route('post-comment-create', $item->id) }}
-                                                method="POST" enctype="multipart/form-data" data-remote="true">
-                                                @csrf
-                                                <input class="form-control form-control-sm" type="text" name="comment"
-                                                    placeholder="Type a comment">
-                                            </form>
+
+                                            @if (Auth::user()->role_id !== 1)
+                                                <form class="mb-4" action={{ route('post-comment-create', $item->id) }}
+                                                    method="POST" enctype="multipart/form-data" data-remote="true">
+                                                    @csrf
+                                                    <input class="form-control form-control-sm" type="text"
+                                                        name="comment" placeholder="Type a comment">
+                                                </form>
+                                            @endif
                                         </div>
                                     @endforeach
                                     {{ $posts->links() }}

@@ -37,6 +37,7 @@
                                 @enderror
                             </div>
                             <div class="form-group">
+                                <a href="{{ url()->previous() }}" class="btn btn-secondary">Cancel</a>
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                         </form>

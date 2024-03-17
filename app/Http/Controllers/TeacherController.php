@@ -81,7 +81,7 @@ class TeacherController extends Controller
             $teacher->latest_education = $request->latest_education;
             $teacher->save();
 
-            return redirect()->route('teacher-list')->with(['status' => 'success', 'message' => 'New Teacher Successfully Added!']);
+            return redirect()->route('teacher-list')->with(['status' => 'success', 'message' => 'New teacher successfully added!']);
         }
     }
 
@@ -114,7 +114,7 @@ class TeacherController extends Controller
             $teacher->latest_education = $request->latest_education;
             $teacher->save();
 
-            return redirect()->route('teacher-list')->with(['status' => 'success', 'message' => 'Teacher Information Successfully Updated!']);
+            return redirect()->route('teacher-list')->with(['status' => 'success', 'message' => 'Teacher information successfully updated!']);
         }
     }
 
@@ -131,14 +131,14 @@ class TeacherController extends Controller
         } else {
             $user = User::find(Auth::user()->id);
             $extension = $request->file('image')->getClientOriginalExtension();
-            $imgName = $user->name . '-' . now()->timestamp . '.' . $extension;
+            $imgName = $user->id . '-' . now()->timestamp . '.' . $extension;
             $request->file('image')->move('assets/images/profile', $imgName);
 
             $user->update([
                 'image' => $imgName
             ]);
 
-            $this->message('Profile Photo Successfully Updated.', 'success');
+            $this->message('Profile photo successfully updated.', 'success');
             return back();
         }
     }
@@ -186,7 +186,7 @@ class TeacherController extends Controller
                 $profile->address()->update($address->toArray());
             }
 
-            $this->message('Profile Successfully Updated!', 'success');
+            $this->message('Profile successfully updated!', 'success');
             return back();
         }
     }
@@ -204,7 +204,7 @@ class TeacherController extends Controller
                 'password' => Hash::make($request->newPassword),
             ]);
 
-            $this->message('Password Successfully Updated!', 'success');
+            $this->message('Password successfully updated!', 'success');
             return back();
         }
     }
@@ -212,7 +212,7 @@ class TeacherController extends Controller
     public function delete($id)
     {
         $teacher = Teacher::with('user', 'profile')->findOrFail($id);
-        $this->message('Successfully Remove Teacher "' . $teacher->user->name . '"', 'success');
+        $this->message('Successfully remove teacher "' . $teacher->user->name . '"', 'success');
         $teacher->user->delete();
         $teacher->profile->delete();
         $teacher->delete();

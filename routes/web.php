@@ -112,6 +112,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/create', [PostController::class, 'create'])->name('post-create');
         Route::put('/edit/{id}', [PostController::class, 'update'])->name('post-update');
         Route::delete('/delete/{id}', [PostController::class, 'delete'])->name('post-delete');
+        Route::put('/report/{id}', [PostController::class, 'report'])->name('post-report');
         Route::post('/comment/{id}', [PostController::class, 'comment'])->name('post-comment-create');
         Route::get('/detail/{id}', [PostController::class, 'detail'])->name('post-detail');
     });
