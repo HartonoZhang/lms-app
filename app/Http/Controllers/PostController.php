@@ -35,10 +35,10 @@ class PostController extends Controller
 
     public function checkFile($request, $requestImage)
     {
-        if($request->hasFile($requestImage)) {
+        if ($request->hasFile($requestImage)) {
             $extension = $request->file($requestImage)->getClientOriginalExtension();
             $imgName = $requestImage . '-post-' . now()->timestamp . '.' . $extension;
-            $request->file($requestImage)->move('assets/images/posts/'.$requestImage, $imgName);
+            $request->file($requestImage)->move('assets/images/posts/' . $requestImage, $imgName);
             return $imgName;
         }
         return null;
@@ -51,6 +51,8 @@ class PostController extends Controller
             'description' => ['required'],
             'image' => ['mimes:png,jpg,jpeg', 'max:2048'],
             'image_2' => ['mimes:png,jpg,jpeg', 'max:2048'],
+            'link' => ['url', 'nullable'],
+            'link_2' => ['url', 'nullable'],
             'file' => ['mimes:pdf,zip,ppt,pptx,xlx,xlsx,docx,doc', 'max:2048'],
         ]);
 
@@ -58,7 +60,7 @@ class PostController extends Controller
             $image = $this->checkFile($request, 'image');
             $image_2 = $this->checkFile($request, 'image_2');
             $file = $this->checkFile($request, 'file');
-            
+
             Post::create([
                 'user_id' => Auth::user()->id,
                 'description' => $request->description,
@@ -90,17 +92,42 @@ class PostController extends Controller
         ]);
     }
 
+    public function checkFileUpdate($requestName, $request, $name, $post)
+    {
+        if ($requestName) {
+            return null;
+        } else {
+            $result = $this->checkFile($request, $name);
+            return $result ? $result : $post->$name;
+        }
+    }
+
     public function update(Request $request, $id)
     {
         $validation = $request->validate([
             'title' => ['required', 'min:3'],
             'description' => ['required'],
+            'image' => ['mimes:png,jpg,jpeg', 'max:2048'],
+            'image_2' => ['mimes:png,jpg,jpeg', 'max:2048'],
+            'link' => ['url', 'nullable'],
+            'link_2' => ['url', 'nullable'],
+            'file' => ['mimes:pdf,zip,ppt,pptx,xlx,xlsx,docx,doc', 'max:2048'],
         ]);
 
         if ($validation) {
             $post = Post::with('user')->findOrFail($id);
+
+            $image = $this->checkFileUpdate($request->removeFirstImage, $request, 'image', $post);
+            $image_2 = $this->checkFileUpdate($request->removeSecondImage, $request, 'image_2', $post);
+            $file = $this->checkFileUpdate($request->removeFile, $request, 'file', $post);
+
             $post->title = $request->title;
             $post->description = $request->description;
+            $post->image = $image;
+            $post->image_2 = $image_2;
+            $post->link = $request->link;
+            $post->link_2 = $request->link_2;
+            $post->file = $file;
             $post->update();
 
             return redirect()->route('post-detail', $id)->with(['status' => 'success', 'message' => 'Post Successfully Updated!']);

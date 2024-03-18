@@ -67,13 +67,20 @@
                     @endif
                 </div>
                 <p class="card-text">{{ $post->description }}</p>
-                <p class="card-text">
-                    <a href="{{ $post->link }}" target="_blank">{{ $post->link }}</a> <br>
-                    <a href="{{ $post->link_2 }}" target="_blank">{{ $post->link_2 }}</a>
-                </p>
+                @if ($post->link || $post->link_2)
+                    <p class="card-text">
+                        @if ($post->link)
+                            <a href="{{ $post->link }}" target="_blank">{{ $post->link }}</a> <br>
+                        @endif
+                        @if ($post->link_2)
+                            <a href="{{ $post->link_2 }}" target="_blank">{{ $post->link_2 }}</a>
+                        @endif
+                    </p>
+                @endif
                 @if ($post->file)
                     <p class="card-text">
-                        <a href="{{ asset('assets/images/posts/file') }}/{{ $post->file }}" target="_blank">{{ $post->file }}</a>
+                        <a href="{{ asset('assets/images/posts/file') }}/{{ $post->file }}"
+                            target="_blank">{{ $post->file }}</a>
                     </p>
                 @endif
             </div>
