@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
@@ -66,6 +67,16 @@ Route::middleware('auth')->group(function () {
             Route::post('/add', [CourseController::class, 'create'])->name('course-add');
             Route::delete('/delete/{id}', [CourseController::class, 'delete'])->name('course-delete');
             Route::put('/edit/{id}', [CourseController::class, 'update'])->name('course-update');
+        });
+
+        Route::prefix('period')->group(function () {
+            Route::get('/list', [AdminController::class, 'periodList'])->name('period-list');
+            Route::get('/add', [AdminController::class, 'periodAdd'])->name('period-add');
+            Route::get('/edit/{id}', [AdminController::class, 'periodEdit'])->name('period-update');
+
+            Route::post('/add', [PeriodController::class, 'create'])->name('period-add');
+            Route::delete('/delete/{id}', [PeriodController::class, 'delete'])->name('period-delete');
+            Route::put('/edit/{id}', [PeriodController::class, 'update'])->name('period-update');
         });
 
         Route::prefix('class')->group(function () {

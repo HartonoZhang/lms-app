@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\Classroom;
+use App\Models\Period;
 use App\Models\Student;
 use App\Models\Course;
 use App\Models\Organization;
@@ -166,9 +167,25 @@ class AdminController extends Controller
         return view('pages.courses.edit')->with(['data' => $data]);
     }
 
+    public function periodList(){
+        $data = Period::with(['classroom'])->get();
+        return view('pages.periods.list')->with([
+            'datas'=> $data
+        ]);
+    }
+
+    public function periodAdd(){
+        return view('pages.periods.add');
+    }
+
+    public function periodEdit($id){
+        $data = Period::find($id);
+        return view('pages.periods.edit')->with(['data' => $data]);
+    }
+
     public function classList()
     {
-        $classrooms = Classroom::with(['course'])->get();
+        $classrooms = Classroom::with(['course','period'])->get();
         return view('pages.classes.list')->with([
             'classrooms' => $classrooms
         ]);
@@ -176,7 +193,7 @@ class AdminController extends Controller
 
     public function classDetail($id)
     {
-        $data = Classroom::with(['course', 'teacherClassroom.teacher.user', 'studentClassroom.student.user'])->where('id', $id)->get()[0];
+        $data = Classroom::with(['course', 'period', 'teacherClassroom.teacher.user', 'studentClassroom.student.user'])->where('id', $id)->get()[0];
         $studentLists = $data->studentClassroom->pluck('student');
         $teacherLists = $data->teacherClassroom->pluck('teacher');
         return view('pages.classes.detail')->with([
@@ -189,10 +206,12 @@ class AdminController extends Controller
     public function classAdd()
     {
         $courses = Course::all();
+        $periods = Period::all();
         $students = Student::with(['user'])->get();
         $teachers = Teacher::with(['user'])->get();
         return view('pages.classes.add')->with([
             'courses' => $courses,
+            'periods' => $periods,
             'students' => $students,
             'teachers' => $teachers,
         ]);
@@ -201,6 +220,7 @@ class AdminController extends Controller
     public function classEdit($id)
     {
         $courses = Course::all();
+        $periods = Period::all();
         $students = Student::with(['user'])->get();
         $teachers = Teacher::with(['user'])->get();
         $data = Classroom::with(['course', 'teacherClassroom', 'studentClassroom'])->where('id', $id)->get()[0];
@@ -209,6 +229,7 @@ class AdminController extends Controller
         return view('pages.classes.edit')->with([
             'data' => $data,
             'courses' => $courses,
+            'periods' => $periods,
             'students' => $students,
             'teachers' => $teachers,
             'checkedStudent' => $checkedStudent,
