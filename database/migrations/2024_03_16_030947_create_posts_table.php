@@ -20,6 +20,10 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('image')->nullable();
+            $table->string('image_2')->nullable();
+            $table->string('link')->nullable();
+            $table->string('link_2')->nullable();
+            $table->string('file')->nullable();
             $table->timestamps();
         });
     }

@@ -92,16 +92,19 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('admin')->group(function () {
             Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
-            Route::get('/profile', [AdminController::class, 'profile']);
+            Route::get('/profile/{id}', [AdminController::class, 'profile']);
 
-            Route::put('/updateProfile', [AdminController::class, 'saveProfiles']);
-            Route::put('/updatePassword', [AdminController::class, 'savePassword']);
-            Route::put('/updatePhoto', [AdminController::class, 'savePhoto']);
+            Route::put('/updateProfile', [AdminController::class, 'saveProfiles'])->name('update-admin-profile');
+            Route::put('/updatePassword', [AdminController::class, 'savePassword'])->name('update-admin-password');
+            Route::put('/updatePhoto', [AdminController::class, 'savePhoto'])->name('update-admin-photo');
         });
     });
     Route::middleware('teacher-only')->group(function () {
         Route::prefix('teacher')->group(function () {
             Route::get('/', [TeacherController::class, 'home'])->name('teacher-dashboard');
+            Route::put('/updateProfile', [TeacherController::class, 'saveProfiles'])->name('update-teacher-profile');
+            Route::put('/updatePhoto', [TeacherController::class, 'savePhoto'])->name('update-teacher-photo');
+            Route::put('/updatePassword', [TeacherController::class, 'savePassword'])->name('update-teacher-password');
         });
     });
     Route::middleware('student-only')->group(function () {
@@ -109,6 +112,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [StudentController::class, 'home'])->name('student-dashboard');
             Route::put('/updateProfile', [StudentController::class, 'saveProfiles'])->name('update-student-profile');
             Route::put('/updatePhoto', [StudentController::class, 'savePhoto'])->name('update-student-photo');
+            Route::put('/updatePassword', [StudentController::class, 'savePassword'])->name('update-student-password');
         });
     });
 
@@ -119,6 +123,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/create', [PostController::class, 'create'])->name('post-create');
         Route::put('/edit/{id}', [PostController::class, 'update'])->name('post-update');
         Route::delete('/delete/{id}', [PostController::class, 'delete'])->name('post-delete');
+        Route::put('/report/{id}', [PostController::class, 'report'])->name('post-report');
         Route::post('/comment/{id}', [PostController::class, 'comment'])->name('post-comment-create');
         Route::get('/detail/{id}', [PostController::class, 'detail'])->name('post-detail');
     });

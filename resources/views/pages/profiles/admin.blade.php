@@ -16,11 +16,11 @@
                     <div class="card-body box-profile">
                         <div class="text-center">
                             <img class="profile-user-img img-fluid img-circle"
-                            src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}"
+                            src="{{ asset('assets') }}/images/profile/{{ $admin->user->image }}"
                             alt="User profile picture" style="width: 120px; height: 120px;">
                         </div>
-                        <h3 class="profile-username text-center">{{ Auth::user()->name }}</h3>
-                        <p class="text-muted text-center">{{ Auth::user()->email }}</p>
+                        <h3 class="profile-username text-center">{{ $admin->user->name }}</h3>
+                        <p class="text-muted text-center">{{ $admin->user->email }}</p>
 
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
@@ -51,7 +51,7 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="active tab-pane" id="settings">
-                                <form class="form-horizontal" action="/admin/updateProfile" method="POST"
+                                <form class="form-horizontal" action={{ route('update-admin-profile') }} method="POST"
                                     enctype="multipart/form-data" data-remote="true">
                                     @csrf
                                     @method('PUT')
@@ -60,7 +60,7 @@
                                         <div class="col-sm-10">
                                             <input type="Name" class="form-control" id="inputName"
                                                 placeholder="Input your name" name="name"
-                                                value="{{ Auth::user()->name }}">
+                                                value="{{ old('name', $admin->user->name) }}">
                                             @error('name')
                                                 <p class="text-danger m-0">{{ $message }}</p>
                                             @enderror
@@ -71,7 +71,7 @@
                                         <div class="col-sm-10">
                                             <input type="email" class="form-control" id="inputEmail"
                                                 placeholder="Input your email" name="email"
-                                                value="{{ Auth::user()->email }}">
+                                                value="{{ old('email', $admin->user->email) }}">
                                             @error('email')
                                                 <p class="text-danger m-0">{{ $message }}</p>
                                             @enderror
@@ -85,7 +85,7 @@
                                 </form>
                             </div>
                             <div class="tab-pane" id="security">
-                                <form class="form-horizontal" action="/admin/updatePassword" method="POST"
+                                <form class="form-horizontal" action={{ route('update-admin-password') }} method="POST"
                                     enctype="multipart/form-data" data-remote="true">
                                     @csrf
                                     @method('PUT')
@@ -139,7 +139,7 @@
     <div class="modal fade" id="modal-update-photo">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="/admin/updatePhoto" method="POST" enctype="multipart/form-data" data-remote="true">
+                <form action={{ route('update-admin-photo') }} method="POST" enctype="multipart/form-data" data-remote="true">
                     @csrf
                     @method('PUT')
                     <div class="modal-header">

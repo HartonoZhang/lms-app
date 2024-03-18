@@ -74,9 +74,12 @@ class AdminController extends Controller
         ]);
     }
 
-    public function profile()
+    public function profile($id)
     {
-        return view('pages.profiles.admin');
+        $admin = Admin::with('user')->where('user_id', '=', $id)->first();
+        return view('pages.profiles.admin', [
+            'admin' => $admin
+        ]);
     }
 
     public function setting()
@@ -247,7 +250,7 @@ class AdminController extends Controller
             $user->name = $request->name;
             $user->update();
 
-            $this->message('Profile Successfully Updated!', 'success');
+            $this->message('Profile successfully updated!', 'success');
             return back();
         }
     }
@@ -265,7 +268,7 @@ class AdminController extends Controller
                 'password' => Hash::make($request->newPassword),
             ]);
 
-            $this->message('Password Successfully Updated!', 'success');
+            $this->message('Password successfully updated!', 'success');
             return back();
         }
     }
@@ -283,14 +286,14 @@ class AdminController extends Controller
         } else {
             $user = User::find(Auth::user()->id);
             $extension = $request->file('image')->getClientOriginalExtension();
-            $imgName = $user->name . '-' . now()->timestamp . '.' . $extension;
+            $imgName = $user->id . '-' . now()->timestamp . '.' . $extension;
             $request->file('image')->move('assets/images/profile', $imgName);
 
             $user->update([
                 'image' => $imgName
             ]);
 
-            $this->message('Profile Photo Successfully Updated.', 'success');
+            $this->message('Profile photo successfully updated.', 'success');
             return back();
         }
     }
