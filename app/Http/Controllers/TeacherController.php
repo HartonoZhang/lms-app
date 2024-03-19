@@ -282,16 +282,11 @@ class TeacherController extends Controller
             } else if ($request->attendanceFilter == 'notPresent') {
                 $query->whereDoesntHave('student.attendanceBySession')
                     ->orWhereHas('student.attendanceBySession', function ($query) {
-                        $query->whereNull('is_present');
+                        $query->whereNull('is_present')
+                            ->orWhere('is_present', 0);
                     });
             }
-        })->with(['student.user', 'student.attendanceBySession' => function ($query) use ($request) {
-            if ($request->attendanceFilter == 'present') {
-                $query->where('is_present', 1);
-            } else if ($request->attendanceFilter == 'notPresent') {
-                $query->orWhereNull('is_present');
-            }
-        }])->get()->toArray();
+        })->with(['student.user', 'student.attendanceBySession'])->get()->toArray();
 
         $data = [
             'success' => 'success',
