@@ -8,6 +8,7 @@ use App\Models\Material;
 use App\Models\Profile;
 use App\Models\Teacher;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -144,14 +145,32 @@ class TeacherController extends Controller
         return view('pages.courses.detail', $data);
     }
 
-    public function getSessionData(Request $request, $id)
-    {
+    public function getSessionData(Request $request, $id){
         $class = Classroom::find($id);
         $session = $class->Sessions->where('id', $request->sessionId)->first();
+        $students = $class->studentClassroom->load([
+            'student.user',
+            'student.attendanceBySession' => function ($query) use ($request) {
+                $query->where('session_id', $request->sessionId);
+            },
+        ]);
+        $session->load([
+            'Materials',
+            'Threads' => function ($query) {
+                $query->orderByDesc('id');
+            },
+            'Threads.User',
+            'Threads.Comments.User'
+        ]);
+        foreach ($session->Threads as $thread) {
+            $thread->created_at_format = $thread->getFormattedDate();
+            foreach ($thread->Comments as $comment) {
+                $comment->created_at_format = $comment->getFormattedDate();
+            }
+        }
         $data = [
             'session' => $session,
-            'materials' => $session->Materials,
-            'threads' => $session->Threads,
+            'students' => $students,
         ];
         return response()->json($data);
     }
@@ -178,7 +197,7 @@ class TeacherController extends Controller
         );
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()->all()]);
+            return response()->json(['success' => false, 'errors' => $validator->errors()->toArray()]);
         }
 
         if ($request->type == 'file') {
@@ -216,7 +235,7 @@ class TeacherController extends Controller
         );
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()->all()]);
+            return response()->json(['success' => false, 'errors' => $validator->errors()->toArray()]);
         }
 
         if ($request->type == 'file') {
@@ -249,5 +268,35 @@ class TeacherController extends Controller
         $material->delete();
 
         return response()->json(['success' => 'success']);
+    }
+
+    public function filterAttendance(Request $request, $id){
+        $class = Classroom::find($id);
+        $students = $class->studentClassroom()->whereHas('student.user', function ($query) use ($request) {
+            $query->where('name', 'LIKE', '%' . $request->name . '%');
+        })->where(function ($query) use ($request) {
+            if ($request->attendanceFilter == 'present') {
+                $query->whereHas('student.attendanceBySession', function ($query) {
+                    $query->where('is_present', 1);
+                });
+            } else if ($request->attendanceFilter == 'notPresent') {
+                $query->whereDoesntHave('student.attendanceBySession')
+                    ->orWhereHas('student.attendanceBySession', function ($query) {
+                        $query->whereNull('is_present');
+                    });
+            }
+        })->with(['student.user', 'student.attendanceBySession' => function ($query) use ($request) {
+            if ($request->attendanceFilter == 'present') {
+                $query->where('is_present', 1);
+            } else if ($request->attendanceFilter == 'notPresent') {
+                $query->orWhereNull('is_present');
+            }
+        }])->get()->toArray();
+
+        $data = [
+            'success' => 'success',
+            'students' => $students,
+        ];
+        return response()->json($data);
     }
 }

@@ -83,74 +83,12 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="nav-forum" role="tabpanel" aria-labelledby="nav-forum-tab">
-                                {{-- isi custom content --}}
-                                <div class="forum-container">
-                                    <div class="card card-widget border collapsed-card">
-                                        <div class="card-header sticky-top">
-                                            <div class="user-block">
-                                                <img loading="lazy" class="img-circle"
-                                                    src="{{ url('/assets/img/dummy_course.jpg') }}" alt="User Image">
-                                                <span class="username">Jonathan Burke Jr.</span>
-                                                <span class="description">13 March 2024, 12:13</span>
-                                            </div>
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                    <i class="fas fa-plus"></i>
-                                                </button>
-                                            </div>
-                                            <span class="float-right text-muted">2 comments</span>
-                                        </div>
-                                        {{-- post --}}
-                                        <div class="card-body">
-                                            <p>Far far away, behind the word mountains, far from the
-                                                countries Vokalia and Consonantia, there live the blind
-                                                texts. Separated they live in Bookmarksgrove right at</p>
-
-                                            <p>the coast of the Semantics, a large language ocean.
-                                                A small river named Duden flows by their place and supplies
-                                                it with the necessary regelialia. It is a paradisematic
-                                                country, in which roasted parts of sentences fly into
-                                                your mouth.</p>
-                                        </div>
-                                        {{-- comments --}}
-                                        <div class="card-footer card-comments">
-                                            <div class="card-comment">
-                                                <img loading="lazy" class="img-circle img-sm"
-                                                    src="{{ url('/assets/img/dummy_course.jpg') }}" alt="User Image">
-                                                <div class="comment-text">
-                                                    <span class="username">
-                                                        Maria Gonzales
-                                                        <span class="text-muted float-right">13 March 2024, 12:13</span>
-                                                    </span>
-                                                    It is a long established fact that a reader will be distracted
-                                                    by the readable content of a page when looking at its layout.
-                                                </div>
-                                            </div>
-                                            <div class="card-comment">
-                                                <img loading="lazy" class="img-circle img-sm"
-                                                    src="{{ url('/assets/img/dummy_course.jpg') }}" alt="User Image">
-                                                <div class="comment-text">
-                                                    <span class="username">
-                                                        Nora Havisham
-                                                        <span class="text-muted float-right">13 March 2024, 12:13</span>
-                                                    </span>
-                                                    The point of using Lorem Ipsum is that it hrs a morer-less
-                                                    normal distribution of letters, as opposed to using
-                                                    'Content here, content here', making it look like readable English.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {{-- form --}}
-                                        <div class="card-footer">
-                                            <form action="#" method="post">
-                                                <img loading="lazy" class="img-fluid img-circle img-sm"
-                                                    src="{{ url('/assets/img/dummy_course.jpg') }}" alt="Alt Text">
-                                                <div class="img-push">
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        placeholder="Press enter to post comment">
-                                                </div>
-                                            </form>
-                                        </div>
+                                <div>
+                                    <button data-toggle="modal" data-target="#add-thread-modal" class="btn btn-primary mb-2">Add Thread</button>
+                                </div>
+                                <div>
+                                    <div class="forum-container">
+                                        {{-- isi custom content --}}
                                     </div>
                                 </div>
                             </div>
@@ -158,20 +96,25 @@
                                 aria-labelledby="nav-attendance-tab">
                                 {{-- isi custom content --}}
                                 <div class="my-3">
-                                    <form action="">
+                                    <form data-sessionId="" id="attendance-filter-form" action="{{route('teacher-course-attendance-filter', ['id' => $class->id])}}" method="GET">
+                                        @csrf
+                                        @method('GET')
+                                        <input class="session-id" type="text" name="sessionId" value="" readonly hidden>
                                         <div class="row">
-                                            <div class="col-md-5 my-1">
-                                                <input type="text" class="mx-1 form-control"
+                                            <div class="form-group col-md-5 my-1" data-input="name">
+                                                <input type="text" name="name" class="mx-1 form-control"
                                                     placeholder="Search Student Name..." />
+                                                <span class="text-danger attendance-filter-error"></span>
                                             </div>
-                                            <div class="col-md-5 my-1">
-                                                <input type="text" class="mx-1 form-control"
+                                            <div class="form-group col-md-5 my-1" data-input="studentId">
+                                                <input type="text" name="studentId" class="mx-1 form-control"
                                                     placeholder="Search Student Id..." />
+                                                <span class="text-danger attendance-filter-error"></span>
                                             </div>
                                             <div class="col-md-2 my-1">
-                                                <button class="mx-2 btn btn-primary float-right">Search</button>
+                                                <button type="submit" class="mx-2 btn btn-primary float-right">Search</button>
                                             </div>
-                                            <div class="col-md-12 my-2">
+                                            <div class="form-group col-md-12 my-2">
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio"
                                                         name="attendanceFilter" id="filterAll" value="all" checked>
@@ -191,34 +134,13 @@
                                             </div>
                                         </div>
                                     </form>
-                                    <form action="">
+                                    <form id="attendance-list-form" action="" method="POST">
+                                        @csrf
                                         <div class="attendance-list">
                                             <div class="row">
-                                                @for ($i = 1; $i < 6; $i++)
-                                                    <div class="col-lg-6 my-2">
-                                                        <div
-                                                            class="student-attendance d-flex align-items-center justify-content-between rounded border px-2">
-                                                            <div class="d-flex justify-content-start align-items-center">
-                                                                <img loading="lazy" class="img-circle img-sm"
-                                                                    src="{{ url('/assets/img/dummy_course.jpg') }}"
-                                                                    alt="User Image">
-                                                                <div class="ml-2">
-                                                                    <p class="mb-0">Kenneth Vincent Kwandou</p>
-                                                                    <small class="text-muted">2440026780</small>
-                                                                </div>
-                                                            </div>
-                                                            <div class="custom-control custom-checkbox">
-                                                                <input type="checkbox" class="custom-control-input"
-                                                                    id="student_{{ $i }}" checked>
-                                                                <label class="custom-control-label"
-                                                                    for="student_{{ $i }}"></label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endfor
                                             </div>
                                         </div>
-                                        <button class="float-right btn btn-primary my-3 mx-2">Save</button>
+                                        <button class="float-left btn btn-primary my-3">Save</button>
                                     </form>
                                 </div>
                             </div>
@@ -240,7 +162,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <span class="text-danger" id="add-material-error"></span>
                     <div class="form-group">
                         <label for="addMaterialType">Select Material Type</label>
                         <select class="form-control" id="addMaterialType">
@@ -251,19 +172,21 @@
                     <form class="add-material-form" id="add-material-link" data-sessionId="" method="POST" action="{{route('teacher-course-material-add', ['id' => $class->id])}}">
                         @csrf
                         <input type="text" value="link" name="type" readonly hidden>
-                        <div class="form-group">
+                        <div class="form-group" data-input="link">
                             <label for="materialLink">URL</label>
                             <input type="text" class="form-control" name="link" id="materialLink"
                                 placeholder="https://www.google.com">
+                            <span class="text-danger add-material-error add-material-link-error"></span>
                         </div>
                         <button type="submit" class="btn btn-primary">Add Link</button>
                     </form>
                     <form class="add-material-form" id="add-material-file" data-sessionId="" method="POST" action="{{route('teacher-course-material-add', ['id' => $class->id])}}" style="display: none;" enctype="multipart/form-data">
                         @csrf
                         <input type="text" value="file" name="type" readonly hidden>
-                        <div class="form-group">
+                        <div class="form-group" data-input="file">
                             <label for="materialFile">Upload File</label>
                             <input type="file" class="form-control" name="file" id="materialFile">
+                            <span class="text-danger add-material-error add-material-file-error"></span>
                         </div>
                         <button type="submit" class="btn btn-primary">Upload File</button>
                     </form>
@@ -283,7 +206,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <span class="text-danger" id="edit-material-error"></span>
                     <div class="form-group">
                         <label for="editMaterialType">Select Material Type</label>
                         <select class="form-control materialType" id="editMaterialType">
@@ -295,10 +217,11 @@
                         @csrf
                         @method('PUT')
                         <input type="text" value="link" name="type" readonly hidden>
-                        <div class="form-group">
+                        <div class="form-group" data-input="link">
                             <label for="materialLink">URL</label>
                             <input type="text" class="form-control" name="link" id="materialLink"
                                 placeholder="https://www.google.com">
+                                <span class="text-danger edit-material-error edit-material-link-error"></span>
                         </div>
                         <button type="submit" class="btn btn-primary">Edit Link</button>
                     </form>
@@ -306,11 +229,44 @@
                         @csrf
                         @method('PUT')
                         <input type="text" value="file" name="type" readonly hidden>
-                        <div class="form-group">
+                        <div class="form-group" data-input="file">
                             <label for="materialFile">Upload File</label>
                             <input type="file" class="form-control" name="file" id="materialFile">
+                            <span class="text-danger edit-material-error edit-material-file-error"></span>
                         </div>
                         <button type="submit" class="btn btn-primary">Upload File</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="add-thread-modal" tabindex="-1" role="dialog" aria-labelledby="add-thread-modal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Thread</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="add-thread-form" data-sessionId="" method="POST" action="{{route('thread-post')}}">
+                        @csrf
+                        <div class="form-group" data-input="title">
+                            <label for="threadTitle">Title</label>
+                            <input type="text" class="form-control" name="title" id="threadTitle"
+                                placeholder="Thread Title">
+                            <span class="text-danger add-thread-error"></span>
+                        </div>
+                        <div class="form-group" data-input="description">
+                            <label for="threadDescription">Description</label>
+                            <textarea type="text" class="form-control" name="description" id="threadDescription"
+                                placeholder="Thread Description"></textarea>
+                            <span class="text-danger add-thread-error"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post Thread</button>
                     </form>
                 </div>
             </div>
@@ -460,7 +416,7 @@
         }
 
         .forum-container {
-            max-height: var(--courseBodyHeight);
+            max-height: 30rem;
             overflow-y: auto;
         }
 
@@ -471,10 +427,12 @@
         .forum-container .card-header {
             position: sticky;
             background-color: white;
+            cursor: pointer;
         }
 
         .student-attendance {
             background-color: var(--color-light);
+            cursor: pointer;
         }
 
         .canvas-wrapper {
@@ -552,8 +510,8 @@
         }
     </script>
 
-    {{-- session --}}
-    <script>
+    {{-- session scripts --}}
+    <script type="text/javascript">
         $(document).ready(function(){
             $('#addMaterialType').change(function() {
                 var selectedType = $(this).val();
@@ -594,12 +552,16 @@
                             getSession(sessionId);
                             toastr.success('New material added!');
                             $('.add-material-form .form-control').val('');
+                            $('.add-material-form .form-control').removeClass('is-invalid');
+                            $('.add-material-form .add-material-error').html('');
                         } else {
-                            let errors = '';
-                            res.errors.forEach((err) => {
-                                errors += err + '<br>';
-                            });
-                            $('#add-material-error').html(errors);
+                            for (var error in res.errors) {
+                                if (res.errors.hasOwnProperty(error)) {
+                                    let formGroup = $(`.add-material-form .form-group[data-input="${error}"]`);
+                                    formGroup.find(`.form-control`).addClass('is-invalid');
+                                    formGroup.find(`.add-material-error`).html(res.errors[error]);
+                                }
+                            }
                         }
                     },
                     error: function(xhr, status, error) {
@@ -615,7 +577,6 @@
                 var materialId = $(this).data('materialId');
                 formData.append('sessionId', sessionId);
                 formData.append('materialId', materialId);
-                console.log(formData, formData.get('_token'))
                 $.ajax({
                     url: $(this).attr('action'),
                     type: 'POST',
@@ -628,12 +589,83 @@
                             getSession(sessionId);
                             toastr.success('Material successfully edited!');
                             $('.edit-material-form .form-control').val('');
+                            $('.edit-material-form .form-control').removeClass('is-invalid');
+                            $('.edit-material-form .edit-material-error').html('');
                         } else {
-                            let errors = '';
-                            res.errors.forEach((err) => {
-                                errors += err + '<br>';
-                            });
-                            $('#edit-material-error').html(errors);
+                            for (var error in res.errors) {
+                                if (res.errors.hasOwnProperty(error)) {
+                                    let formGroup = $(`.edit-material-form .form-group[data-input="${error}"]`);
+                                    formGroup.find(`.form-control`).addClass('is-invalid');
+                                    formGroup.find(`.edit-material-error`).html(res.errors[error]);
+                                }
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+
+            $('.add-thread-form').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+                var sessionId = $(this).data('sessionId');
+                formData.append('sessionId', sessionId);
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        if(res.success){
+                            $('#add-thread-modal').modal('hide');
+                            getSession(sessionId);
+                            toastr.success('New thread added!');
+                            $('.add-thread-form .form-control').val('');
+                            $('.add-thread-form .form-control').removeClass('is-invalid');
+                            $('.add-thread-form .add-thread-error').html('');
+                        } else {
+                            for (var error in res.errors) {
+                                if (res.errors.hasOwnProperty(error)) {
+                                    let formGroup = $(`.add-thread-form .form-group[data-input="${error}"]`);
+                                    formGroup.find(`.form-control`).addClass('is-invalid');
+                                    formGroup.find(`.add-thread-error`).html(res.errors[error]);
+                                }
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+
+            $('#attendance-filter-form').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+                var sessionId = $(this).data('sessionId');
+                formData.append('sessionId', sessionId);
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        if(res.success){
+                            initAttendanceTab(sessionId, res.students)
+                            // $('#attendance-filter-form .form-control').removeClass('is-invalid');
+                            // $('#attendance-filter-form .attendance-filter-error').html('');
+                        } else {
+                            // for (var error in res.errors) {
+                            //     if (res.errors.hasOwnProperty(error)) {
+                            //         let formGroup = $(`#attendance-filter-form .form-group[data-input="${error}"]`);
+                            //         formGroup.find(`.form-control`).addClass('is-invalid');
+                            //         formGroup.find(`.attendance-filter-error`).html(res.errors[error]);
+                            //     }
+                            // }
                         }
                     },
                     error: function(xhr, status, error) {
@@ -651,11 +683,14 @@
                     sessionId: sessionId
                 },
                 success: function(res) {
-                    let session = res.session;
+                    var session = res.session;
+                    var students = res.students;
                     $('#session-title').html(`${session.title}`);
                     $('#nav-description').html(`${session.description}`);
+                    //material tab
+                    let materials = session.materials;
                     let materialContent = '';
-                    res.materials.forEach((material) => {
+                    materials.forEach((material) => {
                         materialContent += `
                             <div class="col-6 py-2">
                                 <a class="material-link row mx-2 my-1 py-2 px-3" href="#" data-isFile="${material.is_file}" data-value="${material.value}">
@@ -696,41 +731,197 @@
                         </div>
                     `;
                     $('#nav-learning-material-content').html(materialContent);
+                    initializeMaterialElements(session.id)
 
-                    // initialize edit / delete session material
-                    $(".add-material-form").data('sessionId', session.id);
-                    $(".edit-material-form").data('sessionId', session.id);
+                    //forum tab
+                    let forum = session.threads;
+                    let forumContent = '';
+                    forum.forEach((thread) => {
+                        let commentContent = ''
+                        thread.comments.forEach((comment) => {
+                            commentContent += getCommentElement(comment);
+                        });
 
-                    $('a.material-link').on('click', function(e) {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        if (this.dataset.isfile == 1) {
-                            downloadMaterial(this.dataset.value, sessionId);
-                        } else {
-                            window.open(this.dataset.value, '_blank', 'noopener', 'noreferrer')
-                        }
-                    })
+                        forumContent += `
+                            <div class="card card-widget border collapsed-card">
+                                <div class="card-header sticky-top pl-3 pt-2" data-card-widget="collapse">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex flex-column">
+                                            <div class="user-block">
+                                                <img loading="lazy" class="img-circle"
+                                                src="{{ url('/assets/images/profile/') }}/${thread.user.image}" alt="User Image">
+                                                <span class="username fw-normal">${thread.user.name}</span>
+                                                <span class="description">${thread.created_at_format}</span>
+                                            </div>
+                                            <div class="mt-2">${thread.title}</div>
+                                        </div>
+                                        <div class="card-tools">
+                                            <span class="float-right text-muted">${thread.comments.length} comments</span>
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- post --}}
+                                <div class="card-body">
+                                    ${thread.description}
+                                </div>
+                                {{-- comments --}}
+                                <div id="card-comments-${thread.id}" class="card-footer card-comments">` +
+                                    commentContent +
+                                `</div>
+                                {{-- form --}}
+                                <div class="card-footer">
+                                    <form class="comment-form" data-threadId="${thread.id}" action="{{route('thread-post-comment')}}" method="POST">
+                                        @csrf
+                                        <img loading="lazy" class="img-fluid img-circle img-sm"
+                                            src="{{ url('/assets/images/profile/') . '/' . auth()->user()->image }}" alt="Alt Text">
+                                        <div class="img-push">
+                                            <input type="text" name="threadId" value="${thread.id}" hidden readonly>
+                                            <textarea name="description" class="form-control form-control-sm"
+                                                placeholder="Enter your comment here..."></textarea>
+                                        </div>
+                                        <button type="submit" class="float-left mt-2 btn btn-primary">Post Comment</button>
+                                    </form>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    $('#nav-forum .forum-container').html(forumContent);
+                    initializeForumElements(session.id)
 
-                    $('.add-material').on('click', function(e) {
-                        $('#add-material-error').html('');
-                        $('#add-material-modal').modal('show');
-                    })
-
-                    $('.material-edit-btn').on('click', function(e) {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        $(".edit-material-form").data('materialId', this.dataset.materialid);
-                        $('#edit-material-error').html('');
-                        $('#edit-material-modal').modal('show');
-                    })
-
-                    $('.material-delete-btn').on('click', function(e) {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        showConfirmModal('Are you sure you want to delete this material?', deleteMaterial, {sessionId: this.dataset.sessionid, materialId: this.dataset.materialid});
-                    })
+                    //atttendance tab
+                    initAttendanceTab(session.id, students)
                 }
             });
+        }
+
+        function initAttendanceTab(sessionId, students){
+            let attendanceContent = '';
+            students.forEach((st) => {
+                let isPresent = 0;
+                if (st.student.attendance_by_session) {
+                    isPresent = st.student.attendance_by_session.is_present;
+                }
+                attendanceContent += `
+                    <div class="col-lg-6 my-2">
+                        <div class="student-attendance d-flex align-items-center justify-content-between rounded border p-2">
+                            <div class="d-flex justify-content-start align-items-center">
+                                <img loading="lazy" class="img-circle img-sm"
+                                    src="{{ url('/assets/images/profile/') }}/${st.student.user.image}"
+                                    alt="User Image">
+                                <div class="ml-2">
+                                    <p class="mb-0">${st.student.user.name}</p>
+                                    {{-- <small class="text-muted">2440026780</small> --}}
+                                </div>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input"
+                                    id="student_${st.student_id}" ${isPresent ? 'checked' : ''}>
+                                <label class="custom-control-label"
+                                    for="student_${st.student_id}"></label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            $('#nav-attendance .attendance-list .row').html(attendanceContent);
+            initializeAttendanceElements(sessionId)
+        }
+
+        function initializeMaterialElements(sessionId){
+            $(".add-material-form").data('sessionId', sessionId);
+            $(".edit-material-form").data('sessionId', sessionId);
+
+            $('a.material-link').on('click', function(e) {
+                event.stopPropagation();
+                event.preventDefault();
+                if (this.dataset.isfile == 1) {
+                    downloadMaterial(this.dataset.value, sessionId);
+                } else {
+                    window.open(this.dataset.value, '_blank', 'noopener', 'noreferrer')
+                }
+            })
+
+            $('.add-material').on('click', function(e) {
+                $('.add-material-form .form-control').val('');
+                $('.add-material-form .form-control').removeClass('is-invalid');
+                $('.add-material-form .add-material-error').html('');
+                $('#add-material-modal').modal('show');
+            })
+
+            $('.material-edit-btn').on('click', function(e) {
+                event.stopPropagation();
+                event.preventDefault();
+                $(".edit-material-form").data('materialId', this.dataset.materialid);
+                $('.edit-material-form .form-control').val('');
+                $('.edit-material-form .form-control').removeClass('is-invalid');
+                $('.edit-material-form .edit-material-error').html('');
+                $('#edit-material-modal').modal('show');
+            })
+
+            $('.material-delete-btn').on('click', function(e) {
+                event.stopPropagation();
+                event.preventDefault();
+                showConfirmModal('Are you sure you want to delete this material?', deleteMaterial, {sessionId: this.dataset.sessionid, materialId: this.dataset.materialid});
+            })
+        }
+
+        function initializeForumElements(sessionId){
+            $(".add-thread-form").data('sessionId', sessionId);
+            $('.comment-form').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+                var textarea = $(this).find('textarea');
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        if(res.success){
+                            $(`#card-comments-${res.threadId}`).append(getCommentElement(res.comment));
+                            toastr.success('Comment submitted!');
+                            textarea.val('');
+                            textarea.removeClass('is-invalid');
+                        } else {
+                            if (res.errorInput.description) {
+                                textarea.addClass('is-invalid');
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+        }
+
+        function initializeAttendanceElements(sessionId) {
+            $("#attendance-filter-form").data('sessionId', sessionId);
+            $('.student-attendance').click(function() {
+                $(this).find('.custom-checkbox input').prop('checked', function(i, checked) {
+                    return !checked;
+                });
+            });
+        }
+
+        function getCommentElement(comment){
+            return `
+                <div class="card-comment">
+                    <img loading="lazy" class="img-circle img-sm"
+                        src="{{ url('/assets/images/profile/') }}/${comment.user.image}" alt="User Image">
+                    <div class="comment-text">
+                        <span class="username">
+                            ${comment.user.name}
+                            <span class="text-muted float-right">${comment.created_at_format}</span>
+                        </span>
+                        ${comment.description}
+                    </div>
+                </div>
+            `
         }
 
         function downloadMaterial(fileName, sessionId) {
@@ -780,7 +971,7 @@
     </script>
 
     {{-- canvas scripts --}}
-    <script>
+    <script type="text/javascript">
         let canvasListeners = {};
 
         $(window).resize(function() {

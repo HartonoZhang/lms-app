@@ -8,6 +8,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/leaderboard/teachers', [TeacherController::class, 'leaderboards'])->name('teacher-leaderboard');
     Route::get('teacher/profile/{id}', [TeacherController::class, 'profile'])->name('teacher-profile');
     Route::get('student/profile/{id}', [StudentController::class, 'profile'])->name('student-profile');
+    Route::post('thread/', [ThreadController::class, 'postThread'])->name('thread-post');
+    Route::post('thread/comment', [ThreadController::class, 'postComment'])->name('thread-post-comment');
 
     Route::middleware('admin-only')->group(function () {
         Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
@@ -99,6 +102,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/course/{id}/session/material/add', 'addMaterial')->name('course-material-add');
             Route::put('/course/{id}/session/material/edit', 'editMaterial')->name('course-material-edit');
             Route::delete('/course/{id}/session/material/delete', 'deleteMaterial')->name('course-material-delete');
+            Route::get('/course/{id}/session/attendace/filter', 'filterAttendance')->name('course-attendance-filter');
         });
     });
     Route::middleware('student-only')->group(function () {
