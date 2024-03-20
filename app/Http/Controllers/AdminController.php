@@ -8,6 +8,8 @@ use App\Models\Period;
 use App\Models\Student;
 use App\Models\Course;
 use App\Models\Organization;
+use App\Models\Post;
+use App\Models\PostReport;
 use App\Models\Teacher;
 use App\Models\User;
 use Carbon\Carbon;
@@ -33,6 +35,14 @@ class AdminController extends Controller
         $listStudent = Student::all();
         $listClassroom = Classroom::all();
         $listCourses = Course::all();
+        $listPost = Post::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
+        $totalPost = Post::all();
+        $totalPostToday = Post::whereDate('created_at', Carbon::today())->get();
+        $totalReport = PostReport::all();
+        $totalReportToday = PostReport::whereDate('created_at', Carbon::today())->get();
+        $newCourseThisMonth = Course::whereMonth('created_at', Carbon::now()->month)->get();
+        $newStudentThisMonth = Student::whereMonth('created_at', Carbon::now()->month)->get();
+        $newTeacherThisMonth = Teacher::whereMonth('created_at', Carbon::now()->month)->get();
 
         $studentChartByYear = Student::whereBetween(
             'created_at',
@@ -70,7 +80,15 @@ class AdminController extends Controller
             'listCourses' => $listCourses,
             'studentChartByYear' => $studentChartByYear,
             'graduatedStudentByYear' => $graduatedStudentByYear,
-            'teacherChartByYear' => $teacherChartByYear
+            'teacherChartByYear' => $teacherChartByYear,
+            'totalPost' => $totalPost,
+            'totalPostToday' => $totalPostToday,
+            'totalReport' => $totalReport,
+            'totalReportToday' => $totalReportToday,
+            'newCourseThisMonth' => $newCourseThisMonth,
+            'newStudentThisMonth' => $newStudentThisMonth,
+            'newTeacherThisMonth' => $newTeacherThisMonth,
+            'listPost' => $listPost
         ]);
     }
 

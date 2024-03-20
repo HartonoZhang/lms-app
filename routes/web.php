@@ -117,7 +117,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('post')->group(function () {
-        Route::get('/', [PostController::class, 'index'])->name('post-form');
+        Route::get('/', [PostController::class, 'index'])->name('post-create-view');
         Route::get('/edit/{id}', [PostController::class, 'postUpdate'])->name('post-update');
 
         Route::post('/create', [PostController::class, 'create'])->name('post-create');

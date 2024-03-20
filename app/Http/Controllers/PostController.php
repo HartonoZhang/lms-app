@@ -19,7 +19,7 @@ class PostController extends Controller
 
     public function index()
     {
-        return view('pages.posts.index');
+        return view('pages.posts.create');
     }
 
     public function postUpdate($id)
@@ -177,6 +177,7 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $post->delete();
         $routeName = strtolower(Auth::user()->role->name);
+        // bug
         return redirect()->route($routeName . '-profile', Auth::user()->id)->with(['status' => 'success', 'message' => 'Post successfully deleted!']);
     }
 }
