@@ -17,7 +17,7 @@
             @foreach ($classrooms as $class)
                 <div class="px-3">
                     @if ($userRole == 2)
-                        <a href="{{route('teacher-course-detail', ['id' => $class->id])}}">
+                        <a href="{{route('course-detail', ['id' => $class->id])}}">
                     @else
                         {{-- <a href="{route('student-course-detail', ['id' => 1])}"> --}}
                         <a href="">

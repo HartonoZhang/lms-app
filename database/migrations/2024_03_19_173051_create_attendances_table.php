@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign('student_id')->references('id')->on('student')->onDelete('cascade');
             $table->boolean('is_present');
             $table->timestamps();
+            $table->unique(['session_id', 'student_id']);
         });
     }
 

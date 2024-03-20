@@ -20,7 +20,7 @@ class Classroom extends Model
         return $this->hasMany(StudentClassroom::class);
     }
 
-    public function Sessions(){
+    public function sessions(){
         return $this->hasMany(Session::class);
     }
     use HasFactory;

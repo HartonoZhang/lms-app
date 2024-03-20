@@ -55,7 +55,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('teacher-courses')}}" class="nav-link">
+                    <a href="{{route('course-courses')}}" class="nav-link">
                         <i class="fas fa-book nav-icon"></i>
                         <p>
                             Courses

@@ -4,7 +4,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('teacher-dashboard') }}">Home</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('teacher-courses') }}">Courses</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('course-courses') }}">Courses</a></li>
     <li class="breadcrumb-item active">Detail</li>
 @endsection
 
@@ -21,8 +21,8 @@
                                 <img loading="lazy" src="{{ url('/assets/img/dummy_course.jpg') }}" alt="Teacher">
                             </div>
                             <div class="ml-2 mr-3">
-                                <p class="m-0">{{ $tc->Teacher->User->name }}</p>
-                                {{-- <p class="m-0">D1234 - Primary Instructor</p> --}}
+                                <p class="m-0">{{ $tc->Teacher->user->name }}</p>
+                                <p class="m-0">teacher_id</p>
                             </div>
                         @endforeach
                     </div>
@@ -37,16 +37,17 @@
                     </div>
                 @endif
                 <div class="mt-3 mb-2 mx-0 px-0">
-                    <a class="content-link mr-2 py-1 px-3 active" href="">Sessions</a>
-                    <a class="content-link mr-2 py-1 px-3" href="">Assignments</a>
-                    <a class="content-link mr-2 py-1 px-3" href="">People</a>
+                    <a id="session-details-button" class="content-link mr-2 py-1 px-3 active" href="#">Sessions</a>
+                    <a id="assignments-button" class="content-link mr-2 py-1 px-3" href="#">Assignments</a>
+                    <a id="people-button" class="content-link mr-2 py-1 px-3" href="#">People</a>
                     @if ($userRole == 3)
                         <a class="content-link mr-2 py-1 px-3" href="">Attendance</a>
                     @endif
                 </div>
             </div>
             <div class="card-body course-detail-body py-2 px-2">
-                <div class="row">
+                {{-- session details --}}
+                <div id="session-details" class="row">
                     <div class="col-3 canvas-wrapper p-0 m-0">
                         <canvas id="session-roadmap" width="0" height="0"></canvas>
                     </div>
@@ -74,7 +75,11 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="nav-description" role="tabpanel"
                                 aria-labelledby="nav-description-tab">
-                                {{-- isi custom content --}}
+                                <button style="box-shadow: none !important" class="btn btn-primary mb-2" data-toggle="modal" data-target="#edit-description-modal">Edit Description</button>
+                                <div id="description-content">
+                                    {{-- isi custom content --}}
+
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="nav-learning-material" role="tabpanel"
                                 aria-labelledby="nav-learning-material-tab">
@@ -96,56 +101,91 @@
                                 aria-labelledby="nav-attendance-tab">
                                 {{-- isi custom content --}}
                                 <div class="my-3">
-                                    <form data-sessionId="" id="attendance-filter-form" action="{{route('teacher-course-attendance-filter', ['id' => $class->id])}}" method="GET">
+                                    <form data-sessionId="" id="attendance-filter-form" action="{{route('course-attendance-filter', ['id' => $class->id])}}" method="GET">
                                         @csrf
                                         @method('GET')
                                         <input class="session-id" type="text" name="sessionId" value="" readonly hidden>
                                         <div class="row">
-                                            <div class="form-group col-md-5 my-1" data-input="name">
-                                                <input type="text" name="name" class="mx-1 form-control"
-                                                    placeholder="Search Student Name..." />
-                                                <span class="text-danger attendance-filter-error"></span>
-                                            </div>
-                                            <div class="form-group col-md-5 my-1" data-input="studentId">
-                                                <input type="text" name="studentId" class="mx-1 form-control"
-                                                    placeholder="Search Student Id..." />
-                                                <span class="text-danger attendance-filter-error"></span>
+                                            <div class="col-md-10">
+                                                <div class="row">
+                                                    <div class="form-group col-md-6 my-1" data-input="name">
+                                                        <input type="text" name="name" class="mx-1 form-control"
+                                                            placeholder="Search Student Name..." />
+                                                        <span class="text-danger attendance-filter-error"></span>
+                                                    </div>
+                                                    <div class="form-group col-md-6 my-1" data-input="studentId">
+                                                        <input type="text" name="studentId" class="mx-1 form-control"
+                                                            placeholder="Search Student Id..." />
+                                                        <span class="text-danger attendance-filter-error"></span>
+                                                    </div>
+                                                    <div class="form-group col-md-12 my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="attendanceFilter" id="filterAll" value="all" checked>
+                                                            <label class="form-check-label" for="filterAll">All</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="attendanceFilter" id="filterPresent" value="present">
+                                                            <label class="form-check-label" for="filterPresent">Present</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="attendanceFilter" id="filterNotPresent" value="notPresent">
+                                                            <label class="form-check-label" for="filterNotPresent">Not
+                                                                Present</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-md-2 my-1">
-                                                <button type="submit" class="mx-2 btn btn-primary float-right">Search</button>
-                                            </div>
-                                            <div class="form-group col-md-12 my-2">
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio"
-                                                        name="attendanceFilter" id="filterAll" value="all" checked>
-                                                    <label class="form-check-label" for="filterAll">All</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio"
-                                                        name="attendanceFilter" id="filterPresent" value="present">
-                                                    <label class="form-check-label" for="filterPresent">Present</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio"
-                                                        name="attendanceFilter" id="filterNotPresent" value="notPresent">
-                                                    <label class="form-check-label" for="filterNotPresent">Not
-                                                        Present</label>
-                                                </div>
+                                                <button type="submit" class="mx-2 btn btn-primary">Search</button>
                                             </div>
                                         </div>
                                     </form>
-                                    <form id="attendance-list-form" action="" method="POST">
+                                    <form data-sessionId="" id="attendance-list-form" action="{{route('course-attendance-save', ['id' => $class->id])}}" method="POST">
                                         @csrf
                                         <div class="attendance-list">
                                             <div class="row">
                                             </div>
                                         </div>
-                                        <button class="float-left btn btn-primary my-3">Save</button>
+                                        <button type="submit" class="float-left btn btn-primary my-3">Save</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                {{-- people --}}
+                <div id="people" class="row">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="edit-description-modal" tabindex="-1" role="dialog" aria-labelledby="edit-description-modal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Description</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="edit-description-form" id="edit-description-link" data-sessionId="" method="POST" action="{{route('course-session-description-update', ['id' => $class->id])}}">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group" data-input="description">
+                            <label>Session Description</label>
+                            <textarea type="text" class="form-control" name="description"
+                                placeholder="Session Description"></textarea>
+                            <span class="text-danger edit-description-error description-error"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -169,7 +209,7 @@
                             <option value="file">File</option>
                         </select>
                     </div>
-                    <form class="add-material-form" id="add-material-link" data-sessionId="" method="POST" action="{{route('teacher-course-material-add', ['id' => $class->id])}}">
+                    <form class="add-material-form" id="add-material-link" data-sessionId="" method="POST" action="{{route('course-material-add', ['id' => $class->id])}}">
                         @csrf
                         <input type="text" value="link" name="type" readonly hidden>
                         <div class="form-group" data-input="link">
@@ -180,7 +220,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Add Link</button>
                     </form>
-                    <form class="add-material-form" id="add-material-file" data-sessionId="" method="POST" action="{{route('teacher-course-material-add', ['id' => $class->id])}}" style="display: none;" enctype="multipart/form-data">
+                    <form class="add-material-form" id="add-material-file" data-sessionId="" method="POST" action="{{route('course-material-add', ['id' => $class->id])}}" style="display: none;" enctype="multipart/form-data">
                         @csrf
                         <input type="text" value="file" name="type" readonly hidden>
                         <div class="form-group" data-input="file">
@@ -213,7 +253,7 @@
                             <option value="file">File</option>
                         </select>
                     </div>
-                    <form class="edit-material-form" id="edit-material-link" data-sessionId="" data-materialId="" method="POST" action="{{route('teacher-course-material-edit', ['id' => $class->id])}}">
+                    <form class="edit-material-form" id="edit-material-link" data-sessionId="" data-materialId="" method="POST" action="{{route('course-material-edit', ['id' => $class->id])}}">
                         @csrf
                         @method('PUT')
                         <input type="text" value="link" name="type" readonly hidden>
@@ -225,7 +265,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Edit Link</button>
                     </form>
-                    <form class="edit-material-form" id="edit-material-file" data-sessionId="" data-materialId="" method="POST" action="{{route('teacher-course-material-edit', ['id' => $class->id])}}" style="display: none;" enctype="multipart/form-data">
+                    <form class="edit-material-form" id="edit-material-file" data-sessionId="" data-materialId="" method="POST" action="{{route('course-material-edit', ['id' => $class->id])}}" style="display: none;" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <input type="text" value="file" name="type" readonly hidden>
@@ -365,7 +405,7 @@
         }
 
         .course-detail-body {
-            /* min-height: var(--courseBodyHeight); */
+            min-height: var(--courseBodyHeight);
             max-height: var(--courseBodyHeight);
         }
 
@@ -428,6 +468,12 @@
             position: sticky;
             background-color: white;
             cursor: pointer;
+        }
+
+        .attendance-list{
+            max-height: 23rem;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         .student-attendance {
@@ -494,8 +540,31 @@
             var observer = new MutationObserver(callback);
             observer.observe(targetNode, config);
 
-            @if ($class->Sessions->first()->id ?? false)
-                getSession({{ $class->Sessions->first()->id }});
+            $('#session-details-button').click(function(e) {
+                e.preventDefault();
+                @if ($class->sessions->first()->id ?? false)
+                    getSession({{ $class->sessions->first()->id }});
+                @endif
+                resetCanvas();
+                $('.content-link').removeClass('active');
+                $(this).addClass('active');
+                $('#assignments').prop('hidden', true);
+                $('#people').prop('hidden', true);
+                $('#session-details').prop('hidden', false);
+            });
+
+            $('#people-button').click(function(e) {
+                e.preventDefault();
+                getPeople({{ $class->id }});
+                $('.content-link').removeClass('active');
+                $(this).addClass('active');
+                $('#session-details').prop('hidden', true);
+                $('#assignments').prop('hidden', true);
+                $('#people').prop('hidden', false);
+            });
+
+            @if ($class->sessions->first()->id ?? false)
+                getSession({{ $class->sessions->first()->id }});
             @endif
             resetCanvas();
         })
@@ -513,6 +582,41 @@
     {{-- session scripts --}}
     <script type="text/javascript">
         $(document).ready(function(){
+            $('.edit-description-form').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+                var sessionId = $(this).data('sessionId');
+                formData.append('sessionId', sessionId);
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        if(res.success){
+                            $('#edit-description-modal').modal('hide');
+                            getSession(sessionId);
+                            toastr.success('Session description updated!');
+                            $('.edit-description-form .form-control').val('');
+                            $('.edit-description-form .form-control').removeClass('is-invalid');
+                            $('.edit-description-form .edit-description-error').html('');
+                        } else {
+                            for (var error in res.errors) {
+                                if (res.errors.hasOwnProperty(error)) {
+                                    let formGroup = $(`.edit-description-form .form-group[data-input="${error}"]`);
+                                    formGroup.find(`.form-control`).addClass('is-invalid');
+                                    formGroup.find(`.edit-description-error`).html(res.errors[error]);
+                                }
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+
             $('#addMaterialType').change(function() {
                 var selectedType = $(this).val();
                 if (selectedType === 'link') {
@@ -673,11 +777,44 @@
                     }
                 });
             });
+
+            $('#attendance-list-form').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData($(this)[0]);
+                var sessionId = $(this).data('sessionId');
+                formData.append('sessionId', sessionId);
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(res) {
+                        if(res.success){
+                            // initAttendanceTab(sessionId, res.students);
+                            toastr.success('Attendance data saved!');
+                            // $('#attendance-filter-form .form-control').removeClass('is-invalid');
+                            // $('#attendance-filter-form .attendance-filter-error').html('');
+                        } else {
+                            // for (var error in res.errors) {
+                            //     if (res.errors.hasOwnProperty(error)) {
+                            //         let formGroup = $(`#attendance-filter-form .form-group[data-input="${error}"]`);
+                            //         formGroup.find(`.form-control`).addClass('is-invalid');
+                            //         formGroup.find(`.attendance-filter-error`).html(res.errors[error]);
+                            //     }
+                            // }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
         });
 
         function getSession(sessionId) {
             $.ajax({
-                url: "{{ route('teacher-course-session', ['id' => $class->id]) }}",
+                url: "{{ route('course-session-data', ['id' => $class->id]) }}",
                 type: 'GET',
                 data: {
                     sessionId: sessionId
@@ -686,7 +823,8 @@
                     var session = res.session;
                     var students = res.students;
                     $('#session-title').html(`${session.title}`);
-                    $('#nav-description').html(`${session.description}`);
+                    $('#description-content').html(`${session.description}`);
+                    $(".edit-description-form").data('sessionId', sessionId);
                     //material tab
                     let materials = session.materials;
                     let materialContent = '';
@@ -700,7 +838,7 @@
                                         </div>
                                     </div>
                                     <div class="col-8 d-flex flex-column justify-content-center align-items-">
-                                        <p class="p-0 m-0">${material.value}</p>
+                                        <p class="p-0 m-0">${material.title}</p>
                                         @if ($userRole == 2)
                                             <div>
                                                 <button class="btn btn-warning rounded-circle material-edit-btn" data-sessionId="${session.id}" data-materialId="${material.id}">
@@ -813,14 +951,15 @@
                                     alt="User Image">
                                 <div class="ml-2">
                                     <p class="mb-0">${st.student.user.name}</p>
-                                    {{-- <small class="text-muted">2440026780</small> --}}
+                                    <small class="text-muted">student_id</small>
                                 </div>
                             </div>
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input"
-                                    id="student_${st.student_id}" ${isPresent ? 'checked' : ''}>
+                                <input type="checkbox" class="custom-control-input p-student" name="present[]"
+                                    id="p-student-${st.student_id}" ${isPresent ? 'checked' : ''} value="${st.student_id}">
+                                <input id="np-student-${st.student_id}" type="text" class="np-student" name="notPresent[]" value="${st.student_id}" ${isPresent ? 'disabled' : ''} hidden>
                                 <label class="custom-control-label"
-                                    for="student_${st.student_id}"></label>
+                                    for="p-student-${st.student_id}"></label>
                             </div>
                         </div>
                     </div>
@@ -901,8 +1040,15 @@
 
         function initializeAttendanceElements(sessionId) {
             $("#attendance-filter-form").data('sessionId', sessionId);
+            $("#attendance-list-form").data('sessionId', sessionId);
             $('.student-attendance').click(function() {
-                $(this).find('.custom-checkbox input').prop('checked', function(i, checked) {
+                let element = $(this);
+                element.find('.custom-checkbox .p-student').prop('checked', function(i, checked) {
+                    if (checked) {
+                        element.find('.custom-checkbox .np-student').prop('disabled', false);
+                    } else {
+                        element.find('.custom-checkbox .np-student').prop('disabled', true);
+                    }
                     return !checked;
                 });
             });
@@ -925,7 +1071,7 @@
         }
 
         function downloadMaterial(fileName, sessionId) {
-            var url = "{{ route('teacher-course-material-download', ['id' => $class->id]) }}"
+            var url = "{{ route('course-material-download', ['id' => $class->id]) }}"
             $.ajax({
                 url: url,
                 type: 'GET',
@@ -954,7 +1100,7 @@
         function deleteMaterial(data){
             data._token = '{{csrf_token()}}';
             $.ajax({
-                url: "{{route('teacher-course-material-delete', $class->id)}}",
+                url: "{{route('course-material-delete', $class->id)}}",
                 type: 'DELETE',
                 data: data,
                 success: function(res) {
@@ -965,6 +1111,39 @@
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
+                }
+            });
+        }
+    </script>
+
+    {{-- people scripts --}}
+    <script type="text/javascript">
+        function getPeople(classId){
+            $.ajax({
+                url: "{{ route('course-people-data', ['id' => $class->id]) }}",
+                type: 'GET',
+                data: {},
+                success: function(res) {
+                    var students = res.students;
+                    let peopleContent = '';
+                    students.forEach((st) => {
+                        peopleContent += `
+                            <div class="py-1 px-2 col-3">
+                                <div class="card card-primary card-outline">
+                                    <div class="card-body box-profile">
+                                        <div class="text-center">
+                                            <img class="profile-user-img img-fluid img-circle"
+                                                src="{{ asset('assets') }}/images/profile/${st.student.user.image}"
+                                                alt="User profile picture">
+                                        </div>
+                                        <h3 class="profile-username text-center">${st.student.user.name}</h3>
+                                        <p class="text-muted text-center">student_id</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    $('#people').html(peopleContent);
                 }
             });
         }
@@ -1050,7 +1229,7 @@
                 canvas.width = parentWidth;
                 // calculate extra height per session
                 canvas.height = height + (150 *
-                    {{ $class->Sessions->count() > 4 ? $class->Sessions->count() - 4 : 0 }});
+                    {{ $class->sessions->count() > 4 ? $class->sessions->count() - 4 : 0 }});
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 //background style
@@ -1073,11 +1252,11 @@
                 ctx.lineWidth = 10;
 
                 // draw line and circle
-                @if ($class->Sessions->count() > 0)
+                @if ($class->sessions->count() > 0)
                     ctx.beginPath();
                     ctx.moveTo(midX, 0);
                     ctx.lineTo(midX, 25);
-                    @foreach ($class->Sessions as $session)
+                    @foreach ($class->sessions as $session)
                         @if ($loop->first)
                             ctx.bezierCurveTo(midX, ctrlY1, midX - scaleX, ctrlY2, midX - scaleX, currY);
                             circleCoords.push({

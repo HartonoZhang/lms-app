@@ -104,7 +104,7 @@
             </section>
 
             <!-- Main content -->
-            <section class="content pb-2">
+            <section class="content">
                 @yield('content')
             </section>
             <!-- /.content -->

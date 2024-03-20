@@ -11,11 +11,11 @@ class Thread extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    public function Comments(){
+    public function comments(){
         return $this->hasMany(Comment::class);
     }
 
-    public function User(){
+    public function user(){
         return $this->belongsTo(User::class);
     }
 

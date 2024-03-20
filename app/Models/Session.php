@@ -11,19 +11,19 @@ class Session extends Model
     protected $table = 'sessions';
     protected $guarded = ['id'];
 
-    public function Class(){
+    public function class(){
         return $this->belongsTo(Classroom::class, 'class_id', 'id');
     }
 
-    public function Materials(){
+    public function materials(){
         return $this->hasMany(Material::class);
     }
 
-    public function Threads(){
+    public function threads(){
         return $this->hasMany(Thread::class);
     }
 
-    public function Attendances(){
+    public function attendances(){
         return $this->hasMany(Attendance::class);
     }
 }
