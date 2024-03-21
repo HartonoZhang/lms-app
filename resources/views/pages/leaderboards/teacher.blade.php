@@ -121,41 +121,37 @@
                     </div>
                     <!-- /.info-box -->
                 </div>
-            </div>
-        
-            <table class="table table-borderless">
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Student</th>
-                        <th>Email</th>
-                        <th>Level</th>
-                        <th>Current Exp</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                        $isTopTen = false;
-                        $currentUserId = Auth::user()->id;
-                        $leaderboardCount = $datas->count() >= 11 ? 11 : $datas->count();
-                    @endphp
-                    @if ($leaderboardCount <= 3)
+            </div>  
+            @php
+                $isTopTen = false;
+                $currentUserId = Auth::user()->id;
+                $leaderboardCount = $datas->count() >= 11 ? 11 : $datas->count();
+            @endphp
+            @if ($leaderboardCount > 3)
+                <table class="table table-borderless">
+                    <thead>
                         <tr>
-                            <td>No Data</td>
+                            <th>Rank</th>
+                            <th>Student</th>
+                            <th>Email</th>
+                            <th>Level</th>
+                            <th>Current Exp</th>
                         </tr>
-                    @else
-                        @for ($i = 3; $i < $leaderboardCount; $i++)
-                        @php
-                            if($isCurrentRole && $datas[$i]->user->id === $currentUserId) $isTopTen = true;
-                        @endphp
-                        <tr style="{{$isCurrentRole && $datas[$i]->user->id === $currentUserId ? "background-color: var(--color-primary-light);" : ""}}">
-                            <td>#{{$i}}</td>
-                            <td>{{$datas[$i]->user->name}}</td>
-                            <td>{{$datas[$i]->user->email}}</td>
-                            <td>{{$datas[$i]->profile->level}}</td>
-                            <td>{{$datas[$i]->profile->current_exp}}</td>
-                        </tr>
-                        @endfor
+                    </thead>
+                    <tbody>
+                    
+                    @for ($i = 3; $i < $leaderboardCount; $i++)
+                    @php
+                        if($isCurrentRole && $datas[$i]->user->id === $currentUserId) $isTopTen = true;
+                    @endphp
+                    <tr style="{{$isCurrentRole && $datas[$i]->user->id === $currentUserId ? "background-color: var(--color-primary-light);" : ""}}">
+                        <td>#{{$i}}</td>
+                        <td>{{$datas[$i]->user->name}}</td>
+                        <td>{{$datas[$i]->user->email}}</td>
+                        <td>{{$datas[$i]->profile->level}}</td>
+                        <td>{{$datas[$i]->profile->current_exp}}</td>
+                    </tr>
+                    @endfor
                         @if ($isCurrentRole && $isTopTen == false)
                             @php
                                 $thisTeacher = $datas->where('user_id',$currentUserId)->all();
@@ -177,9 +173,9 @@
                                 <td>{{$thisTeacher->profile->current_exp}}</td>
                             </tr>
                         @endif
-                    @endif
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            @endif
         </div>
     @else
         <div class="card card-danger">
