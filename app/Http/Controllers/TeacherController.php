@@ -40,7 +40,24 @@ class TeacherController extends Controller
 
     public function leaderboards()
     {
-        return view('pages.leaderboards.teacher');
+        $datas = Teacher::with(['user','profile'])
+                    ->get()
+                    //sort by level descending
+                    ->sortByDesc(function($teacher){
+                        return $teacher->profile->level;
+                    })
+                    ->values();
+        $first = array_key_exists(0,$datas->all())? $datas[0] : null;
+        $second = array_key_exists(1,$datas->all())? $datas[1] : null;
+        $third = array_key_exists(2,$datas->all()) ? $datas[2] : null;
+        $isCurrentRole = auth()->user()->role_id == 2 ? true : false;
+        return view('pages.leaderboards.teacher')->with([
+            'first'=> $first,
+            'second'=> $second,
+            'third'=> $third,
+            'datas'=> $datas,
+            'isCurrentRole'=> $isCurrentRole
+        ]);
     }
 
     public function create(Request $request)

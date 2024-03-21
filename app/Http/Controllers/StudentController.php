@@ -40,7 +40,24 @@ class StudentController extends Controller
 
     public function leaderboards()
     {
-        return view('pages.leaderboards.student');
+        $datas = Student::with(['user','profile'])
+                    ->get()
+                    //sort by level descending
+                    ->sortByDesc(function($student){
+                        return $student->profile->level;
+                    })
+                    ->values();
+        $first = array_key_exists(0,$datas->all())? $datas[0] : null;
+        $second = array_key_exists(1,$datas->all())? $datas[1] : null;
+        $third = array_key_exists(2,$datas->all()) ? $datas[2] : null;
+        $isCurrentRole = auth()->user()->role_id == 3 ? true : false;
+        return view('pages.leaderboards.student')->with([
+            'first'=> $first,
+            'second'=> $second,
+            'third'=> $third,
+            'datas'=> $datas,
+            'isCurrentRole' => $isCurrentRole
+        ]);
     }
 
     public function create(Request $request)
