@@ -36,7 +36,6 @@
                         @if (Auth::user()->id === $teacher->user_id)
                             <button class="btn btn-primary btn-block" data-toggle="modal"
                                 data-target="#modal-update-photo"><b>Change Profile Photo</b></button>
-                            <a href="{{ route('post-form') }}" class="btn btn-info btn-block"><b>Create Post</b></a>
                             <a href="{{ route('logout') }}" class="btn btn-danger btn-block"><b>Logout</b></a>
                         @endif
                     </div>

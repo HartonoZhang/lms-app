@@ -4,6 +4,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/{{ strtolower(Auth::user()->role->name) }}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('post-list') }}">List Posts</a></li>
     <li class="breadcrumb-item active">Post Detail {{ $post->id }}</li>
 @endsection
 
@@ -15,34 +16,42 @@
                     <img class="img-circle img-bordered-sm"
                         src="{{ asset('assets') }}/images/profile/{{ $post->user->image }}" alt="user image">
                     <span class="username">
+                        <div class="d-flex align-items-center">
                         @if ($post->user->role_id === 2)
                             <a href="/teacher/profile/{{ $post->user->id }}">{{ $post->user->name }}</a>
-                        @else
+                            <span class="badge text-white ml-1"
+                                    style="background-color: #ffbb55">Teacher</span>
+                        @elseif ($post->user->role_id === 3)
                             <a href="/student/profile/{{ $post->user->id }}">{{ $post->user->name }}</a>
+                            <span class="badge text-white ml-1"
+                                    style="background-color: #7380ec">Student</span>
+                        @else
+                                {{ $post->user->name }} <span class="badge text-white ml-1"
+                                    style="background-color: #f3797e">Admin</span>
                         @endif
+                        </div>
                         @if (Auth::user()->id === $post->user->id)
                             <a href="#" class="float-right btn-tool" data-toggle="modal" data-target="#modal-delete"
                                 data-placement="top" title="Delete"><i class="fas fa-times"></i></a>
                             <a href="{{ route('post-update', $post->id) }}" class="float-right btn-tool mr-2"><i
                                     class="fa fa-edit"></i></a>
-                            @if (count($reports) === 0)
-                                <a href="#" class="float-right btn-tool mr-2" data-toggle="tooltip"
-                                    data-placement="top" title="No users reported this post."><i
-                                        class="fas fa-exclamation-triangle"></i></a>
-                            @elseif(count($reports) === 1)
-                                <a href="#" class="float-right btn-tool mr-2" data-toggle="tooltip"
-                                    data-placement="top" title="1 user reported this post."><i
-                                        class="fas fa-exclamation-triangle"></i></a>
-                            @else
-                                <a href="#" class="float-right btn-tool mr-2" data-toggle="tooltip"
-                                    data-placement="top"
-                                    title="There are {{ count($reports) }} users who reported this post."><i
-                                        class="fas fa-exclamation-triangle"></i></a>
+                            @if ($post->user->role_id !== 1)
+                                @if (count($reports) === 0)
+                                    <a href="#" class="float-right btn-tool mr-2" data-toggle="tooltip"
+                                        data-placement="top" title="No users reported this post."><i
+                                            class="fas fa-exclamation-triangle"></i></a>
+                                @elseif(count($reports) === 1)
+                                    <a href="#" class="float-right btn-tool mr-2" data-toggle="tooltip"
+                                        data-placement="top" title="1 user reported this post."><i
+                                            class="fas fa-exclamation-triangle"></i></a>
+                                @else
+                                    <a href="#" class="float-right btn-tool mr-2" data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="There are {{ count($reports) }} users who reported this post."><i
+                                            class="fas fa-exclamation-triangle"></i></a>
+                                @endif
                             @endif
-                        @elseif (Auth::user()->role_id === 1)
-                            <a href="#" class="float-right btn-tool" data-toggle="modal" data-target="#modal-delete"
-                                data-placement="top" title="Delete"><i class="fas fa-times"></i></a>
-                        @else
+                        @elseif ($post->user->role_id !== 1)
                             <a href="#" class="float-right btn-tool" data-toggle="modal" data-target="#modal-report"
                                 data-placement="top" title="Report"><i class="fas fa-exclamation-triangle"></i></a>
                         @endif

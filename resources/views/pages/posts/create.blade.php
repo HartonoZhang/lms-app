@@ -4,8 +4,6 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/{{ strtolower(Auth::user()->role->name) }}">Home</a></li>
-    <li class="breadcrumb-item"><a
-            href="/{{ strtolower(Auth::user()->role->name) }}/profile/{{ Auth::user()->id }}">Profile</a></li>
     <li class="breadcrumb-item active">Create Post</li>
 @endsection
 

@@ -117,7 +117,10 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('post')->group(function () {
-        Route::get('/', [PostController::class, 'index'])->name('post-form');
+        Route::get('/create', [PostController::class, 'index'])->name('post-create-view');
+        Route::get('/list', [PostController::class, 'list'])->name('post-list');
+        Route::get('/list-report', [PostController::class, 'listReport'])->name('post-report-view');
+        Route::get('/list-report/{id}', [PostController::class, 'listReportDetail'])->name('post-report-detail');
         Route::get('/edit/{id}', [PostController::class, 'postUpdate'])->name('post-update');
 
         Route::post('/create', [PostController::class, 'create'])->name('post-create');
