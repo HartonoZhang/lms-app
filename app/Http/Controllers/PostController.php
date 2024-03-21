@@ -19,7 +19,41 @@ class PostController extends Controller
 
     public function index()
     {
-        return view('pages.posts.index');
+        return view('pages.posts.create');
+    }
+
+    public function list()
+    {
+        $posts = Post::orderBy('created_at', 'DESC')->paginate(10);
+        return view('pages.posts.list', [
+            'posts' => $posts
+        ]);
+    }
+
+    public function listReport()
+    {
+        if (Auth::user()->role_id !== 1) {
+            return back();
+        }
+        $listPostWithReport = Post::with('report', 'user')->get();
+        $listReport = PostReport::with('user', 'post')->get();
+        return view('pages.posts.list-report', [
+            'listReport' => $listReport,
+            'listPostWithReport' => $listPostWithReport
+        ]);
+    }
+
+    public function listReportDetail($id)
+    {
+        if (Auth::user()->role_id !== 1) {
+            return back();
+        }
+        $post = Post::with('user')->findOrFail($id);
+        $listReportDetail = PostReport::with('user', 'post')->where('post_id', '=', $id)->get();
+        return view('pages.posts.list-report-detail', [
+            'post' => $post,
+            'listReportDetail' => $listReportDetail
+        ]);
     }
 
     public function postUpdate($id)
@@ -71,8 +105,7 @@ class PostController extends Controller
                 'link_2' => $request->link_2,
                 'file' => $file,
             ]);
-            $routeName = strtolower(Auth::user()->role->name);
-            return redirect()->route($routeName . '-profile', Auth::user()->id)->with(['status' => 'success', 'message' => 'New post successfully created!']);
+            return redirect()->route('post-list')->with(['status' => 'success', 'message' => 'New post successfully created!']);
         }
     }
 
@@ -172,11 +205,15 @@ class PostController extends Controller
         }
     }
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
+        $currentUrl = $request->session()->previousUrl();
         $post = Post::findOrFail($id);
         $post->delete();
-        $routeName = strtolower(Auth::user()->role->name);
-        return redirect()->route($routeName . '-profile', Auth::user()->id)->with(['status' => 'success', 'message' => 'Post successfully deleted!']);
+        if(parse_url($currentUrl)['path'] === '/post/list-report') {
+            $this->message('Post successfully deleted!', 'success');
+            return back();
+        }
+        return redirect()->route('post-list')->with(['status' => 'success', 'message' => 'Post successfully deleted!']);
     }
 }

@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classroom;
+use App\Models\Course;
+use App\Models\Material;
 use App\Models\Address;
 use App\Models\Post;
 use App\Models\Profile;
 use App\Models\Teacher;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class TeacherController extends Controller
@@ -30,7 +35,7 @@ class TeacherController extends Controller
     {
         $teacher = Teacher::with('profile', 'user')->where('user_id', '=', $id)->first();
         $address = Address::where('id', '=', $teacher->profile->address_id)->first();
-        $posts = Post::with('comment')->where('user_id', '=', $id)->paginate(5);
+        $posts = Post::with('comment')->where('user_id', '=', $id)->orderBy('created_at', 'DESC')->paginate(5);
         return view('pages.profiles.teacher', [
             'teacher' => $teacher,
             'address' => $address,

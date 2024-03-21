@@ -1,14 +1,18 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,13 +31,34 @@ Route::middleware('auth')->group(function () {
     Route::get('/leaderboard/teachers', [TeacherController::class, 'leaderboards'])->name('teacher-leaderboard');
     Route::get('teacher/profile/{id}', [TeacherController::class, 'profile'])->name('teacher-profile');
     Route::get('student/profile/{id}', [StudentController::class, 'profile'])->name('student-profile');
-    
+    Route::post('thread/', [ThreadController::class, 'postThread'])->name('thread-post');
+    Route::post('thread/comment', [ThreadController::class, 'postComment'])->name('thread-post-comment');
+    Route::controller(CourseController::class)->prefix('course')->name('course-')->group(function () {
+        Route::get('/', 'courses')->name('courses');
+        Route::get('/{id}', 'courseDetail')->name('detail');
+        Route::controller(SessionController::class)->prefix('{id}/session')->group(function(){
+            Route::get('/session', 'getSessionData')->name('session-data');
+            Route::get('/people', 'getPeopleData')->name('people-data');
+            Route::put('/update', 'updateDescription')->name('session-description-update');
+            Route::controller(MaterialController::class)->prefix('material')->name('material-')->group(function(){
+                Route::get('/', 'getMaterialFile')->name('download');
+                Route::post('/add', 'addMaterial')->name('add');
+                Route::put('/edit', 'editMaterial')->name('edit');
+                Route::delete('/delete', 'deleteMaterial')->name('delete');
+            });
+            Route::controller(AttendanceController::class)->prefix('attendance')->name('attendance-')->group(function(){
+                Route::get('/filter', 'filterAttendance')->name('filter');
+                Route::post('/save', 'saveAttendance')->name('save');
+            });
+        });
+    });
+
     Route::middleware('admin-only')->group(function () {
         Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
 
         Route::prefix('setting')->group(function () {
             Route::get('/', [AdminController::class, 'setting'])->name('setting');
-            
+
             Route::put('/edit', [OrganizationController::class, 'update'])->name('organization-edit');
         });
 
@@ -100,7 +125,10 @@ Route::middleware('auth')->group(function () {
         });
     });
     Route::middleware('teacher-only')->group(function () {
-        Route::prefix('teacher')->group(function () {
+        Route::controller(TeacherController::class)->prefix('teacher')->name('teacher-')->group(function () {
+            Route::get('/', 'home')->name('dashboard');
+            Route::get('/profile', 'profile');
+
             Route::get('/', [TeacherController::class, 'home'])->name('teacher-dashboard');
             Route::put('/updateProfile', [TeacherController::class, 'saveProfiles'])->name('update-teacher-profile');
             Route::put('/updatePhoto', [TeacherController::class, 'savePhoto'])->name('update-teacher-photo');
@@ -117,7 +145,10 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('post')->group(function () {
-        Route::get('/', [PostController::class, 'index'])->name('post-form');
+        Route::get('/create', [PostController::class, 'index'])->name('post-create-view');
+        Route::get('/list', [PostController::class, 'list'])->name('post-list');
+        Route::get('/list-report', [PostController::class, 'listReport'])->name('post-report-view');
+        Route::get('/list-report/{id}', [PostController::class, 'listReportDetail'])->name('post-report-detail');
         Route::get('/edit/{id}', [PostController::class, 'postUpdate'])->name('post-update');
 
         Route::post('/create', [PostController::class, 'create'])->name('post-create');

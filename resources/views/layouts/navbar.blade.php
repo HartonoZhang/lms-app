@@ -54,6 +54,39 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                  <a href="{{route('course-courses')}}" class="nav-link">
+                        <i class="fas fa-book nav-icon"></i>
+                        <p>
+                            Courses
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-globe nav-icon"></i>
+                        <p>
+                            Post
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('post-list') }}"
+                                class="{{ request()->is('post/list') ? 'active' : '' }} nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>List Post</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('post-create-view') }}"
+                                class="{{ request()->is('post/create') ? 'active' : '' }} nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Post</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 @if (Auth::user()->role_id === 1)
                     <li class="nav-item">
                         <a href="#" class="nav-link">

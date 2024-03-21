@@ -25,8 +25,19 @@ class Student extends Model
     {
         return $this->belongsTo(Profile::class);
     }
-    
+
     public function classroom(){
         return $this->hasMany(StudentClassroom::class);
+    }
+
+    public function attendance(){
+        return $this->hasMany(Attendance::class);
+    }
+
+    public function attendanceBySession($sessionId = null){
+        if ($sessionId) {
+            return $this->hasOne(Attendance::class)->where('session_id', $sessionId);
+        }
+        return $this->hasOne(Attendance::class);
     }
 }

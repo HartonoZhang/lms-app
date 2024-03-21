@@ -21,6 +21,9 @@ class Classroom extends Model
         return $this->hasMany(StudentClassroom::class);
     }
 
+    public function sessions(){
+        return $this->hasMany(Session::class);
+    }
     public function period(){
         return $this->belongsTo(Period::class);
     }
