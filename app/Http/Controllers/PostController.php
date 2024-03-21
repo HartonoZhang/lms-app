@@ -22,6 +22,27 @@ class PostController extends Controller
         return view('pages.posts.create');
     }
 
+    public function list()
+    {
+        $posts = Post::orderBy('created_at', 'DESC')->paginate(10);
+        return view('pages.posts.list', [
+            'posts' => $posts
+        ]);
+    }
+
+    public function listReport()
+    {
+        if (Auth::user()->role_id !== 1) {
+            return back();
+        }
+        $listPostWithReport = Post::with('report', 'user')->get();
+        $listReport = PostReport::with('user', 'post')->get();
+        return view('pages.posts.list-report', [
+            'listReport' => $listReport,
+            'listPostWithReport' => $listPostWithReport
+        ]);
+    }
+
     public function postUpdate($id)
     {
         $post = Post::findOrFail($id);
@@ -71,8 +92,7 @@ class PostController extends Controller
                 'link_2' => $request->link_2,
                 'file' => $file,
             ]);
-            $routeName = strtolower(Auth::user()->role->name);
-            return redirect()->route($routeName . '-profile', Auth::user()->id)->with(['status' => 'success', 'message' => 'New post successfully created!']);
+            return redirect()->route('post-list')->with(['status' => 'success', 'message' => 'New post successfully created!']);
         }
     }
 
@@ -176,8 +196,6 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $post->delete();
-        $routeName = strtolower(Auth::user()->role->name);
-        // bug
-        return redirect()->route($routeName . '-profile', Auth::user()->id)->with(['status' => 'success', 'message' => 'Post successfully deleted!']);
+        return redirect()->route('post-list')->with(['status' => 'success', 'message' => 'Post successfully deleted!']);
     }
 }

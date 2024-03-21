@@ -95,8 +95,10 @@ class AdminController extends Controller
     public function profile($id)
     {
         $admin = Admin::with('user')->where('user_id', '=', $id)->first();
+        $posts = Post::with('comment')->where('user_id', '=', $id)->orderBy('created_at', 'DESC')->paginate(5);
         return view('pages.profiles.admin', [
-            'admin' => $admin
+            'admin' => $admin,
+            'posts' => $posts
         ]);
     }
 

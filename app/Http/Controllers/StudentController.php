@@ -30,7 +30,7 @@ class StudentController extends Controller
     {
         $student = Student::with('profile', 'user')->where('user_id', '=', $id)->first();
         $address = Address::where('id', '=', $student->profile->address_id)->first();
-        $posts = Post::with('comment')->where('user_id', '=', $id)->paginate(5);
+        $posts = Post::with('comment')->where('user_id', '=', $id)->orderBy('created_at', 'DESC')->paginate(5);
         return view('pages.profiles.student', [
             'student' => $student,
             'address' => $address,

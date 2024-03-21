@@ -64,15 +64,15 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('teacher-leaderboard') }}"
-                                class="{{ request()->is('leaderboard/teachers') ? 'active' : '' }} nav-link">
+                            <a href="{{ route('post-list') }}"
+                                class="{{ request()->is('post/list') ? 'active' : '' }} nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List Post</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('post-create-view') }}"
-                                class="{{ request()->is('post') ? 'active' : '' }} nav-link">
+                                class="{{ request()->is('post/create') ? 'active' : '' }} nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Create Post</p>
                             </a>
