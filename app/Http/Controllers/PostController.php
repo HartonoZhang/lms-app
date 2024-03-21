@@ -43,6 +43,19 @@ class PostController extends Controller
         ]);
     }
 
+    public function listReportDetail($id)
+    {
+        if (Auth::user()->role_id !== 1) {
+            return back();
+        }
+        $post = Post::with('user')->findOrFail($id);
+        $listReportDetail = PostReport::with('user', 'post')->where('post_id', '=', $id)->get();
+        return view('pages.posts.list-report-detail', [
+            'post' => $post,
+            'listReportDetail' => $listReportDetail
+        ]);
+    }
+
     public function postUpdate($id)
     {
         $post = Post::findOrFail($id);
@@ -192,10 +205,15 @@ class PostController extends Controller
         }
     }
 
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
+        $currentUrl = $request->session()->previousUrl();
         $post = Post::findOrFail($id);
         $post->delete();
+        if(parse_url($currentUrl)['path'] === '/post/list-report') {
+            $this->message('Post successfully deleted!', 'success');
+            return back();
+        }
         return redirect()->route('post-list')->with(['status' => 'success', 'message' => 'Post successfully deleted!']);
     }
 }

@@ -186,7 +186,7 @@
                         </ul>
                     </div>
                     <div class="card-footer text-center">
-                        <a href="#" class="uppercase">View All Post</a>
+                        <a href="{{ route('post-list') }}" class="uppercase">View All Post</a>
                     </div>
                 </div>
             </section>

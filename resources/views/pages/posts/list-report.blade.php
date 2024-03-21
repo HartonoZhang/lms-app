@@ -47,46 +47,47 @@
                                     <td>
                                         <ul class="list-inline m-0">
                                             <li class="list-inline-item">
-                                                <a class="btn btn-primary btn-sm rounded-0" href="#"
-                                                    data-placement="top" title="Detail"><i class="fa fa-search"></i></a>
+                                                <a class="btn btn-primary btn-sm rounded-0"
+                                                    href="{{ route('post-report-detail', $item->id) }}" data-placement="top"
+                                                    title="Detail"><i class="fa fa-search"></i></a>
                                             </li>
                                             <li class="list-inline-item">
                                                 <a href="#" class="btn btn-danger btn-sm rounded-0"
-                                                    data-toggle="modal" data-target="#modal-delete-3" data-placement="top"
-                                                    title="Delete">
+                                                    data-toggle="modal" data-target="#modal-delete-{{ $item->id }}"
+                                                    data-placement="top" title="Delete">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
                                             </li>
                                         </ul>
                                     </td>
                                 </tr>
-                            
-                            {{-- <div class="modal fade" id="modal-delete-{{ $student->id }}">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <form action={{ route('student-delete', $student->id) }} method="POST"
-                                            enctype="multipart/form-data" data-remote="true">
-                                            @csrf
-                                            @method('DELETE')
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Remove Post</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Are you sure want to remove this student?</p>
-                                            </div>
-                                            <div class="modal-footer justify-content-between">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Cancel</button>
-                                                <button type="submit" class="btn btn-primary">Confirm</button>
-                                            </div>
-                                        </form>
+
+                                <div class="modal fade" id="modal-delete-{{ $item->id }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form action={{ route('post-delete', $item->id) }} method="POST"
+                                                enctype="multipart/form-data" data-remote="true">
+                                                @csrf
+                                                @method('DELETE')
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Remove Post</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure want to remove "{{ $item->title }}" post?</p>
+                                                </div>
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary">Confirm</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>  --}}
                             @endif
                         @endforeach
                     </tbody>
@@ -99,8 +100,6 @@
 @section('css-link')
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/toastr/toastr.min.css">
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.jsdelivr.net/gh/exacti/floating-labels@latest/floating-labels.min.css" media="screen">
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
