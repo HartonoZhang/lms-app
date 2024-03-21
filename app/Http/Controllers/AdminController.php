@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\Classroom;
+use App\Models\Period;
 use App\Models\Student;
 use App\Models\Course;
 use App\Models\Organization;
+use App\Models\Post;
+use App\Models\PostReport;
 use App\Models\Teacher;
 use App\Models\User;
 use Carbon\Carbon;
@@ -32,6 +35,14 @@ class AdminController extends Controller
         $listStudent = Student::all();
         $listClassroom = Classroom::all();
         $listCourses = Course::all();
+        $listPost = Post::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
+        $totalPost = Post::all();
+        $totalPostToday = Post::whereDate('created_at', Carbon::today())->get();
+        $totalReport = PostReport::all();
+        $totalReportToday = PostReport::whereDate('created_at', Carbon::today())->get();
+        $newCourseThisMonth = Course::whereMonth('created_at', Carbon::now()->month)->get();
+        $newStudentThisMonth = Student::whereMonth('created_at', Carbon::now()->month)->get();
+        $newTeacherThisMonth = Teacher::whereMonth('created_at', Carbon::now()->month)->get();
 
         $studentChartByYear = Student::whereBetween(
             'created_at',
@@ -69,13 +80,26 @@ class AdminController extends Controller
             'listCourses' => $listCourses,
             'studentChartByYear' => $studentChartByYear,
             'graduatedStudentByYear' => $graduatedStudentByYear,
-            'teacherChartByYear' => $teacherChartByYear
+            'teacherChartByYear' => $teacherChartByYear,
+            'totalPost' => $totalPost,
+            'totalPostToday' => $totalPostToday,
+            'totalReport' => $totalReport,
+            'totalReportToday' => $totalReportToday,
+            'newCourseThisMonth' => $newCourseThisMonth,
+            'newStudentThisMonth' => $newStudentThisMonth,
+            'newTeacherThisMonth' => $newTeacherThisMonth,
+            'listPost' => $listPost
         ]);
     }
 
-    public function profile()
+    public function profile($id)
     {
-        return view('pages.profiles.admin');
+        $admin = Admin::with('user')->where('user_id', '=', $id)->first();
+        $posts = Post::with('comment')->where('user_id', '=', $id)->orderBy('created_at', 'DESC')->paginate(5);
+        return view('pages.profiles.admin', [
+            'admin' => $admin,
+            'posts' => $posts
+        ]);
     }
 
     public function setting()
@@ -163,9 +187,25 @@ class AdminController extends Controller
         return view('pages.courses.edit')->with(['data' => $data]);
     }
 
+    public function periodList(){
+        $data = Period::with(['classroom'])->get();
+        return view('pages.periods.list')->with([
+            'datas'=> $data
+        ]);
+    }
+
+    public function periodAdd(){
+        return view('pages.periods.add');
+    }
+
+    public function periodEdit($id){
+        $data = Period::find($id);
+        return view('pages.periods.edit')->with(['data' => $data]);
+    }
+
     public function classList()
     {
-        $classrooms = Classroom::with(['course'])->get();
+        $classrooms = Classroom::with(['course','period'])->get();
         return view('pages.classes.list')->with([
             'classrooms' => $classrooms
         ]);
@@ -173,7 +213,7 @@ class AdminController extends Controller
 
     public function classDetail($id)
     {
-        $data = Classroom::with(['course', 'teacherClassroom.teacher.user', 'studentClassroom.student.user'])->where('id', $id)->get()[0];
+        $data = Classroom::with(['course', 'period', 'teacherClassroom.teacher.user', 'studentClassroom.student.user'])->where('id', $id)->get()[0];
         $studentLists = $data->studentClassroom->pluck('student');
         $teacherLists = $data->teacherClassroom->pluck('teacher');
         return view('pages.classes.detail')->with([
@@ -186,10 +226,12 @@ class AdminController extends Controller
     public function classAdd()
     {
         $courses = Course::all();
+        $periods = Period::all();
         $students = Student::with(['user'])->get();
         $teachers = Teacher::with(['user'])->get();
         return view('pages.classes.add')->with([
             'courses' => $courses,
+            'periods' => $periods,
             'students' => $students,
             'teachers' => $teachers,
         ]);
@@ -198,6 +240,7 @@ class AdminController extends Controller
     public function classEdit($id)
     {
         $courses = Course::all();
+        $periods = Period::all();
         $students = Student::with(['user'])->get();
         $teachers = Teacher::with(['user'])->get();
         $data = Classroom::with(['course', 'teacherClassroom', 'studentClassroom'])->where('id', $id)->get()[0];
@@ -206,6 +249,7 @@ class AdminController extends Controller
         return view('pages.classes.edit')->with([
             'data' => $data,
             'courses' => $courses,
+            'periods' => $periods,
             'students' => $students,
             'teachers' => $teachers,
             'checkedStudent' => $checkedStudent,
@@ -226,7 +270,7 @@ class AdminController extends Controller
             $user->name = $request->name;
             $user->update();
 
-            $this->message('Profile Successfully Updated!', 'success');
+            $this->message('Profile successfully updated!', 'success');
             return back();
         }
     }
@@ -244,7 +288,7 @@ class AdminController extends Controller
                 'password' => Hash::make($request->newPassword),
             ]);
 
-            $this->message('Password Successfully Updated!', 'success');
+            $this->message('Password successfully updated!', 'success');
             return back();
         }
     }
@@ -262,14 +306,14 @@ class AdminController extends Controller
         } else {
             $user = User::find(Auth::user()->id);
             $extension = $request->file('image')->getClientOriginalExtension();
-            $imgName = $user->name . '-' . now()->timestamp . '.' . $extension;
+            $imgName = $user->id . '-' . now()->timestamp . '.' . $extension;
             $request->file('image')->move('assets/images/profile', $imgName);
 
             $user->update([
                 'image' => $imgName
             ]);
 
-            $this->message('Profile Photo Successfully Updated.', 'success');
+            $this->message('Profile photo successfully updated.', 'success');
             return back();
         }
     }

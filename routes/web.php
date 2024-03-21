@@ -7,6 +7,7 @@ use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StudentController;
@@ -93,6 +94,16 @@ Route::middleware('auth')->group(function () {
             Route::put('/edit/{id}', [CourseController::class, 'update'])->name('course-update');
         });
 
+        Route::prefix('period')->group(function () {
+            Route::get('/list', [AdminController::class, 'periodList'])->name('period-list');
+            Route::get('/add', [AdminController::class, 'periodAdd'])->name('period-add');
+            Route::get('/edit/{id}', [AdminController::class, 'periodEdit'])->name('period-update');
+
+            Route::post('/add', [PeriodController::class, 'create'])->name('period-add');
+            Route::delete('/delete/{id}', [PeriodController::class, 'delete'])->name('period-delete');
+            Route::put('/edit/{id}', [PeriodController::class, 'update'])->name('period-update');
+        });
+
         Route::prefix('class')->group(function () {
             Route::get('/list', [AdminController::class, 'classList'])->name('class-list');
             Route::get('/add', [AdminController::class, 'classAdd'])->name('class-add');
@@ -106,17 +117,22 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('admin')->group(function () {
             Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
-            Route::get('/profile', [AdminController::class, 'profile']);
+            Route::get('/profile/{id}', [AdminController::class, 'profile']);
 
-            Route::put('/updateProfile', [AdminController::class, 'saveProfiles']);
-            Route::put('/updatePassword', [AdminController::class, 'savePassword']);
-            Route::put('/updatePhoto', [AdminController::class, 'savePhoto']);
+            Route::put('/updateProfile', [AdminController::class, 'saveProfiles'])->name('update-admin-profile');
+            Route::put('/updatePassword', [AdminController::class, 'savePassword'])->name('update-admin-password');
+            Route::put('/updatePhoto', [AdminController::class, 'savePhoto'])->name('update-admin-photo');
         });
     });
     Route::middleware('teacher-only')->group(function () {
         Route::controller(TeacherController::class)->prefix('teacher')->name('teacher-')->group(function () {
             Route::get('/', 'home')->name('dashboard');
             Route::get('/profile', 'profile');
+
+            Route::get('/', [TeacherController::class, 'home'])->name('teacher-dashboard');
+            Route::put('/updateProfile', [TeacherController::class, 'saveProfiles'])->name('update-teacher-profile');
+            Route::put('/updatePhoto', [TeacherController::class, 'savePhoto'])->name('update-teacher-photo');
+            Route::put('/updatePassword', [TeacherController::class, 'savePassword'])->name('update-teacher-password');
         });
     });
     Route::middleware('student-only')->group(function () {
@@ -124,16 +140,21 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [StudentController::class, 'home'])->name('student-dashboard');
             Route::put('/updateProfile', [StudentController::class, 'saveProfiles'])->name('update-student-profile');
             Route::put('/updatePhoto', [StudentController::class, 'savePhoto'])->name('update-student-photo');
+            Route::put('/updatePassword', [StudentController::class, 'savePassword'])->name('update-student-password');
         });
     });
 
     Route::prefix('post')->group(function () {
-        Route::get('/', [PostController::class, 'index'])->name('post-form');
+        Route::get('/create', [PostController::class, 'index'])->name('post-create-view');
+        Route::get('/list', [PostController::class, 'list'])->name('post-list');
+        Route::get('/list-report', [PostController::class, 'listReport'])->name('post-report-view');
+        Route::get('/list-report/{id}', [PostController::class, 'listReportDetail'])->name('post-report-detail');
         Route::get('/edit/{id}', [PostController::class, 'postUpdate'])->name('post-update');
 
         Route::post('/create', [PostController::class, 'create'])->name('post-create');
         Route::put('/edit/{id}', [PostController::class, 'update'])->name('post-update');
         Route::delete('/delete/{id}', [PostController::class, 'delete'])->name('post-delete');
+        Route::put('/report/{id}', [PostController::class, 'report'])->name('post-report');
         Route::post('/comment/{id}', [PostController::class, 'comment'])->name('post-comment-create');
         Route::get('/detail/{id}', [PostController::class, 'detail'])->name('post-detail');
     });

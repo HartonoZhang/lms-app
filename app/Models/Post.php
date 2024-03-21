@@ -14,7 +14,11 @@ class Post extends Model
         'user_id',
         'title',
         'description',
-        'image'
+        'image',
+        'image_2',
+        'link',
+        'link_2',
+        'file'
     ];
 
     public function user()
@@ -24,5 +28,9 @@ class Post extends Model
 
     public function comment(){
         return $this->hasMany(PostComment::class);
+    }
+
+    public function report(){
+        return $this->hasMany(PostReport::class);
     }
 }

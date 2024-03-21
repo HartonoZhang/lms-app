@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Classroom extends Model
 {
-    protected $fillable = ['course_id','code', 'name', 'student_capacity'];
+    protected $fillable = ['course_id','period_id','code', 'name', 'student_capacity'];
+    use HasFactory;
     public function course(){
         return $this->belongsTo(Course::class);
     }
@@ -23,5 +24,7 @@ class Classroom extends Model
     public function sessions(){
         return $this->hasMany(Session::class);
     }
-    use HasFactory;
+    public function period(){
+        return $this->belongsTo(Period::class);
+    }
 }

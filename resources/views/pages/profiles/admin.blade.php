@@ -16,11 +16,11 @@
                     <div class="card-body box-profile">
                         <div class="text-center">
                             <img class="profile-user-img img-fluid img-circle"
-                            src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}"
-                            alt="User profile picture" style="width: 120px; height: 120px;">
+                                src="{{ asset('assets') }}/images/profile/{{ $admin->user->image }}"
+                                alt="User profile picture" style="width: 120px; height: 120px;">
                         </div>
-                        <h3 class="profile-username text-center">{{ Auth::user()->name }}</h3>
-                        <p class="text-muted text-center">{{ Auth::user()->email }}</p>
+                        <h3 class="profile-username text-center">{{ $admin->user->name }}</h3>
+                        <p class="text-muted text-center">{{ $admin->user->email }}</p>
 
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
@@ -43,15 +43,50 @@
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Settings</a>
+                            <li class="nav-item"><a class="nav-link active" href="#posts" data-toggle="tab">Posts</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a>
                             </li>
                             <li class="nav-item"><a class="nav-link" href="#security" data-toggle="tab">Security</a></li>
                         </ul>
                     </div>
                     <div class="card-body">
                         <div class="tab-content">
-                            <div class="active tab-pane" id="settings">
-                                <form class="form-horizontal" action="/admin/updateProfile" method="POST"
+                            <div class="active tab-pane" id="posts">
+                                @if (count($posts) == 0)
+                                    <p>There is no posts yet</p>
+                                @else
+                                    @foreach ($posts as $item)
+                                        <div class="post">
+                                            <div class="user-block">
+                                                <img class="img-circle img-bordered-sm"
+                                                    src="{{ asset('assets') }}/images/profile/{{ $admin->user->image }}"
+                                                    alt="user image">
+                                                <span class="username">
+                                                    {{ $admin->user->name }}
+                                                </span>
+                                                <span
+                                                    class="description">{{ $item->created_at->format('g:i, A d-m-y') }}</span>
+                                            </div>
+                                            <a href="{{ route('post-detail', $item->id) }}">
+                                                <h6>{{ $item->title }}</h6>
+                                            </a>
+                                            <p class="post-description">
+                                                {{ $item->description }}
+                                            </p>
+
+                                            <p class="d-flex justify-content-end">
+                                                <a href="{{ route('post-detail', $item->id) }}" class="text-sm">
+                                                    <i class="far fa-comments mr-1"></i> Comments
+                                                    ({{ count($item->comment) }})
+                                                </a>
+                                            </p>
+                                        </div>
+                                    @endforeach
+                                    {{ $posts->links() }}
+                                @endif
+                            </div>
+                            <div class="tab-pane" id="settings">
+                                <form class="form-horizontal" action={{ route('update-admin-profile') }} method="POST"
                                     enctype="multipart/form-data" data-remote="true">
                                     @csrf
                                     @method('PUT')
@@ -60,7 +95,7 @@
                                         <div class="col-sm-10">
                                             <input type="Name" class="form-control" id="inputName"
                                                 placeholder="Input your name" name="name"
-                                                value="{{ Auth::user()->name }}">
+                                                value="{{ old('name', $admin->user->name) }}">
                                             @error('name')
                                                 <p class="text-danger m-0">{{ $message }}</p>
                                             @enderror
@@ -71,7 +106,7 @@
                                         <div class="col-sm-10">
                                             <input type="email" class="form-control" id="inputEmail"
                                                 placeholder="Input your email" name="email"
-                                                value="{{ Auth::user()->email }}">
+                                                value="{{ old('email', $admin->user->email) }}">
                                             @error('email')
                                                 <p class="text-danger m-0">{{ $message }}</p>
                                             @enderror
@@ -85,15 +120,15 @@
                                 </form>
                             </div>
                             <div class="tab-pane" id="security">
-                                <form class="form-horizontal" action="/admin/updatePassword" method="POST"
+                                <form class="form-horizontal" action={{ route('update-admin-password') }} method="POST"
                                     enctype="multipart/form-data" data-remote="true">
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group row">
                                         <label for="oldPassword" class="col-sm-2 col-form-label">Old Password</label>
                                         <div class="col-sm-10">
-                                            <input type="password" class="form-control" id="oldPassword" name="oldPassword"
-                                                placeholder="Input old password">
+                                            <input type="password" class="form-control" id="oldPassword"
+                                                name="oldPassword" placeholder="Input old password">
                                             @error('oldPassword')
                                                 <p class="text-danger m-0">{{ $message }}</p>
                                             @enderror
@@ -102,8 +137,8 @@
                                     <div class="form-group row">
                                         <label for="newPassword" class="col-sm-2 col-form-label">New Password</label>
                                         <div class="col-sm-10">
-                                            <input type="password" class="form-control" id="newPassword" name="newPassword"
-                                                placeholder="Input new password">
+                                            <input type="password" class="form-control" id="newPassword"
+                                                name="newPassword" placeholder="Input new password">
                                             @error('newPassword')
                                                 <p class="text-danger m-0">{{ $message }}</p>
                                             @enderror
@@ -139,7 +174,8 @@
     <div class="modal fade" id="modal-update-photo">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="/admin/updatePhoto" method="POST" enctype="multipart/form-data" data-remote="true">
+                <form action={{ route('update-admin-photo') }} method="POST" enctype="multipart/form-data"
+                    data-remote="true">
                     @csrf
                     @method('PUT')
                     <div class="modal-header">

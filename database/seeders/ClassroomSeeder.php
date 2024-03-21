@@ -22,16 +22,19 @@ class ClassroomSeeder extends Seeder
                 'name'=> 'Tutorial Class Only',
                 'code'=> 'LH01',
                 'student_capacity' => 10,
+                'period_id' => '1',
             ],[
                 'course_id' => 2,
                 'name'=> 'Exam Room',
                 'code'=> 'LK01',
                 'student_capacity' => 30,
+                'period_id' => '2',
             ],[
                 'course_id' => 3,
                 'name'=> 'VIP Class',
                 'code'=> 'LI01',
                 'student_capacity' => null,
+                'period_id' => '3',
             ]
         ];
 
@@ -43,6 +46,7 @@ class ClassroomSeeder extends Seeder
                 'student_capacity'=> $value['student_capacity'],
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
+                'period_id' => $value['period_id'],
             ]);
         }
     }

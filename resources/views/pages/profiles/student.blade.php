@@ -36,7 +36,6 @@
                         @if (Auth::user()->id === $student->user_id)
                             <button class="btn btn-primary btn-block" data-toggle="modal"
                                 data-target="#modal-update-photo"><b>Change Profile Photo</b></button>
-                            <a href="{{ route('post-form') }}" class="btn btn-info btn-block"><b>Create Post</b></a>
                             <a href="{{ route('logout') }}" class="btn btn-danger btn-block"><b>Logout</b></a>
                         @endif
                     </div>
@@ -90,12 +89,15 @@
                                                     ({{ count($item->comment) }})
                                                 </a>
                                             </p>
-                                            <form class="mb-4" action={{ route('post-comment-create', $item->id) }}
-                                                method="POST" enctype="multipart/form-data" data-remote="true">
-                                                @csrf
-                                                <input class="form-control form-control-sm" type="text" name="comment"
-                                                    placeholder="Type a comment">
-                                            </form>
+
+                                            @if (Auth::user()->role_id !== 1)
+                                                <form class="mb-4" action={{ route('post-comment-create', $item->id) }}
+                                                    method="POST" enctype="multipart/form-data" data-remote="true">
+                                                    @csrf
+                                                    <input class="form-control form-control-sm" type="text"
+                                                        name="comment" placeholder="Type a comment">
+                                                </form>
+                                            @endif
                                         </div>
                                     @endforeach
                                     {{ $posts->links() }}
@@ -236,8 +238,8 @@
                                     </form>
                                 </div>
                                 <div class="tab-pane" id="security">
-                                    <form class="form-horizontal" action="/admin/updatePassword" method="POST"
-                                        enctype="multipart/form-data" data-remote="true">
+                                    <form class="form-horizontal" action={{ route('update-student-password') }}
+                                        method="POST" enctype="multipart/form-data" data-remote="true">
                                         @csrf
                                         @method('PUT')
                                         <div class="form-group row">
