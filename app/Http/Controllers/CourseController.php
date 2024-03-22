@@ -93,4 +93,9 @@ class CourseController extends Controller
         ];
         return view('pages.courses.detail', $data);
     }
+
+    public function studentCourse()
+    {
+        return view('pages.courses.student.detail');
+    }
 }

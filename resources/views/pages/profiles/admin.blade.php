@@ -24,10 +24,10 @@
 
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <b>Teachers</b> <a class="float-right">1,322</a>
+                                <b>Teachers</b> <a class="float-right">{{ count($teachers) }}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Students</b> <a class="float-right">543</a>
+                                <b>Students</b> <a class="float-right">{{ count($students) }}</a>
                             </li>
                         </ul>
                         <button class="btn btn-primary btn-block" data-toggle="modal"

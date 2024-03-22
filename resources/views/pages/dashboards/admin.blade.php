@@ -167,22 +167,28 @@
                     </div>
                     <div class="card-body p-0">
                         <ul class="products-list product-list-in-card pl-2 pr-2">
-                            @foreach ($listPost as $item)
-                                <li class="item">
-                                    <div class="product-img">
-                                        <img src="{{ asset('assets') }}/images/profile/{{ $item->user->image }}"
-                                            alt="Product Image" class="img-size-50">
-                                    </div>
-                                    <div class="product-info">
-                                        <a href="{{ route('post-detail', $item->id) }}"
-                                            class="product-title">{{ $item->title }}
-                                        </a>
-                                        <span class="product-description">
-                                            {{ $item->description }}
-                                        </span>
-                                    </div>
+                            @if (count($listPost))
+                                @foreach ($listPost as $item)
+                                    <li class="item">
+                                        <div class="product-img">
+                                            <img src="{{ asset('assets') }}/images/profile/{{ $item->user->image }}"
+                                                alt="Product Image" class="img-size-50">
+                                        </div>
+                                        <div class="product-info">
+                                            <a href="{{ route('post-detail', $item->id) }}"
+                                                class="product-title">{{ $item->title }}
+                                            </a>
+                                            <span class="product-description">
+                                                {{ $item->description }}
+                                            </span>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            @else
+                                <li class="item text-center">
+                                    There are no post yet!
                                 </li>
-                            @endforeach
+                            @endif
                         </ul>
                     </div>
                     <div class="card-footer text-center">

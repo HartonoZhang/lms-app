@@ -21,41 +21,45 @@
         </div>
         <div class="card">
             <div class="card-body">
-                @foreach ($posts as $item)
-                    <div class="post">
-                        <div class="user-block">
-                            <img class="img-circle img-bordered-sm"
-                                src="{{ asset('assets') }}/images/profile/{{ $item->user->image }}" alt="user image">
-                            <span class="username d-flex align-items-center">
-                                @if ($item->user->role_id === 1)
-                                    {{ $item->user->name }} <span class="badge text-white ml-1"
-                                        style="background-color: #f3797e">Admin</span>
-                                @elseif($item->user->role_id === 2)
-                                    {{ $item->user->name }} <span class="badge text-white ml-1"
-                                        style="background-color: #ffbb55">Teacher</span>
-                                @else
-                                    {{ $item->user->name }} <span class="badge text-white ml-1"
-                                        style="background-color: #7380ec">Student</span>
-                                @endif
-                            </span>
-                            <span class="description">{{ $item->created_at->format('g:iA, d-m-y') }}</span>
-                        </div>
-                        <a href="{{ route('post-detail', $item->id) }}">
-                            <h6>{{ $item->title }}</h6>
-                        </a>
-                        <p class="post-description">
-                            {{ $item->description }}
-                        </p>
-
-                        <p class="d-flex justify-content-end">
-                            <a href="{{ route('post-detail', $item->id) }}" class="text-sm">
-                                <i class="far fa-comments mr-1"></i> Comments
-                                ({{ count($item->comment) }})
+                @if (count($posts))
+                    @foreach ($posts as $item)
+                        <div class="post">
+                            <div class="user-block">
+                                <img class="img-circle img-bordered-sm"
+                                    src="{{ asset('assets') }}/images/profile/{{ $item->user->image }}" alt="user image">
+                                <span class="username d-flex align-items-center">
+                                    @if ($item->user->role_id === 1)
+                                        {{ $item->user->name }} <span class="badge text-white ml-1"
+                                            style="background-color: #f3797e">Admin</span>
+                                    @elseif($item->user->role_id === 2)
+                                        {{ $item->user->name }} <span class="badge text-white ml-1"
+                                            style="background-color: #ffbb55">Teacher</span>
+                                    @else
+                                        {{ $item->user->name }} <span class="badge text-white ml-1"
+                                            style="background-color: #7380ec">Student</span>
+                                    @endif
+                                </span>
+                                <span class="description">{{ $item->created_at->format('g:iA, d-m-y') }}</span>
+                            </div>
+                            <a href="{{ route('post-detail', $item->id) }}">
+                                <h6>{{ $item->title }}</h6>
                             </a>
-                        </p>
-                    </div>
-                @endforeach
-                {{ $posts->links() }}
+                            <p class="post-description">
+                                {{ $item->description }}
+                            </p>
+
+                            <p class="d-flex justify-content-end">
+                                <a href="{{ route('post-detail', $item->id) }}" class="text-sm">
+                                    <i class="far fa-comments mr-1"></i> Comments
+                                    ({{ count($item->comment) }})
+                                </a>
+                            </p>
+                        </div>
+                    @endforeach
+                    {{ $posts->links() }}
+                @else
+                    There are no post yet!
+                @endif
             </div>
         </div>
     </div>

@@ -6,7 +6,7 @@
     </a>
 
     <div class="sidebar">
-        <a href="/{{ $role }}/profile/{{Auth::user()->id}}"
+        <a href="/{{ $role }}/profile/{{ Auth::user()->id }}"
             class="user-panel mt-3 py-2 mb-3 d-flex align-items-center rounded">
             <div class="image">
                 <img src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}" class="img-circle elevation-2"
@@ -24,7 +24,7 @@
                 <li class="nav-header">MAIN MENU</li>
                 <li class="nav-item">
                     <a href="/{{ $role }}"
-                        class="{{ request()->is('/') || request()->is('admin') ? 'active' : '' }} nav-link">
+                        class="{{ request()->is('/') || request()->is($role) ? 'active' : '' }} nav-link">
                         <i class="fas fa-tachometer-alt nav-icon"></i>
                         <p>Dashboard</p>
                     </a>
@@ -54,14 +54,16 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                  <a href="{{route('course-courses')}}" class="nav-link">
-                        <i class="fas fa-book nav-icon"></i>
-                        <p>
-                            Courses
-                        </p>
-                    </a>
-                </li>
+                @if (Auth::user()->role_id === 3)
+                    <li class="nav-item">
+                        <a href="{{ route('student-course') }}" class="{{ request()->is('student/course') ? 'active' : '' }} nav-link">
+                            <i class="fas fa-book nav-icon"></i>
+                            <p>
+                                My Courses
+                            </p>
+                        </a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="fas fa-globe nav-icon"></i>
