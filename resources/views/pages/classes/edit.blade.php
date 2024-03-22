@@ -75,6 +75,30 @@
                             <p class="text-danger mb-1">{{ $message }}</p>
                             @enderror
                         </div>
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
+                                <select class="form-control form-control-mb select2" style="width: 100%;" name="period">
+                                    <option disabled selected>Select period</option>
+                                    @foreach ($periods as $period)
+                                        @php
+                                            $selected = false;
+                                            if (old('period')) {
+                                                if(old ('period')== $period->id){
+                                                    $selected = true;
+                                                }
+                                            } else if ($period->id == $data->period_id){
+                                                $selected = true;
+                                            }
+                                        @endphp
+                                        <option value={{$period->id}} {{$selected ? "selected" : ""}}>{{$period->name}}</option>
+                                    @endforeach
+                                </select>
+                                <label for="inputGender">Period*</label>
+                            </div>
+                            @error('period')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                     @php
                         if (old('studentLists')) {
@@ -126,7 +150,7 @@
                                 <tbody>
                                     @foreach ($students as $student)
                                         <tr>
-                                            <td>{{$student->name}}</td>
+                                            <td>{{$student->user->name}}</td>
                                             <td>{{$student->user->email}}</td>
                                             <td>
                                                 @php
@@ -187,7 +211,7 @@
                                 <tbody>
                                     @foreach ($teachers as $teacher)
                                         <tr>
-                                            <td>{{$teacher->name}}</td>
+                                            <td>{{$teacher->user->name}}</td>
                                             <td>{{$teacher->user->email}}</td>
                                             <td>
                                                 <div class="custom-control custom-checkbox">

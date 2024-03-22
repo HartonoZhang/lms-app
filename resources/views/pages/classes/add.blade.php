@@ -8,202 +8,241 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid h-100">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    Class Information
-                </h3>
-            </div>
-            <div class="card-body">
-                <form class="form-horizontal" id="addClassroomForm" action="{{route('class-add')}}" method="POST" enctype="multipart/form-data"
-                    data-remote="true">
-                    @csrf
-                    <div class="form-row">
-                        <div class="col-sm-4 mb-3">
-                            <div class="form-label-group in-border mb-1">
-                                <input type="text" id="firstName" class="form-control form-control-mb"
-                                    placeholder="First Name" name="code" value="{{old("code")}}" />
-                                <label for="firstName">Class Code*</label>
+    @if ($courses->all() && $periods->all() && $students->all() && $teachers->all())
+        <div class="container-fluid h-100">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        Class Information
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal" id="addClassroomForm" action="{{route('class-add')}}" method="POST" enctype="multipart/form-data"
+                        data-remote="true">
+                        @csrf
+                        <div class="form-row">
+                            <div class="col-sm-4 mb-3">
+                                <div class="form-label-group in-border mb-1">
+                                    <input type="text" id="firstName" class="form-control form-control-mb"
+                                        placeholder="First Name" name="code" value="{{old("code")}}" />
+                                    <label for="firstName">Class Code*</label>
+                                </div>
+                                @error('code')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                                @enderror
                             </div>
-                            @error('code')
-                            <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="col-sm-4 mb-3">
-                            <div class="form-label-group in-border mb-1">
-                                <input type="text" id="lastName" class="form-control form-control-mb"
-                                    placeholder="Last Name" name="name" value="{{old("name")}}" />
-                                <label for="lastName">Class Name*</label>
+                            <div class="col-sm-4 mb-3">
+                                <div class="form-label-group in-border mb-1">
+                                    <input type="text" id="lastName" class="form-control form-control-mb"
+                                        placeholder="Last Name" name="name" value="{{old("name")}}" />
+                                    <label for="lastName">Class Name*</label>
+                                </div>
+                                @error('name')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                                @enderror
                             </div>
-                            @error('name')
-                            <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="col-sm-4 mb-3">
-                            <div class="form-label-group in-border mb-1">
-                                <input type="text" id="lastName" class="form-control form-control-mb"
-                                    placeholder="Last Name" name="student_capacity" value="{{old("student_capacity")}}" />
-                                <label for="lastName">Max capacity for student (leave empty value if no limit)*</label>
+                            <div class="col-sm-4 mb-3">
+                                <div class="form-label-group in-border mb-1">
+                                    <input type="text" id="lastName" class="form-control form-control-mb"
+                                        placeholder="Last Name" name="student_capacity" value="{{old("student_capacity")}}" />
+                                    <label for="lastName">Max capacity for student (leave empty value if no limit)*</label>
+                                </div>
+                                @error('student_capacity')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                                @enderror
                             </div>
-                            @error('student_capacity')
-                            <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="col-sm-4 mb-3">
-                            <div class="form-label-group in-border mb-1">
-                                <select class="form-control form-control-mb select2" style="width: 100%;" name="course">
-                                    <option disabled selected>Select a course</option>
-                                    @foreach ($courses as $course)
-                                        <option value={{$course->id}} {{old('course') == $course->id ? "selected" : ""}}>{{$course->code == null ? "" : $course->code." - "}}{{$course->name}}</option>
-                                    @endforeach
-                                </select>
-                                <label for="inputGender">Course*</label>
+                            <div class="col-sm-4 mb-3">
+                                <div class="form-label-group in-border mb-1">
+                                    <select class="form-control form-control-mb select2" style="width: 100%;" name="course">
+                                        <option disabled selected>Select course</option>
+                                        @foreach ($courses as $course)
+                                            <option value={{$course->id}} {{old('course') == $course->id ? "selected" : ""}}>{{$course->code == null ? "" : $course->code." - "}}{{$course->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <label for="inputGender">Course*</label>
+                                </div>
+                                @error('course')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                                @enderror
                             </div>
-                            @error('course')
-                            <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
+                            <div class="col-sm-4 mb-3">
+                                <div class="form-label-group in-border mb-1">
+                                    <select class="form-control form-control-mb select2" style="width: 100%;" name="period">
+                                        <option disabled selected>Select period</option>
+                                        @foreach ($periods as $period)
+                                            <option value={{$period->id}} {{old('period') == $period->id ? "selected" : ""}}>{{$period->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <label for="inputGender">Period*</label>
+                                </div>
+                                @error('period')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
-                    @php
-                        if (old('studentLists')) {
-                            $oldCheckedStudent = explode(',',old('studentLists'));
-                        }else {
-                            $oldCheckedStudent = null;
-                        }
-                        if (old('teacherLists')) {
-                            $oldCheckedTeacher = explode(',',old('teacherLists'));
-                        }else {
-                            $oldCheckedTeacher = null;
-                        }
-                    @endphp
-                    <script type="text/javascript">
-                        var studentCheckboxes = '<?php echo json_encode($oldCheckedStudent); ?>'
-                        if (studentCheckboxes === "null") {
-                            studentCheckboxes = []
-                        } else {
-                            studentCheckboxes = studentCheckboxes.replaceAll("[","").replaceAll("]","").replaceAll("\"","").split(",")
-                            studentCheckboxes = studentCheckboxes.map(Number)
-                        }
-                        console.log(studentCheckboxes)
-                        function updateStudentCheckbox(id){
-                            if (!studentCheckboxes.includes(id)){
-                                studentCheckboxes.push(id);
+                        @php
+                            if (old('studentLists')) {
+                                $oldCheckedStudent = explode(',',old('studentLists'));
+                            }else {
+                                $oldCheckedStudent = null;
+                            }
+                            if (old('teacherLists')) {
+                                $oldCheckedTeacher = explode(',',old('teacherLists'));
+                            }else {
+                                $oldCheckedTeacher = null;
+                            }
+                        @endphp
+                        <script type="text/javascript">
+                            var studentCheckboxes = '<?php echo json_encode($oldCheckedStudent); ?>'
+                            if (studentCheckboxes === "null") {
+                                studentCheckboxes = []
                             } else {
-                                index = studentCheckboxes.indexOf(id);
-                                if (index > -1) {
-                                    studentCheckboxes.splice(index, 1);
-                                }
+                                studentCheckboxes = studentCheckboxes.replaceAll("[","").replaceAll("]","").replaceAll("\"","").split(",")
+                                studentCheckboxes = studentCheckboxes.map(Number)
                             }
                             console.log(studentCheckboxes)
-                            document.getElementById("studentLists").value = studentCheckboxes;
-                        }
-                    </script>
-                    <div class="card border">
-                        <div class="card-body">
-                            <table id="table-students" class="table table-bordered table-striped">
-                                <thead>
-                                    @error('studentLists')
-                                        <p class="text-danger mb-1">{{ $message }}</p>
-                                    @enderror   
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($students as $student)
-                                        <tr>
-                                            <td>{{$student->name}}</td>
-                                            <td>{{$student->user->email}}</td>
-                                            <td>
-                                                @php
-                                                    $isChecked = false;
-                                                    if ($oldCheckedStudent) {
-                                                        if (in_array($student->id, $oldCheckedStudent)){
-                                                            $isChecked = true;
-                                                        }
-                                                    }
-                                                @endphp
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="studentid-{{$student->id}}" onchange=updateStudentCheckbox({{$student->id}}) {{$isChecked ? "checked" : ""}} />
-                                                    <label class="custom-control-label" for="studentid-{{$student->id}}"></label>
-                                                </div>
-                                            </td>
-                                        </tr>    
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <input type="hidden" name="studentLists"  id="studentLists"/>
-                    <script type="text/javascript">
-                         var teacherCheckboxes = '<?php echo json_encode($oldCheckedTeacher); ?>'
-                        if (teacherCheckboxes === "null") {
-                            teacherCheckboxes = []
-                        } else {
-                            teacherCheckboxes = teacherCheckboxes.replaceAll("[","").replaceAll("]","").replaceAll("\"","").split(",")
-                            teacherCheckboxes = teacherCheckboxes.map(Number)
-                        }
-                        function updateTeacherCheckbox(id){
-                            // console.log(id);
-                            if (!teacherCheckboxes.includes(id)){
-                                teacherCheckboxes.push(id);
-                            } else {
-                                index = teacherCheckboxes.indexOf(id);
-                                if (index > -1) {
-                                    teacherCheckboxes.splice(index, 1);
+                            function updateStudentCheckbox(id){
+                                if (!studentCheckboxes.includes(id)){
+                                    studentCheckboxes.push(id);
+                                } else {
+                                    index = studentCheckboxes.indexOf(id);
+                                    if (index > -1) {
+                                        studentCheckboxes.splice(index, 1);
+                                    }
                                 }
+                                console.log(studentCheckboxes)
+                                document.getElementById("studentLists").value = studentCheckboxes;
                             }
-                            document.getElementById("teacherLists").value = teacherCheckboxes;
-                        }
-                    </script>
-                    <div class="card border">
-                        <div class="card-body">
-                            <table id="table-teachers" class="table table-bordered table-striped">
-                                <thead>
-                                    @error('teacherLists')
-                                        <p class="text-danger mb-1">{{ $message }}</p>
-                                    @enderror   
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($teachers as $teacher)
+                        </script>
+                        <div class="card border">
+                            <div class="card-body">
+                                <table id="table-students" class="table table-bordered table-striped">
+                                    <thead>
+                                        @error('studentLists')
+                                            <p class="text-danger mb-1">{{ $message }}</p>
+                                        @enderror   
                                         <tr>
-                                            <td>{{$teacher->name}}</td>
-                                            <td>{{$teacher->user->email}}</td>
-                                            <td>
-                                                <div class="custom-control custom-checkbox">
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($students as $student)
+                                            <tr>
+                                                <td>{{$student->user->name}}</td>
+                                                <td>{{$student->user->email}}</td>
+                                                <td>
                                                     @php
                                                         $isChecked = false;
-                                                        if ($oldCheckedTeacher) {
-                                                            if (in_array($teacher->id, $oldCheckedTeacher)){
+                                                        if ($oldCheckedStudent) {
+                                                            if (in_array($student->id, $oldCheckedStudent)){
                                                                 $isChecked = true;
                                                             }
                                                         }
                                                     @endphp
-                                                    <input type="checkbox" class="custom-control-input" id="teacherid-{{$teacher->id}}" onchange=updateTeacherCheckbox({{$teacher->id}}) {{$isChecked ? "checked" : ""}} >
-                                                    <label class="custom-control-label" for="teacherid-{{$teacher->id}}"></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="studentid-{{$student->id}}" onchange=updateStudentCheckbox({{$student->id}}) {{$isChecked ? "checked" : ""}} />
+                                                        <label class="custom-control-label" for="studentid-{{$student->id}}"></label>
+                                                    </div>
+                                                </td>
+                                            </tr>    
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    <input type="hidden" name="teacherLists"  id="teacherLists"/>
-                    <a type="button" href="{{route('class-list')}}" class="btn btn-danger">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </form>
+                        <input type="hidden" name="studentLists"  id="studentLists"/>
+                        <script type="text/javascript">
+                            var teacherCheckboxes = '<?php echo json_encode($oldCheckedTeacher); ?>'
+                            if (teacherCheckboxes === "null") {
+                                teacherCheckboxes = []
+                            } else {
+                                teacherCheckboxes = teacherCheckboxes.replaceAll("[","").replaceAll("]","").replaceAll("\"","").split(",")
+                                teacherCheckboxes = teacherCheckboxes.map(Number)
+                            }
+                            function updateTeacherCheckbox(id){
+                                // console.log(id);
+                                if (!teacherCheckboxes.includes(id)){
+                                    teacherCheckboxes.push(id);
+                                } else {
+                                    index = teacherCheckboxes.indexOf(id);
+                                    if (index > -1) {
+                                        teacherCheckboxes.splice(index, 1);
+                                    }
+                                }
+                                document.getElementById("teacherLists").value = teacherCheckboxes;
+                            }
+                        </script>
+                        <div class="card border">
+                            <div class="card-body">
+                                <table id="table-teachers" class="table table-bordered table-striped">
+                                    <thead>
+                                        @error('teacherLists')
+                                            <p class="text-danger mb-1">{{ $message }}</p>
+                                        @enderror   
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($teachers as $teacher)
+                                            <tr>
+                                                <td>{{$teacher->user->name}}</td>
+                                                <td>{{$teacher->user->email}}</td>
+                                                <td>
+                                                    <div class="custom-control custom-checkbox">
+                                                        @php
+                                                            $isChecked = false;
+                                                            if ($oldCheckedTeacher) {
+                                                                if (in_array($teacher->id, $oldCheckedTeacher)){
+                                                                    $isChecked = true;
+                                                                }
+                                                            }
+                                                        @endphp
+                                                        <input type="checkbox" class="custom-control-input" id="teacherid-{{$teacher->id}}" onchange=updateTeacherCheckbox({{$teacher->id}}) {{$isChecked ? "checked" : ""}} >
+                                                        <label class="custom-control-label" for="teacherid-{{$teacher->id}}"></label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <input type="hidden" name="teacherLists"  id="teacherLists"/>
+                        <a type="button" href="{{route('class-list')}}" class="btn btn-danger">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    @else
+        <div class="card card-danger">
+            <div class="card-header">
+                <h3 class="card-title">
+                    Error : Can't add class
+                </h3>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Can't add class because doesn't meet the criteria below:</p>   
+                @if (!$courses->all())
+                    <p>No course data available: <a href={{route('course-add')}} class="btn btn-primary">click here to add course</a></p>
+                @endif
+                @if (!$periods->all())
+                    <p>No period data available: <a href={{route('period-add')}} class="btn btn-primary">click here to add period</a></p>
+                @endif
+                @if (!$students->all())
+                    <p>No student data available: <a href={{route('student-add')}} class="btn btn-primary">click here to add student</a></p>
+                @endif
+                @if (!$teachers->all())
+                    <p>No teacher data available: <a href={{route('teacher-add')}} class="btn btn-primary">click here to add teacher</a></p>
+                @endif
+            </div>
+        </div>  
+    @endif
 @endsection
 
 @section('css-link')

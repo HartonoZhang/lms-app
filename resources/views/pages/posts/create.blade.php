@@ -4,9 +4,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/{{ strtolower(Auth::user()->role->name) }}">Home</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('post-list') }}">List Posts</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('post-detail', $post->id) }}">Post Detail {{ $post->id }}</a></li>
-    <li class="breadcrumb-item active">Update Post</li>
+    <li class="breadcrumb-item active">Create Post</li>
 @endsection
 
 @section('content')
@@ -15,31 +13,31 @@
             <div class="col">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Update Post</h3>
+                        <h3 class="card-title">Create New Post</h3>
                     </div>
                     <div class="card-body">
-                        <form class="form-horizontal" action={{ route('post-update', $post->id) }} method="POST"
+                        <form class="form-horizontal" action={{ route('post-create') }} method="POST"
                             enctype="multipart/form-data" data-remote="true">
                             @csrf
-                            @method('PUT')
                             <div class="form-group">
                                 <label for="title">Title *</label>
                                 <input type="text" id="title" class="form-control" name="title"
-                                    value="{{ old('title', $post->title) }}" placeholder="Input title">
+                                    value="{{ old('title') }}" placeholder="Input title">
                                 @error('title')
                                     <p class="text-danger mt-0">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label for="description">Description *</label>
-                                <textarea id="description" class="form-control" name="description" rows="3" placeholder="Input description">{{ old('description', $post->description) }}</textarea>
+                                <textarea id="description" class="form-control" name="description" rows="3"
+                                    placeholder="Input description">{{ old('description') }}</textarea>
                                 @error('description')
                                     <p class="text-danger mt-0">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label for="inputDescription">Image (optional)</label>
-                                <div class="input-group border-upload" id="input-image-1">
+                                <div class="input-group border-upload">
                                     <input id="image" type="file" onchange="readURL(this);" class="form-control"
                                         name="image">
                                     <label id="image-label" for="image" class="font-weight-light text-muted">
@@ -52,35 +50,10 @@
                                         </label>
                                     </div>
                                 </div>
-                                @if ($post->image)
-                                    <div class="icheck-primary mt-2">
-                                        <input type="checkbox" id="checkboxImage" name="removeFirstImage">
-                                        <label for="checkboxImage">
-                                            Remove first image?
-                                        </label>
-                                    </div>
-                                @endif
                                 @error('image')
                                     <p class="text-danger mt-0">{{ $message }}</p>
                                 @enderror
-                                <div class="input-group mt-2" id="image-area-1">
-                                    <div
-                                        class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
-                                        @if ($post->image)
-                                            <span>Current image 1</span>
-                                            <img src="{{ asset('assets') }}/images/posts/image/{{ $post->image }}"
-                                                alt="current-img" class="img-fluid mt-2">
-                                        @else
-                                            <span>No image yet</span>
-                                        @endif
-                                    </div>
-                                    <div
-                                        class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
-                                        <span>Image 1 upload result</span>
-                                        <img id="image-result" src="#" alt="" class="img-fluid mt-2">
-                                    </div>
-                                </div>
-                                <div class="input-group border-upload mt-2" id="input-image-2">
+                                <div class="input-group border-upload mt-2">
                                     <input id="image_2" type="file" onchange="readURL(this);" class="form-control"
                                         name="image_2">
                                     <label id="image_2-label" for="image_2" class="font-weight-light text-muted">
@@ -93,27 +66,14 @@
                                         </label>
                                     </div>
                                 </div>
-                                @if ($post->image_2)
-                                    <div class="icheck-primary mt-2">
-                                        <input type="checkbox" id="checkboxImage2" name="removeSecondImage">
-                                        <label for="checkboxImage2">
-                                            Remove second image?
-                                        </label>
-                                    </div>
-                                @endif
                                 @error('image_2')
                                     <p class="text-danger mt-0">{{ $message }}</p>
                                 @enderror
-                                <div class="input-group mt-2" id="image-area-2">
+                                <div class="input-group mt-2">
                                     <div
                                         class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
-                                        @if ($post->image_2)
-                                            <span>Current image 2</span>
-                                            <img src="{{ asset('assets') }}/images/posts/image_2/{{ $post->image_2 }}"
-                                                alt="current-img" class="img-fluid mt-2">
-                                        @else
-                                            <span>No image yet</span>
-                                        @endif
+                                        <span>Image 1 upload result</span>
+                                        <img id="image-result" src="#" alt="" class="img-fluid mt-2">
                                     </div>
                                     <div
                                         class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
@@ -125,23 +85,23 @@
                             <div class="form-group">
                                 <label for="link">Link (optional)</label>
                                 <input type="text" id="link" class="form-control" name="link"
-                                    value="{{ old('link', $post->link) }}" placeholder="Input first link">
+                                    value="{{ old('link') }}" placeholder="Input first link">
                                 @error('link')
                                     <p class="text-danger mt-0">{{ $message }}</p>
                                 @enderror
                                 <input type="text" id="link_2" class="form-control mt-2" name="link_2"
-                                    value="{{ old('link_2', $post->link_2) }}" placeholder="Input second link">
+                                    value="{{ old('link_2') }}" placeholder="Input second link">
                                 @error('link_2')
                                     <p class="text-danger mt-0">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label for="inputDescription">File (optional)</label>
-                                <div class="input-group border-upload" id="input-file">
+                                <div class="input-group border-upload">
                                     <input id="file" type="file" onchange="readURL(this);" class="form-control"
                                         name="file">
                                     <label id="file-label" for="file" class="font-weight-light text-muted">
-                                        {{ $post->file ? 'File name: ' . $post->file : 'Choose file' }}
+                                        Choose file
                                     </label>
                                     <div class="input-group-append">
                                         <label for="file" class="btn btn-primary m-0 px-4">
@@ -150,21 +110,13 @@
                                         </label>
                                     </div>
                                 </div>
-                                @if ($post->file)
-                                    <div class="icheck-primary mt-2">
-                                        <input type="checkbox" id="checkboxFile" name="removeFile">
-                                        <label for="checkboxFile">
-                                            Remove file?
-                                        </label>
-                                    </div>
-                                @endif
                                 @error('file')
                                     <p class="text-danger mt-0">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <a href="{{ url()->previous() }}" class="btn btn-secondary">Cancel</a>
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="submit" class="btn btn-primary">Create</button>
                             </div>
                         </form>
                     </div>
@@ -177,17 +129,11 @@
 @section('css-link')
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/toastr/toastr.min.css">
-    <!-- iCheck for checkboxes and radio inputs -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 
     <style>
         .border-upload {
             border: 1px solid #ced4da;
             border-radius: var(--border-radius-1);
-        }
-
-        .icheck-primary label {
-            font-weight: 400 !important;
         }
 
         #file,
@@ -270,34 +216,6 @@
 
             $('#image_2').on('change', function() {
                 readURL(inputImage2, 'image_2-result');
-            });
-
-            $('#checkboxImage').click(function() {
-                if ($(this).prop('checked')) {
-                    $('#input-image-1').hide()
-                    $('#image-area-1').hide()
-                } else {
-                    $('#input-image-1').show()
-                    $('#image-area-1').show()
-                }
-            });
-
-            $('#checkboxImage2').click(function() {
-                if ($(this).prop('checked')) {
-                    $('#input-image-2').hide();
-                    $('#image-area-2').hide()
-                } else {
-                    $('#input-image-2').show();
-                    $('#image-area-2').show()
-                }
-            });
-            
-            $('#checkboxFile').click(function() {
-                if ($(this).prop('checked')) {
-                    $('#input-file').hide();
-                } else {
-                    $('#input-file').show();
-                }
             });
 
             @if (Session::has('status'))

@@ -30,7 +30,7 @@ class StudentController extends Controller
     {
         $student = Student::with('profile', 'user')->where('user_id', '=', $id)->first();
         $address = Address::where('id', '=', $student->profile->address_id)->first();
-        $posts = Post::with('comment')->where('user_id', '=', $id)->paginate(5);
+        $posts = Post::with('comment')->where('user_id', '=', $id)->orderBy('created_at', 'DESC')->paginate(5);
         return view('pages.profiles.student', [
             'student' => $student,
             'address' => $address,
@@ -40,7 +40,24 @@ class StudentController extends Controller
 
     public function leaderboards()
     {
-        return view('pages.leaderboards.student');
+        $datas = Student::with(['user','profile'])
+                    ->get()
+                    //sort by level descending
+                    ->sortByDesc(function($student){
+                        return $student->profile->level;
+                    })
+                    ->values();
+        $first = array_key_exists(0,$datas->all())? $datas[0] : null;
+        $second = array_key_exists(1,$datas->all())? $datas[1] : null;
+        $third = array_key_exists(2,$datas->all()) ? $datas[2] : null;
+        $isCurrentRole = auth()->user()->role_id == 3 ? true : false;
+        return view('pages.leaderboards.student')->with([
+            'first'=> $first,
+            'second'=> $second,
+            'third'=> $third,
+            'datas'=> $datas,
+            'isCurrentRole' => $isCurrentRole
+        ]);
     }
 
     public function create(Request $request)
@@ -80,7 +97,7 @@ class StudentController extends Controller
             $student->graduation_date = null;
             $student->save();
 
-            return redirect()->route('student-list')->with(['status' => 'success', 'message' => 'New Student Successfully Added!']);
+            return redirect()->route('student-list')->with(['status' => 'success', 'message' => 'New student successfully added!']);
         }
     }
 
@@ -112,14 +129,14 @@ class StudentController extends Controller
             $student->graduation_date = $request->graduation_date;
             $student->save();
 
-            return redirect()->route('student-list')->with(['status' => 'success', 'message' => 'Student Information Successfully Updated!']);
+            return redirect()->route('student-list')->with(['status' => 'success', 'message' => 'Student information successfully updated!']);
         }
     }
 
     public function delete($id)
     {
         $student = Student::with('user', 'profile')->findOrFail($id);
-        $this->message('Successfully Remove Student "' . $student->user->name . '"', 'success');
+        $this->message('Successfully remove student "' . $student->user->name . '"', 'success');
         $student->user->delete();
         $student->profile->delete();
         $student->delete();
@@ -164,7 +181,7 @@ class StudentController extends Controller
                 $profile->address()->update($address->toArray());
             }
 
-            $this->message('Profile Successfully Updated!', 'success');
+            $this->message('Profile successfully updated!', 'success');
             return back();
         }
     }
@@ -172,7 +189,7 @@ class StudentController extends Controller
     public function savePhoto(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'image' => ['required']
+            'image' => ['required', 'mimes:png,jpg,jpeg', 'max:2048']
         ]);
 
         if ($validate->fails()) {
@@ -182,14 +199,32 @@ class StudentController extends Controller
         } else {
             $user = User::find(Auth::user()->id);
             $extension = $request->file('image')->getClientOriginalExtension();
-            $imgName = $user->name . '-' . now()->timestamp . '.' . $extension;
+            $imgName = $user->id . '-' . now()->timestamp . '.' . $extension;
             $request->file('image')->move('assets/images/profile', $imgName);
 
             $user->update([
                 'image' => $imgName
             ]);
 
-            $this->message('Profile Photo Successfully Updated.', 'success');
+            $this->message('Profile photo successfully updated.', 'success');
+            return back();
+        }
+    }
+
+    public function savePassword(Request $request)
+    {
+        $validation = $request->validate([
+            'oldPassword' => ['required', 'current_password'],
+            'newPassword' => ['required', 'min:6'],
+            'confirmPassword' => ['required', 'same:newPassword'],
+        ]);
+
+        if ($validation) {
+            User::find(Auth::user()->id)->update([
+                'password' => Hash::make($request->newPassword),
+            ]);
+
+            $this->message('Password successfully updated!', 'success');
             return back();
         }
     }

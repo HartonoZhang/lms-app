@@ -6,7 +6,7 @@
     </a>
 
     <div class="sidebar">
-        <a href="/{{ $role }}/profile/{{Auth::user()->id}}"
+        <a href="/{{ $role }}/profile/{{ Auth::user()->id }}"
             class="user-panel mt-3 py-2 mb-3 d-flex align-items-center rounded">
             <div class="image">
                 <img src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}" class="img-circle elevation-2"
@@ -24,7 +24,7 @@
                 <li class="nav-header">MAIN MENU</li>
                 <li class="nav-item">
                     <a href="/{{ $role }}"
-                        class="{{ request()->is('/') || request()->is('admin') ? 'active' : '' }} nav-link">
+                        class="{{ request()->is('/') || request()->is($role) ? 'active' : '' }} nav-link">
                         <i class="fas fa-tachometer-alt nav-icon"></i>
                         <p>Dashboard</p>
                     </a>
@@ -54,13 +54,40 @@
                         </li>
                     </ul>
                 </li>
+                @if (Auth::user()->role_id === 3)
+                    <li class="nav-item">
+                        <a href="{{ route('student-course') }}" class="{{ request()->is('student/course') ? 'active' : '' }} nav-link">
+                            <i class="fas fa-book nav-icon"></i>
+                            <p>
+                                My Courses
+                            </p>
+                        </a>
+                    </li>
+                @endif
                 <li class="nav-item">
-                    <a href="{{route('course-courses')}}" class="nav-link">
-                        <i class="fas fa-book nav-icon"></i>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-globe nav-icon"></i>
                         <p>
-                            Courses
+                            Post
+                            <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('post-list') }}"
+                                class="{{ request()->is('post/list') ? 'active' : '' }} nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>List Post</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('post-create-view') }}"
+                                class="{{ request()->is('post/create') ? 'active' : '' }} nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Post</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 @if (Auth::user()->role_id === 1)
                     <li class="nav-item">
@@ -138,6 +165,33 @@
                             </li>
                         </ul>
                     </li>
+                    @if ($organization->category_id != 2)
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-clock nav-icon"></i>
+                                <p>
+                                    Period
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('period-list') }}"
+                                        class="{{ request()->is('period/list') ? 'active' : '' }} nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Period List</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('period-add') }}"
+                                        class="{{ request()->is('period/add') ? 'active' : '' }} nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Period Add</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="fas fa-chalkboard nav-icon"></i>

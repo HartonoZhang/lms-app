@@ -66,15 +66,9 @@
         </div>
         <div class="row">
             <section class="col-md-8 connectedSortable">
-                <div class="card card-info card-outline">
+                <div class="card card-info card-outline" style="height: 368px">
                     <div class="card-header">
                         <h3 class="card-title">Student Statistics</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
                     </div>
                     <div class="card-body">
                         <div class="chart">
@@ -85,38 +79,120 @@
                 </div>
             </section>
             <section class="col-md-4 connectedSortable">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Other</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
+                <div class="info-box mb-3 bg-warning">
+                    <span class="info-box-icon"><i class="fas fa-chalkboard"></i></span>
 
+                    <div class="info-box-content">
+                        <span class="info-box-text">Class Today</span>
+                        <span class="info-box-number">5,200</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <div class="info-box mb-3 bg-danger">
+                    <span class="info-box-icon"><i class="fas fa-book-reader"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">New Course This Month</span>
+                        <span class="info-box-number">{{ count($newCourseThisMonth) }}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <div class="info-box mb-3 bg-info">
+                    <span class="info-box-icon"><i class="fas fa-graduation-cap"></i></span>
+
+                    <div class="info-box-content">
+                        <span class="info-box-text">New Student This Month</span>
+                        <span class="info-box-number">{{ count($newStudentThisMonth) }}</span>
+                    </div>
+                    <!-- /.info-box-content -->
+                </div>
+                <div class="info-box mb-3 bg-success">
+                    <span class="info-box-icon text-dark"><i class="fas fa-chalkboard-teacher"></i></span>
+
+                    <div class="info-box-content text-dark">
+                        <span class="info-box-text">New Teacher This Month</span>
+                        <span class="info-box-number">{{ count($newTeacherThisMonth) }}</span>
                     </div>
                 </div>
             </section>
+        </div>
+        <div class="card">
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-sm-3 col-6">
+                        <div class="description-block border-right">
+                            <h5 class="description-header text-primary">{{ count($totalPost) }}</h5>
+                            <span class="description-text">TOTAL POST</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-6">
+                        <div class="description-block border-right">
+                            <h5 class="description-header text-primary">{{ count($totalPostToday) }}</h5>
+                            <span class="description-text">POST TODAY</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-6">
+                        <div class="description-block border-right">
+                            <h5 class="description-header text-danger">{{ count($totalReport) }}</h5>
+                            <span class="description-text">TOTAL REPORT</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-6">
+                        <div class="description-block">
+                            <h5 class="description-header text-danger">{{ count($totalReportToday) }}</h5>
+                            <span class="description-text">REPORT TODAY</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <section class="col-md-8 connectedSortable">
                 <div class="card card-success card-outline">
                     <div class="card-header">
                         <h3 class="card-title">Teacher Statistics</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
                     </div>
                     <div class="card-body">
                         <div class="chart">
                             <canvas id="teacherData"
                                 style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                         </div>
+                    </div>
+                </div>
+            </section>
+            <section class="col-md-4 connectedSortable">
+                <div class="card card-secondary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Recently Post</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="products-list product-list-in-card pl-2 pr-2">
+                            @if (count($listPost))
+                                @foreach ($listPost as $item)
+                                    <li class="item">
+                                        <div class="product-img">
+                                            <img src="{{ asset('assets') }}/images/profile/{{ $item->user->image }}"
+                                                alt="Product Image" class="img-size-50">
+                                        </div>
+                                        <div class="product-info">
+                                            <a href="{{ route('post-detail', $item->id) }}"
+                                                class="product-title">{{ $item->title }}
+                                            </a>
+                                            <span class="product-description">
+                                                {{ $item->description }}
+                                            </span>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            @else
+                                <li class="item text-center">
+                                    There are no post yet!
+                                </li>
+                            @endif
+                        </ul>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="{{ route('post-list') }}" class="uppercase">View All Post</a>
                     </div>
                 </div>
             </section>

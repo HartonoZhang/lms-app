@@ -94,6 +94,11 @@ class CourseController extends Controller
         return view('pages.courses.detail', $data);
     }
 
+    public function studentCourse()
+    {
+        return view('pages.courses.student.detail');
+    }
+
     public function getPeopleData(Request $request, $id){
         $class = Classroom::find($id);
         $students = $class->studentClassroom->load([
