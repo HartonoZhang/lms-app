@@ -34,29 +34,6 @@ Route::middleware('auth')->group(function () {
     Route::get('student/profile/{id}', [StudentController::class, 'profile'])->name('student-profile');
     Route::post('thread/', [ThreadController::class, 'postThread'])->name('thread-post');
     Route::post('thread/comment', [ThreadController::class, 'postComment'])->name('thread-post-comment');
-    Route::controller(CourseController::class)->prefix('course')->name('course-')->group(function () {
-        Route::get('/', 'courses')->name('courses');
-        Route::get('/{id}', 'courseDetail')->name('detail');
-        Route::get('/{id}/people', 'getPeopleData')->name('people-data');
-        Route::controller(SessionController::class)->prefix('{id}/session')->group(function () {
-            Route::get('/session', 'getSessionData')->name('session-data');
-            Route::put('/update', 'updateDescription')->name('session-description-update');
-            Route::controller(MaterialController::class)->prefix('material')->name('material-')->group(function () {
-                Route::get('/', 'getMaterialFile')->name('download');
-                Route::post('/add', 'addMaterial')->name('add');
-                Route::put('/edit', 'editMaterial')->name('edit');
-                Route::delete('/delete', 'deleteMaterial')->name('delete');
-            });
-            Route::controller(AttendanceController::class)->prefix('attendance')->name('attendance-')->group(function () {
-                Route::get('/filter', 'filterAttendance')->name('filter');
-                Route::post('/save', 'saveAttendance')->name('save');
-            });
-        });
-        Route::controller(TaskController::class)->prefix('/{id}/task')->name('task-')->group(function(){
-            Route::get('/data', 'getTaskData')->name('data');
-            Route::get('/detail', 'getTaskDetail')->name('detail');
-        });
-    });
 
     Route::middleware('admin-only')->group(function () {
         Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
@@ -135,6 +112,31 @@ Route::middleware('auth')->group(function () {
             Route::put('/updateProfile', [TeacherController::class, 'saveProfiles'])->name('update-teacher-profile');
             Route::put('/updatePhoto', [TeacherController::class, 'savePhoto'])->name('update-teacher-photo');
             Route::put('/updatePassword', [TeacherController::class, 'savePassword'])->name('update-teacher-password');
+
+            Route::controller(CourseController::class)->prefix('course')->name('teacher-course-')->group(function () {
+                Route::get('/', 'courses')->name('courses');
+                Route::get('/{id}', 'courseDetail')->name('detail');
+                Route::get('/{id}/people', 'getPeopleData')->name('people-data');
+                Route::controller(SessionController::class)->prefix('{id}/session')->group(function () {
+                    Route::get('/session', 'getSessionData')->name('session-data');
+                    Route::put('/update', 'updateDescription')->name('session-description-update');
+                    Route::controller(MaterialController::class)->prefix('material')->name('material-')->group(function () {
+                        Route::get('/', 'getMaterialFile')->name('download');
+                        Route::post('/add', 'addMaterial')->name('add');
+                        Route::put('/edit', 'editMaterial')->name('edit');
+                        Route::delete('/delete', 'deleteMaterial')->name('delete');
+                    });
+                    Route::controller(AttendanceController::class)->prefix('attendance')->name('attendance-')->group(function () {
+                        Route::get('/filter', 'filterAttendance')->name('filter');
+                        Route::post('/save', 'saveAttendance')->name('save');
+                    });
+                });
+                Route::controller(TaskController::class)->prefix('/{id}/task')->name('task-')->group(function(){
+                    Route::get('/data', 'getTaskData')->name('data');
+                    Route::get('/detail', 'getTaskDetail')->name('detail');
+                    Route::get('/upload', 'getTaskUploadFile')->name('upload-download');
+                });
+            });
         });
     });
     Route::middleware('student-only')->group(function () {

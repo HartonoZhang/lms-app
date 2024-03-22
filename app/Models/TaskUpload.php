@@ -7,5 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class TaskUpload extends Model
 {
-    use HasFactory;
+    protected $guarded = ['id'];
+
+    public function task(){
+        return $this->belongsTo(Task::class);
+    }
+    public function student(){
+        return $this->belongsTo(Student::class);
+    }
 }

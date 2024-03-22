@@ -81,7 +81,7 @@ class CourseController extends Controller
             'classrooms' => $classrooms,
             'userRole' => auth()->user()->role_id
         ];
-        return view('pages.courses.my-courses', $data);
+        return view('pages.courses.teacher.my-courses', $data);
     }
 
     public function courseDetail($id)
@@ -91,7 +91,7 @@ class CourseController extends Controller
             'class' => $class,
             'userRole' => auth()->user()->role_id
         ];
-        return view('pages.courses.detail', $data);
+        return view('pages.courses.teacher.detail', $data);
     }
 
     public function studentCourse()

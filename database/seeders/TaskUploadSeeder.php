@@ -19,8 +19,9 @@ class TaskUploadSeeder extends Seeder
             [
                 'task_id' => 1,
                 'student_id' => 1,
-                'title' => 'Jawaban asg 1',
-                'answer_file' => 'test.txt',
+                'file_upload' => 'test.txt',
+                'upload_date' => now(),
+                'status' => 'In Review',
             ]
         ];
 

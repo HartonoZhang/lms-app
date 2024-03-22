@@ -17,12 +17,13 @@ class TaskCategorySeeder extends Seeder
     {
         $data = [
             [
-                'classroom_id' => 1,
                 'name' => 'Assignment'
             ],
             [
-                'classroom_id' => 1,
                 'name' => 'Exam'
+            ],
+            [
+                'name' => 'Project'
             ],
         ];
 
