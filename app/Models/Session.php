@@ -10,6 +10,8 @@ class Session extends Model
     use HasFactory;
     protected $table = 'sessions';
     protected $guarded = ['id'];
+    protected $dates = ['start_time', 'end_time'];
+
 
     public function class(){
         return $this->belongsTo(Classroom::class, 'class_id', 'id');

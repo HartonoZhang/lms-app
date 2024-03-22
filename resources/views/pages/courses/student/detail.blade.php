@@ -1,135 +1,107 @@
 @extends('layouts.template')
 
-@section('title', 'Example Courses')
+@section('title', 'Courses Detail')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="/{{ strtolower(Auth::user()->role->name) }}">Home</a></li>
-    <li class="breadcrumb-item active">Example Courses</li>
+    <li class="breadcrumb-item"><a href="{{ route('student-dashboard') }}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('student-course') }}">My Courses</a></li>
+    <li class="breadcrumb-item active">Courses Detail</li>
 @endsection
 
 @section('content')
     <div class="container-fluid h-100">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title font-weight-bold" style="font-size: 2rem;">
+                    {{ $classroom->course->name }}
+                </h3>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ $classroom->name }} - {{ $classroom->code }}</h5>
+                <p class="card-text mb-0">Teacher</p>
+                <div class="d-flex align-items-center">
+                    @foreach ($teacherClassroom as $item)
+                        <img class="img-circle img-bordered-sm"
+                            src="{{ asset('assets') }}/images/profile/{{ $item->teacher->user->image }}" alt="user image"
+                            width="50" height="50">
+                        <span class="ml-1 mr-2">{{ $item->teacher->user->name }}</span>
+                        <img class="img-circle img-bordered-sm"
+                            src="{{ asset('assets') }}/images/profile/{{ $item->teacher->user->image }}" alt="user image"
+                            width="50" height="50">
+                        <span class="ml-1 mr-2">{{ $item->teacher->user->name }}</span>
+                    @endforeach
+                </div>
+                <div class="d-flex justify-content-between align-items-center my-2">
+                    <div class="progress progress-xs rounded w-100" style="height: 12px;">
+                        <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar"
+                            style="width: 33%" aria-valuenow="33" aria-valuemax="100">
+                        </div>
+                    </div>
+                    <span class="ml-2">33%</span>
+                </div>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="#" class="btn btn-primary">Assignments</a>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
         <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" data-interval="false">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="col-md-11 mx-auto">
-                        <div class="card">
-                            <div class="card-header p-2">
-                                <ul class="nav nav-pills">
-                                    <li class="nav-item"><a class="nav-link active" href="#description"
-                                            data-toggle="tab">Description</a>
-                                    </li>
-                                    <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a>
-                                    </li>
-                                    <li class="nav-item"><a class="nav-link" href="#security" data-toggle="tab">Security</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="card-body">
-                                <div class="tab-content">
-                                    <div class="active tab-pane" id="description">
-                                        <h1>adaasd</h1>
-                                        <h1>adaasd</h1>
-                                        <h1>adaasd</h1>
-                                        <h1>adaasd</h1>
-                                        <h1>adaasd</h1>
-                                    </div>
-                                    <div class="tab-pane" id="settings">
-                                        <h1>adaasd</h1>
-                                        <h1>adaasd</h1>
-                                        <h1>adaasd</h1>
-                                    </div>
-                                    <div class="tab-pane" id="security">
-                                        <h1>adaasd</h1>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="card card-primary card-outline">
+                <div class="card-header mx-auto">
+                    <h3 class="card-title font-weight-bold" id="sessionText">Sessions 1</h3>
                 </div>
-                <div class="carousel-item">
-                    <div class="col-md-11 mx-auto">
-                        <div class="card">
-                            <div class="card-body">
-                                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home"
-                                            role="tab" aria-controls="home" aria-selected="true">Home</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile"
-                                            role="tab" aria-controls="profile" aria-selected="false">Profile</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact"
-                                            role="tab" aria-controls="contact" aria-selected="false">Contact</a>
-                                    </li>
-                                </ul>
-                                <div class="tab-content" id="myTabContent">
-                                  <h2>Session 2</h2>
-                                    <div class="tab-pane fade show active" id="home" role="tabpanel"
-                                        aria-labelledby="home-tab">tab 1</div>
-                                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                        tab 2
-                                    </div>
-                                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                                        tab 3t
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="col-md-11 mx-auto">
-                        <div class="card">
-                            <div class="card-header p-2">
-                                <ul class="nav nav-pills">
-                                    <li class="nav-item"><a class="nav-link active" href="#description-2"
-                                            data-toggle="tab">Description</a>
-                                    </li>
-                                    <li class="nav-item"><a class="nav-link" href="#settings-2"
-                                            data-toggle="tab">Settings</a>
-                                    </li>
-                                    <li class="nav-item"><a class="nav-link" href="#security-2"
-                                            data-toggle="tab">Security</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="card-body">
-                                <div class="tab-content">
-                                    <div class="active tab-pane" id="description-2">
-                                        <h1>adaasd2</h1>
-                                        <h1>adaasd2</h1>
-                                        <h1>adaasd2</h1>
-                                        <h1>adaasd2</h1>
-                                        <h1>adaasd2</h1>
-                                        <h1>adaasd2</h1>
-                                        <h1>adaasd2</h1>
-                                        <h1>adaasd2</h1>
-                                        <h1>adaasd2</h1>
-                                        <h1>adaasd2</h1>
-                                        <h1>adaasd2</h1>
-                                    </div>
-                                    <div class="tab-pane" id="settings-2">
-                                        <h1>adaasd2</h1>
-                                        <h1>adaasd2</h1>
-                                        <h1>adaasd2</h1>
-                                    </div>
-                                    <div class="tab-pane" id="security-2">
-                                        <h1>adaasd 2</h1>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="card-body my-0 py-0">
+                    <ol class="carousel-indicators my-0 py-0">
+                        @foreach ($sessions as $key => $item)
+                            <li data-target="#carouselExampleCaptions" data-slide-to="{{ $key }}"
+                                class="{{ $key === 0 ? 'active' : '' }}">{{ $key + 1 }}</li>
+                        @endforeach
+                    </ol>
                 </div>
             </div>
-            <ol class="carousel-indicators">
-                <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active">1</li>
-                <li data-target="#carouselExampleCaptions" data-slide-to="1">2</li>
-                <li data-target="#carouselExampleCaptions" data-slide-to="2">3</li>
-            </ol>
+
+            <div class="carousel-inner">
+                @foreach ($sessions as $key => $item)
+                    <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
+                        <div class="col-md-11 mx-auto">
+                            <div class="card">
+                                <div class="card-header p-2">
+                                    <ul class="nav nav-pills">
+                                        <li class="nav-item"><a class="nav-link active"
+                                                href="#description-{{ $item->id }}" data-toggle="tab">Description</a>
+                                        </li>
+                                        <li class="nav-item"><a class="nav-link"
+                                                href="#learningMaterial-{{ $item->id }}" data-toggle="tab">Learning
+                                                Material</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content">
+                                        <div class="active tab-pane" id="description-{{ $item->id }}">
+                                            <h3>{{ $item->title }}</h3>
+                                            <p>{{ $item->description }}</p>
+                                            <p>Start Time : {{ $item->start_time->format('g:iA, d-m-y') }}</p>
+                                            <p>End Time : {{ $item->end_time->format('g:iA, d-m-y') }}</p>
+                                        </div>
+                                        <div class="tab-pane" id="learningMaterial-{{ $item->id }}">
+                                            @if (count($item->materials) === 0)
+                                                <p>No have materials</p>
+                                            @else
+                                                @foreach ($item->materials as $material)
+                                                    <p>title : {{ $material->title }} <br> value: {{ $material->value }}
+                                                    </p>
+                                                @endforeach
+                                            @endif
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
             <button class="carousel-control-prev d-lg-flex d-none" type="button" data-target="#carouselExampleCaptions"
                 data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -153,7 +125,6 @@
 
         .carousel-indicators {
             position: relative;
-            bottom: 40px;
         }
 
         .carousel-control-prev,
@@ -162,7 +133,7 @@
             width: 40px;
             outline: var(--color-primary);
             border-radius: 50%;
-            top: 45%;
+            top: 55%;
             border: 1px solid var(--color-primary);
             background-color: var(--color-primary);
             transform: translate(0, -50%);
@@ -188,7 +159,12 @@
 
     <script type="text/javascript">
         $(function() {
+            $('#carouselExampleCaptions').on('slid.bs.carousel', function(e) {
+                var ele = $('#carouselExampleCaptions .carousel-indicators li.active');
+                var $sessions = $('#sessionText');
 
+                $sessions.text(`Session ${ele.data('slideTo') + 1}`);
+            })
         })
     </script>
 @endsection
