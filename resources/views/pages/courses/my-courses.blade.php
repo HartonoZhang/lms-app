@@ -20,7 +20,7 @@
                         <a href="{{route('course-detail', ['id' => $class->id])}}">
                     @else
                         {{-- <a href="{route('student-course-detail', ['id' => 1])}"> --}}
-                        <a href="">
+                            <a href="{{route('course-detail', ['id' => $class->id])}}">
                     @endif
                         <div class="courses-card card overflow-hidden">
                             <div class="courses-card-users-icon p-1" style="font-size: 0.7rem"><i class="fa fa-user mx-1" aria-hidden="true"></i>{{$class->StudentClassroom->count()}}</div>

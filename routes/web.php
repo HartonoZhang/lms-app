@@ -36,17 +36,17 @@ Route::middleware('auth')->group(function () {
     Route::controller(CourseController::class)->prefix('course')->name('course-')->group(function () {
         Route::get('/', 'courses')->name('courses');
         Route::get('/{id}', 'courseDetail')->name('detail');
-        Route::controller(SessionController::class)->prefix('{id}/session')->group(function(){
+        Route::controller(SessionController::class)->prefix('{id}/session')->group(function () {
             Route::get('/session', 'getSessionData')->name('session-data');
             Route::get('/people', 'getPeopleData')->name('people-data');
             Route::put('/update', 'updateDescription')->name('session-description-update');
-            Route::controller(MaterialController::class)->prefix('material')->name('material-')->group(function(){
+            Route::controller(MaterialController::class)->prefix('material')->name('material-')->group(function () {
                 Route::get('/', 'getMaterialFile')->name('download');
                 Route::post('/add', 'addMaterial')->name('add');
                 Route::put('/edit', 'editMaterial')->name('edit');
                 Route::delete('/delete', 'deleteMaterial')->name('delete');
             });
-            Route::controller(AttendanceController::class)->prefix('attendance')->name('attendance-')->group(function(){
+            Route::controller(AttendanceController::class)->prefix('attendance')->name('attendance-')->group(function () {
                 Route::get('/filter', 'filterAttendance')->name('filter');
                 Route::post('/save', 'saveAttendance')->name('save');
             });
@@ -125,10 +125,7 @@ Route::middleware('auth')->group(function () {
         });
     });
     Route::middleware('teacher-only')->group(function () {
-        Route::controller(TeacherController::class)->prefix('teacher')->name('teacher-')->group(function () {
-            Route::get('/', 'home')->name('dashboard');
-            Route::get('/profile', 'profile');
-
+        Route::prefix('teacher')->group(function () {
             Route::get('/', [TeacherController::class, 'home'])->name('teacher-dashboard');
             Route::put('/updateProfile', [TeacherController::class, 'saveProfiles'])->name('update-teacher-profile');
             Route::put('/updatePhoto', [TeacherController::class, 'savePhoto'])->name('update-teacher-photo');
@@ -141,6 +138,9 @@ Route::middleware('auth')->group(function () {
             Route::put('/updateProfile', [StudentController::class, 'saveProfiles'])->name('update-student-profile');
             Route::put('/updatePhoto', [StudentController::class, 'savePhoto'])->name('update-student-photo');
             Route::put('/updatePassword', [StudentController::class, 'savePassword'])->name('update-student-password');
+
+            Route::get('/course', [CourseController::class, 'studentCourse'])->name('student-course');
+            Route::get('/course/{id}', [CourseController::class, 'studentCourseDetail'])->name('student-course-detail');
         });
     });
 
