@@ -1,1 +1,59 @@
-// ongoing
+@extends('layouts.template')
+
+@section('title', 'My Courses')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('student-dashboard') }}">Home</a></li>
+    <li class="breadcrumb-item active">My Courses</li>
+@endsection
+
+@section('content')
+    <div class="container-fluid h-100">
+        <div class="row">
+            @foreach ($classrooms as $item)
+                <div class="col-md-4 col-sm-6 col-12">
+                    <a href={{ route('student-course-detail', $item->id) }}>
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title font-weight-bold">
+                                    {{ $item->course->name }}
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text my-0">{{ $item->code }} - {{ $item->name }}</p>
+                                <p class="card-text my-0">{{ count($item->studentClassroom) }} Students</p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="progress progress-xs rounded w-100">
+                                        <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
+                                            role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                    <span class="ml-2">33%</span>
+                                </div>
+                                <p class="card-subtitle text-muted">3 out of 10 sessions completed</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+@endsection
+
+@section('css-link')
+
+    <style>
+        .card:hover {
+            transform: scale(1.04);
+            transition: 0.2s ease-in-out;
+        }
+    </style>
+@endsection
+
+@section('js-script')
+
+    <script type="text/javascript"></script>
+@endsection

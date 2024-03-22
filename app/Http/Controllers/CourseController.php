@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Classroom;
 use App\Models\Course;
+use App\Models\Session as ModelsSession;
+use App\Models\TeacherClassroom;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -96,7 +99,25 @@ class CourseController extends Controller
 
     public function studentCourse()
     {
-        return view('pages.courses.student.detail');
+        $classrooms = Classroom::with('studentClassroom.student', 'course')->whereHas('studentClassroom.student', function ($q) {
+            $q->where('user_id', Auth::user()->id);
+        })->get();
+
+        return view('pages.courses.student.my-courses', [
+            'classrooms' => $classrooms
+        ]);
+    }
+
+    public function studentCourseDetail($id)
+    {
+        $classroom = Classroom::with('course')->findOrFail($id);
+        $sessions = ModelsSession::with('materials')->where('classroom_id', '=', $id)->get();
+        $teacherClassroom = TeacherClassroom::with('teacher.user')->where('classroom_id', '=', $id)->get();
+        return view('pages.courses.student.detail', [
+            'classroom' => $classroom,
+            'sessions' => $sessions,
+            'teacherClassroom' => $teacherClassroom
+        ]);
     }
 
     public function getPeopleData(Request $request, $id){
