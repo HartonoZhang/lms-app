@@ -6,7 +6,7 @@
     </a>
 
     <div class="sidebar">
-        <a href="/{{ $role }}/profile/{{Auth::user()->id}}"
+        <a href="/{{ $role }}/profile/{{ Auth::user()->id }}"
             class="user-panel mt-3 py-2 mb-3 d-flex align-items-center rounded">
             <div class="image">
                 <img src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}" class="img-circle elevation-2"
@@ -55,7 +55,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                  <a href="{{route('course-courses')}}" class="nav-link">
+                    <a href="{{ route('course-courses') }}" class="nav-link">
                         <i class="fas fa-book nav-icon"></i>
                         <p>
                             Courses

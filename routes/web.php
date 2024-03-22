@@ -125,10 +125,7 @@ Route::middleware('auth')->group(function () {
         });
     });
     Route::middleware('teacher-only')->group(function () {
-        Route::controller(TeacherController::class)->prefix('teacher')->name('teacher-')->group(function () {
-            Route::get('/', 'home')->name('dashboard');
-            Route::get('/profile', 'profile');
-
+        Route::prefix('teacher')->group(function () {
             Route::get('/', [TeacherController::class, 'home'])->name('teacher-dashboard');
             Route::put('/updateProfile', [TeacherController::class, 'saveProfiles'])->name('update-teacher-profile');
             Route::put('/updatePhoto', [TeacherController::class, 'savePhoto'])->name('update-teacher-photo');
@@ -160,6 +157,9 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/logout', [AuthController::class, 'signout'])->name('logout');
+
+    //buat test tampilan session
+    Route::get('/detail-course-example', [CourseController::class, 'detailCourseExample']);
 });
 
 // Account Login
