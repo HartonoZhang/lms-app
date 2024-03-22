@@ -10,6 +10,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
@@ -35,9 +36,9 @@ Route::middleware('auth')->group(function () {
     Route::controller(CourseController::class)->prefix('course')->name('course-')->group(function () {
         Route::get('/', 'courses')->name('courses');
         Route::get('/{id}', 'courseDetail')->name('detail');
+        Route::get('/{id}/people', 'getPeopleData')->name('people-data');
         Route::controller(SessionController::class)->prefix('{id}/session')->group(function(){
             Route::get('/session', 'getSessionData')->name('session-data');
-            Route::get('/people', 'getPeopleData')->name('people-data');
             Route::put('/update', 'updateDescription')->name('session-description-update');
             Route::controller(MaterialController::class)->prefix('material')->name('material-')->group(function(){
                 Route::get('/', 'getMaterialFile')->name('download');
@@ -49,6 +50,10 @@ Route::middleware('auth')->group(function () {
                 Route::get('/filter', 'filterAttendance')->name('filter');
                 Route::post('/save', 'saveAttendance')->name('save');
             });
+        });
+        Route::controller(TaskController::class)->prefix('/{id}/task')->name('task-')->group(function(){
+            Route::get('/data', 'getTaskData')->name('data');
+            Route::get('/detail', 'getTaskDetail')->name('detail');
         });
     });
 

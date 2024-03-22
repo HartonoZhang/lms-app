@@ -11,8 +11,8 @@ class Session extends Model
     protected $table = 'sessions';
     protected $guarded = ['id'];
 
-    public function class(){
-        return $this->belongsTo(Classroom::class, 'class_id', 'id');
+    public function classroom(){
+        return $this->belongsTo(Classroom::class, 'classroom_id', 'id');
     }
 
     public function materials(){

@@ -39,17 +39,6 @@ class SessionController extends Controller
         return response()->json($data);
     }
 
-    public function getPeopleData(Request $request, $id){
-        $class = Classroom::find($id);
-        $students = $class->studentClassroom->load([
-            'student.user'
-        ]);
-        $data = [
-            'students' => $students,
-        ];
-        return response()->json($data);
-    }
-
     public function updateDescription(Request $request, $id){
         $validator = Validator::make(
             $request->all(),

@@ -23,5 +23,9 @@ class Classroom extends Model
     public function sessions(){
         return $this->hasMany(Session::class);
     }
+
+    public function tasks(){
+        return $this->hasMany(Task::class);
+    }
     use HasFactory;
 }

@@ -18,7 +18,7 @@
                     <div class="course-teacher-profile d-flex align-items-center" style="font-size: 0.8rem">
                         @foreach ($class->TeacherClassroom as $tc)
                             <div>
-                                <img loading="lazy" src="{{ url('/assets/img/dummy_course.jpg') }}" alt="Teacher">
+                                <img loading="lazy" src="{{ url("/assets/images/profile/{$tc->Teacher->user->image}") }}" alt="Teacher">
                             </div>
                             <div class="ml-2 mr-3">
                                 <p class="m-0">{{ $tc->Teacher->user->name }}</p>
@@ -38,7 +38,7 @@
                 @endif
                 <div class="mt-3 mb-2 mx-0 px-0">
                     <a id="session-details-button" class="content-link mr-2 py-1 px-3 active" href="#">Sessions</a>
-                    <a id="assignments-button" class="content-link mr-2 py-1 px-3" href="#">Assignments</a>
+                    <a id="tasks-button" class="content-link mr-2 py-1 px-3" href="#">Tasks</a>
                     <a id="people-button" class="content-link mr-2 py-1 px-3" href="#">People</a>
                     @if ($userRole == 3)
                         <a class="content-link mr-2 py-1 px-3" href="">Attendance</a>
@@ -156,9 +156,36 @@
                         </div>
                     </div>
                 </div>
+                {{-- tasks --}}
+                <div id="tasks">
+                    {{-- <button class="btn btn-primary"><i class="fas fa-plus"></i> Add Task</button> --}}
+                    <div class="task-cards row">
+                    </div>
+                    <div class="task-detail" hidden>
+                        <table id="task-detail-table" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Task Upload Title</th>
+                                    <th>Task Upload File</th>
+                                    <th>Task Upload Date</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ 'student_name' }}</td>
+                                    <td>{{ 'task_title' }}</td>
+                                    <td><button>Download</button></td>
+                                    <td>{{ 'task_upload_date' }}</td>
+                                    <td>{{ '80' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 {{-- people --}}
                 <div id="people" class="row">
-
                 </div>
             </div>
         </div>
@@ -548,9 +575,19 @@
                 resetCanvas();
                 $('.content-link').removeClass('active');
                 $(this).addClass('active');
-                $('#assignments').prop('hidden', true);
+                $('#tasks').prop('hidden', true);
                 $('#people').prop('hidden', true);
                 $('#session-details').prop('hidden', false);
+            });
+
+            $('#tasks-button').click(function(e) {
+                e.preventDefault();
+                getTasks({{ $class->id }});
+                $('.content-link').removeClass('active');
+                $(this).addClass('active');
+                $('#people').prop('hidden', true);
+                $('#session-details').prop('hidden', true);
+                $('#tasks').prop('hidden', false);
             });
 
             $('#people-button').click(function(e) {
@@ -559,7 +596,7 @@
                 $('.content-link').removeClass('active');
                 $(this).addClass('active');
                 $('#session-details').prop('hidden', true);
-                $('#assignments').prop('hidden', true);
+                $('#tasks').prop('hidden', true);
                 $('#people').prop('hidden', false);
             });
 
@@ -1116,6 +1153,76 @@
         }
     </script>
 
+    {{-- tasks scripts --}}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#task-detail-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('course-task-detail', ['id' => $class->id]) }}",
+                data: {taskId:1},
+                columns: [
+                    { data: 'title', name: 'title' },
+                    { data: 'description', name: 'description' },
+                    { data: 'deadline', name: 'deadline' }
+                ]
+            });
+        });
+
+        function getTasks(classId){
+            $.ajax({
+                url: "{{ route('course-task-data', ['id' => $class->id]) }}",
+                type: 'GET',
+                data: {},
+                success: function(res) {
+                    var tasks = res.tasks;
+                    let tasksContent = '';
+                    tasks.forEach((task) => {
+                        tasksContent += `
+                            <div class="py-1 px-2 col-4">
+                                <a class="task-detail-link text-decoration-none" data-taskId="${task.id}" href="{{route('course-task-detail', ['id' => $class->id])}}">
+                                    <div class="card card-primary card-outline">
+                                        <div class="card-header">
+                                            <p class="text-dark card-title font-weight-bold">${task.title}</p>
+                                            <p class="card-text"><small class="text-muted">${task.category.name}</small></p>
+                                        </div>
+                                        <div class="card-body py-2">
+                                            <p class="card-text m-0">
+                                                <p class="text-dark m-0">Due Date</p>
+                                                <p class="m-0"><small class="text-muted"><i class="fa fa-calendar"></i> ${task.dueDate}</small></p>
+                                            </p>
+                                            <p class="card-text m-0">
+                                                <p class="text-dark m-0">Time Remaining</p>
+                                                <p class="m-0"><small class="text-muted"><i class="fa fa-clock"></i> ${task.timeRemaining}</small></p>
+                                            </p>
+                                            @if (auth()->user()->role_id == 2)
+                                                <p class="card-text m-0">
+                                                    <p class="text-dark m-0">Students Submitted</p>
+                                                    <p class="m-0"><small class="text-muted"><i class="fa fa-user"></i> 1 / 5</small></p>
+                                                </p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        `;
+                    });
+                    $('#tasks .task-cards').html(tasksContent);
+                    initializeTaskElements();
+                }
+            });
+        }
+
+        function initializeTaskElements(){
+            $('.task-detail-link').click(function(e){
+                e.preventDefault();
+                $('.task-cards').prop('hidden', true);
+                $('.task-detail').prop('hidden', false);
+
+            });
+        }
+    </script>
+
     {{-- people scripts --}}
     <script type="text/javascript">
         function getPeople(classId){
@@ -1136,7 +1243,7 @@
                                                 src="{{ asset('assets') }}/images/profile/${st.student.user.image}"
                                                 alt="User profile picture">
                                         </div>
-                                        <h3 class="profile-username text-center">${st.student.user.name}</h3>
+                                        <p class="profile-username text-center">${st.student.user.name}</p>
                                         <p class="text-muted text-center">student_id</p>
                                     </div>
                                 </div>
