@@ -24,15 +24,31 @@
                                 <p class="card-text my-0">{{ count($item->studentClassroom) }} Students</p>
                             </div>
                             <div class="card-footer">
+                                @php
+                                    $date_now = new DateTime();
+                                    $progressbarPercent = '0%';
+                                    $totalSession = count($item->sessions);
+                                    $sessionDone = 0;
+                                    if ($totalSession) {
+                                        foreach ($item->sessions as $value) {
+                                            if ($value->end_time < $date_now) {
+                                                $sessionDone++;
+                                            }
+                                        }
+                                        $progressbarPercent =
+                                            sprintf('%.0f', ($sessionDone * 100) / $totalSession) . '%';
+                                    }
+                                @endphp
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="progress progress-xs rounded w-100">
-                                        <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
-                                            role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemax="100">
+                                        <div class="progress-bar {{ $progressbarPercent === '100%' ? 'bg-success' : 'bg-warning' }} progress-bar-striped progress-bar-animated"
+                                            role="progressbar" style="width: {{ $progressbarPercent }}" aria-valuenow="100"
+                                            aria-valuemax="100">
                                         </div>
                                     </div>
-                                    <span class="ml-2">33%</span>
+                                    <span class="ml-2">{{ $progressbarPercent }}</span>
                                 </div>
-                                <p class="card-subtitle text-muted">3 out of 10 sessions completed</span>
+                                <p class="card-subtitle text-muted">{{ $sessionDone }} out of {{ $totalSession }} sessions completed</span>
                             </div>
                         </div>
                     </a>

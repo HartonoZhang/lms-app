@@ -140,7 +140,10 @@ Route::middleware('auth')->group(function () {
             Route::put('/updatePassword', [StudentController::class, 'savePassword'])->name('update-student-password');
 
             Route::get('/course', [CourseController::class, 'studentCourse'])->name('student-course');
-            Route::get('/course/{id}', [CourseController::class, 'studentCourseDetail'])->name('student-course-detail');
+            Route::get('/course/{id}', [CourseController::class, 'studentCourseDetailSession'])->name('student-course-detail');
+            Route::get('/course/{id}/assignment', [CourseController::class, 'studentCourseDetailAssignment'])->name('student-course-detail-assignment');
+            Route::get('/course/{id}/attendance', [CourseController::class, 'studentCourseDetailAttendace'])->name('student-course-detail-attendance');
+            Route::get('/course/{id}/people', [CourseController::class, 'studentCourseDetailPeople'])->name('student-course-detail-people');
         });
     });
 
