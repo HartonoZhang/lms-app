@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     protected $guarded = ['id'];
+    protected $dates = ['deadline'];
 
     public function category(){
         return $this->belongsTo(TaskCategory::class, 'task_category_id', 'id');

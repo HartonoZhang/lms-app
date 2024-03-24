@@ -28,7 +28,10 @@ class DatabaseSeeder extends Seeder
             StudentClassroomSeeder::class,
             OrganizationCategorySeeder::class,
             OrganizationSeeder::class,
-            SessionSeeder::class
+            SessionSeeder::class,
+            TaskCategorySeeder::class,
+            TaskSeeder::class,
+            TaskUploadSeeder::class
         ]);
     }
 }

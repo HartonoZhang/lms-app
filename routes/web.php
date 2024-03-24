@@ -160,6 +160,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/course/{id}/attendance', [CourseController::class, 'studentCourseDetailAttendace'])->name('student-course-detail-attendance');
             Route::get('/course/{id}/people', [CourseController::class, 'studentCourseDetailPeople'])->name('student-course-detail-people');
 
+            Route::post('/task-upload/{id}', [TaskController::class, 'taskUpload'])->name('task-upload');
+
             Route::get('/quest', [QuestController::class, 'studentView'])->name('student-quest');
         });
     });
