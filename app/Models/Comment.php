@@ -10,9 +10,14 @@ class Comment extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    protected $fillable = ['thread_id', 'user_id', 'description'];
 
-    public function User(){
+    public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function thread(){
+        return $this->belongsTo(Thread::class);
     }
 
     public function getFormattedDate(){

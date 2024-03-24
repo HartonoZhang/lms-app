@@ -5,7 +5,7 @@
         </h3>
     </div>
     <div class="card-body">
-        <h5 class="card-title mb-4">{{ $classroom->name }} - {{ $classroom->code }}</h5>
+        <h5 class="card-title mb-3">{{ $classroom->name }} - {{ $classroom->code }}</h5>
         <p class="card-text mb-0 border-top py-2 font-weight-bold">Teacher</p>
         <div class="row mb-2 border-bottom">
             @foreach ($teacherClassroom as $item)
@@ -15,7 +15,7 @@
                         width="50" height="50">
                     <div class="ml-1 text-truncate">
                         <span>{{ $item->teacher->user->name }}</span> <br>
-                        <span>{{ $item->teacher->user->email }}</span>
+                        <span style="font-size: 0.8rem;">{{ $item->teacher->user->email }}</span>
                     </div>
                 </div>
             @endforeach
@@ -54,6 +54,7 @@
                 class="btn {{ request()->is('student/course/' . $classroom->id . '/people') ? 'btn-primary' : 'btn-secondary' }} mr-2 mb-2">People</a>
             <a href="{{ route('student-course-detail-attendance', $classroom->id) }}"
                 class="btn {{ request()->is('student/course/' . $classroom->id . '/attendance') ? 'btn-primary' : 'btn-secondary' }} mr-2 mb-2">Attendance</a>
+            <a href="#" class="btn btn-secondary mr-2 mb-2" >Score</a>
         </div>
     </div>
 </div>

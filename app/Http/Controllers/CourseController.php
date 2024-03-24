@@ -111,8 +111,8 @@ class CourseController extends Controller
 
     public function studentCourseDetail($id)
     {
-        $classroom = Classroom::with('course')->findOrFail($id);
-        $sessions = ModelsSession::with('materials', 'attendances.student.user')->where('classroom_id', '=', $id)->get();
+        $classroom = Classroom::with('course', 'tasks.category')->findOrFail($id);
+        $sessions = ModelsSession::with('materials', 'attendances.student.user', 'threads.user', 'threads.comments')->where('classroom_id', '=', $id)->get();
         $teacherClassroom = TeacherClassroom::with('teacher.user')->where('classroom_id', '=', $id)->get();
         return ['classroom' => $classroom, 'sessions' => $sessions, 'teacherClassroom' => $teacherClassroom];
     }

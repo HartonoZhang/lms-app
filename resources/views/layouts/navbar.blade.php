@@ -56,7 +56,8 @@
                 </li>
                 @if (Auth::user()->role_id === 2)
                     <li class="nav-item">
-                        <a href="{{ route('teacher-course-courses') }}" class="{{ request()->is('teacher/course') ? 'active' : '' }} nav-link">
+                        <a href="{{ route('teacher-course-courses') }}"
+                            class="{{ request()->is('teacher/course') ? 'active' : '' }} nav-link">
                             <i class="fas fa-book nav-icon"></i>
                             <p>
                                 My Courses
@@ -66,10 +67,20 @@
                 @endif
                 @if (Auth::user()->role_id === 3)
                     <li class="nav-item">
-                        <a href="{{ route('student-course') }}" class="{{ request()->is('student/course') ? 'active' : '' }} nav-link">
+                        <a href="{{ route('student-course') }}"
+                            class="{{ request()->is('student/course') ? 'active' : '' }} nav-link">
                             <i class="fas fa-book nav-icon"></i>
                             <p>
                                 My Courses
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('student-quest') }}"
+                            class="{{ request()->is('student/quest') ? 'active' : '' }} nav-link">
+                            <i class="fas fa-exclamation-circle nav-icon"></i>
+                            <p>
+                                Daily Quest
                             </p>
                         </a>
                     </li>

@@ -9,6 +9,7 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\QuestController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TaskController;
@@ -32,8 +33,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/leaderboard/teachers', [TeacherController::class, 'leaderboards'])->name('teacher-leaderboard');
     Route::get('teacher/profile/{id}', [TeacherController::class, 'profile'])->name('teacher-profile');
     Route::get('student/profile/{id}', [StudentController::class, 'profile'])->name('student-profile');
-    Route::post('thread/', [ThreadController::class, 'postThread'])->name('thread-post');
-    Route::post('thread/comment', [ThreadController::class, 'postComment'])->name('thread-post-comment');
+
+    Route::prefix('thread')->group(function () {
+        Route::get('/{id}', [ThreadController::class, 'detail'])->name('thread-detail');
+        Route::post('/add', [ThreadController::class, 'postThread'])->name('thread-post');
+        Route::post('/comment/{id}', [ThreadController::class, 'postThreadComment'])->name('thread-comment-create');
+
+        Route::put('/update/{id}', [ThreadController::class, 'update'])->name('thread-update');
+        Route::delete('/delete/{session}/{thread}', [ThreadController::class, 'delete'])->name('thread-delete');
+    });
 
     Route::middleware('admin-only')->group(function () {
         Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
@@ -151,6 +159,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/course/{id}/assignment', [CourseController::class, 'studentCourseDetailAssignment'])->name('student-course-detail-assignment');
             Route::get('/course/{id}/attendance', [CourseController::class, 'studentCourseDetailAttendace'])->name('student-course-detail-attendance');
             Route::get('/course/{id}/people', [CourseController::class, 'studentCourseDetailPeople'])->name('student-course-detail-people');
+
+            Route::post('/task-upload/{id}', [TaskController::class, 'taskUpload'])->name('task-upload');
+
+            Route::get('/quest', [QuestController::class, 'studentView'])->name('student-quest');
         });
     });
 
