@@ -25,6 +25,7 @@ class MaterialController extends Controller
             rules: [
                 'type' => 'required',
                 'sessionId' => 'required',
+                'title' => 'required',
                 'link' => 'required_if:type,link|url:http,https',
                 'file' => 'required_if:type,file|file|mimes:txt,xlsx,pdf,doc,docx',
             ]
@@ -43,12 +44,14 @@ class MaterialController extends Controller
             Storage::put($filePath, file_get_contents($file));
             Material::create([
                 'session_id' => $request->sessionId,
+                'title' => $request->title,
                 'value' => $fileName,
                 'is_file' => 1,
             ]);
         } else {
             Material::create([
                 'session_id' => $request->sessionId,
+                'title' => $request->title,
                 'value' => $request->link,
                 'is_file' => 0,
             ]);

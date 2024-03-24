@@ -4,7 +4,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('teacher-dashboard') }}">Home</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('course-courses') }}">Courses</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('teacher-course-courses') }}">Courses</a></li>
     <li class="breadcrumb-item active">Detail</li>
 @endsection
 
@@ -18,7 +18,7 @@
                     <div class="course-teacher-profile d-flex align-items-center" style="font-size: 0.8rem">
                         @foreach ($class->TeacherClassroom as $tc)
                             <div>
-                                <img loading="lazy" src="{{ url('/assets/img/dummy_course.jpg') }}" alt="Teacher">
+                                <img loading="lazy" src="{{ url("/assets/images/profile/{$tc->Teacher->user->image}") }}" alt="Teacher">
                             </div>
                             <div class="ml-2 mr-3">
                                 <p class="m-0">{{ $tc->Teacher->user->name }}</p>
@@ -38,7 +38,7 @@
                 @endif
                 <div class="mt-3 mb-2 mx-0 px-0">
                     <a id="session-details-button" class="content-link mr-2 py-1 px-3 active" href="#">Sessions</a>
-                    <a id="assignments-button" class="content-link mr-2 py-1 px-3" href="#">Assignments</a>
+                    <a id="tasks-button" class="content-link mr-2 py-1 px-3" href="#">Tasks</a>
                     <a id="people-button" class="content-link mr-2 py-1 px-3" href="#">People</a>
                     @if ($userRole == 3)
                         <a class="content-link mr-2 py-1 px-3" href="">Attendance</a>
@@ -101,7 +101,7 @@
                                 aria-labelledby="nav-attendance-tab">
                                 {{-- isi custom content --}}
                                 <div class="my-3">
-                                    <form data-sessionId="" id="attendance-filter-form" action="{{route('course-attendance-filter', ['id' => $class->id])}}" method="GET">
+                                    <form data-sessionId="" id="attendance-filter-form" action="{{route('teacher-course-attendance-filter', ['id' => $class->id])}}" method="GET">
                                         @csrf
                                         @method('GET')
                                         <input class="session-id" type="text" name="sessionId" value="" readonly hidden>
@@ -143,7 +143,7 @@
                                             </div>
                                         </div>
                                     </form>
-                                    <form data-sessionId="" id="attendance-list-form" action="{{route('course-attendance-save', ['id' => $class->id])}}" method="POST">
+                                    <form data-sessionId="" id="attendance-list-form" action="{{route('teacher-course-attendance-save', ['id' => $class->id])}}" method="POST">
                                         @csrf
                                         <div class="attendance-list">
                                             <div class="row">
@@ -156,9 +156,37 @@
                         </div>
                     </div>
                 </div>
+                {{-- tasks --}}
+                <div id="tasks">
+                    {{-- <button class="btn btn-primary"><i class="fas fa-plus"></i> Add Task</button> --}}
+                    <div class="task-cards row">
+                    </div>
+                    <div class="task-detail" hidden>
+                        <button id="task-detail-back-btn" class="btn btn-secondary my-2"><i class="fas fa-arrow-left"></i> Back</button>
+                        <table id="task-detail-table" class="table w-100">
+                            <thead>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Task Upload File</th>
+                                    <th>Task Upload Date</th>
+                                    <th>Status</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 {{-- people --}}
                 <div id="people" class="row">
-
                 </div>
             </div>
         </div>
@@ -175,7 +203,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="edit-description-form" id="edit-description-link" data-sessionId="" method="POST" action="{{route('course-session-description-update', ['id' => $class->id])}}">
+                    <form class="edit-description-form" id="edit-description-link" data-sessionId="" method="POST" action="{{route('teacher-course-session-description-update', ['id' => $class->id])}}">
                         @csrf
                         @method('PUT')
                         <div class="form-group" data-input="description">
@@ -209,9 +237,15 @@
                             <option value="file">File</option>
                         </select>
                     </div>
-                    <form class="add-material-form" id="add-material-link" data-sessionId="" method="POST" action="{{route('course-material-add', ['id' => $class->id])}}">
+                    <form class="add-material-form" id="add-material-link" data-sessionId="" method="POST" action="{{route('teacher-course-material-add', ['id' => $class->id])}}">
                         @csrf
                         <input type="text" value="link" name="type" readonly hidden>
+                        <div class="form-group" data-input="title">
+                            <label>Title</label>
+                            <input type="text" class="form-control" name="title"
+                                placeholder="Material Title">
+                            <span class="text-danger add-material-error add-material-title-error"></span>
+                        </div>
                         <div class="form-group" data-input="link">
                             <label for="materialLink">URL</label>
                             <input type="text" class="form-control" name="link" id="materialLink"
@@ -220,9 +254,15 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Add Link</button>
                     </form>
-                    <form class="add-material-form" id="add-material-file" data-sessionId="" method="POST" action="{{route('course-material-add', ['id' => $class->id])}}" style="display: none;" enctype="multipart/form-data">
+                    <form class="add-material-form" id="add-material-file" data-sessionId="" method="POST" action="{{route('teacher-course-material-add', ['id' => $class->id])}}" style="display: none;" enctype="multipart/form-data">
                         @csrf
                         <input type="text" value="file" name="type" readonly hidden>
+                        <div class="form-group" data-input="title">
+                            <label>Title</label>
+                            <input type="text" class="form-control" name="title"
+                                placeholder="Material Title">
+                            <span class="text-danger add-material-error add-material-title-error"></span>
+                        </div>
                         <div class="form-group" data-input="file">
                             <label for="materialFile">Upload File</label>
                             <input type="file" class="form-control" name="file" id="materialFile">
@@ -253,7 +293,7 @@
                             <option value="file">File</option>
                         </select>
                     </div>
-                    <form class="edit-material-form" id="edit-material-link" data-sessionId="" data-materialId="" method="POST" action="{{route('course-material-edit', ['id' => $class->id])}}">
+                    <form class="edit-material-form" id="edit-material-link" data-sessionId="" data-materialId="" method="POST" action="{{route('teacher-course-material-edit', ['id' => $class->id])}}">
                         @csrf
                         @method('PUT')
                         <input type="text" value="link" name="type" readonly hidden>
@@ -265,7 +305,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Edit Link</button>
                     </form>
-                    <form class="edit-material-form" id="edit-material-file" data-sessionId="" data-materialId="" method="POST" action="{{route('course-material-edit', ['id' => $class->id])}}" style="display: none;" enctype="multipart/form-data">
+                    <form class="edit-material-form" id="edit-material-file" data-sessionId="" data-materialId="" method="POST" action="{{route('teacher-course-material-edit', ['id' => $class->id])}}" style="display: none;" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <input type="text" value="file" name="type" readonly hidden>
@@ -343,6 +383,10 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
     <style>
         /* .select2-container--bootstrap4.select2-container--focus .select2-selection {
@@ -505,6 +549,19 @@
     <script src="{{ asset('assets') }}/plugins/toastr/toastr.min.js"></script>
     <!-- Select2 -->
     <script src="{{ asset('assets') }}/plugins/select2/js/select2.full.min.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="{{ asset('assets') }}/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/jszip/jszip.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
     <script type="text/javascript">
         $(function() {
@@ -548,9 +605,19 @@
                 resetCanvas();
                 $('.content-link').removeClass('active');
                 $(this).addClass('active');
-                $('#assignments').prop('hidden', true);
+                $('#tasks').prop('hidden', true);
                 $('#people').prop('hidden', true);
                 $('#session-details').prop('hidden', false);
+            });
+
+            $('#tasks-button').click(function(e) {
+                e.preventDefault();
+                getTasks({{ $class->id }});
+                $('.content-link').removeClass('active');
+                $(this).addClass('active');
+                $('#people').prop('hidden', true);
+                $('#session-details').prop('hidden', true);
+                $('#tasks').prop('hidden', false);
             });
 
             $('#people-button').click(function(e) {
@@ -559,7 +626,7 @@
                 $('.content-link').removeClass('active');
                 $(this).addClass('active');
                 $('#session-details').prop('hidden', true);
-                $('#assignments').prop('hidden', true);
+                $('#tasks').prop('hidden', true);
                 $('#people').prop('hidden', false);
             });
 
@@ -814,7 +881,7 @@
 
         function getSession(sessionId) {
             $.ajax({
-                url: "{{ route('course-session-data', ['id' => $class->id]) }}",
+                url: "{{ route('teacher-course-session-data', ['id' => $class->id]) }}",
                 type: 'GET',
                 data: {
                     sessionId: sessionId
@@ -1071,7 +1138,7 @@
         }
 
         function downloadMaterial(fileName, sessionId) {
-            var url = "{{ route('course-material-download', ['id' => $class->id]) }}"
+            var url = "{{ route('teacher-course-material-download', ['id' => $class->id]) }}"
             $.ajax({
                 url: url,
                 type: 'GET',
@@ -1100,7 +1167,7 @@
         function deleteMaterial(data){
             data._token = '{{csrf_token()}}';
             $.ajax({
-                url: "{{route('course-material-delete', $class->id)}}",
+                url: "{{route('teacher-course-material-delete', $class->id)}}",
                 type: 'DELETE',
                 data: data,
                 success: function(res) {
@@ -1116,11 +1183,140 @@
         }
     </script>
 
+    {{-- tasks scripts --}}
+    <script type="text/javascript">
+        var taskDetailTable;
+        $(document).ready(function() {
+            $('#task-detail-back-btn').click(function(){
+                $('.task-detail').prop('hidden', true);
+                $('.task-cards').prop('hidden', false);
+            });
+        });
+
+        function getTasks(classId){
+            $.ajax({
+                url: "{{ route('teacher-course-task-data', ['id' => $class->id]) }}",
+                type: 'GET',
+                data: {},
+                success: function(res) {
+                    var tasks = res.tasks;
+                    let tasksContent = '';
+                    tasks.forEach((task) => {
+                        tasksContent += `
+                            <div class="py-1 px-2 col-4">
+                                <a class="task-detail-link text-decoration-none" data-taskId="${task.id}" href="{{route('teacher-course-task-detail', ['id' => $class->id])}}">
+                                    <div class="card card-primary card-outline">
+                                        <div class="card-header">
+                                            <p class="text-dark card-title font-weight-bold">${task.title}</p>
+                                            <p class="card-text"><small class="text-muted">${task.category.name}</small></p>
+                                        </div>
+                                        <div class="card-body py-2">
+                                            <p class="card-text m-0">
+                                                <p class="text-dark m-0">Due Date</p>
+                                                <p class="m-0"><small class="text-muted"><i class="fa fa-calendar"></i> ${task.dueDate}</small></p>
+                                            </p>
+                                            <p class="card-text m-0">
+                                                <p class="text-dark m-0">Time Remaining</p>
+                                                <p class="m-0"><small class="text-muted"><i class="fa fa-clock"></i> ${task.timeRemaining}</small></p>
+                                            </p>
+                                            @if (auth()->user()->role_id == 2)
+                                                <p class="card-text m-0">
+                                                    <p class="text-dark m-0">Students Submitted</p>
+                                                    <p class="m-0"><small class="text-muted"><i class="fa fa-user"></i> ${task.studentSubmitted} / ${res.studentCount}</small></p>
+                                                </p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        `;
+                    });
+                    $('#tasks .task-cards').html(tasksContent);
+                    initializeTaskElements();
+                }
+            });
+        }
+
+        function initializeTaskElements(){
+            $('.task-detail-link').click(function(e){
+                e.preventDefault();
+                $('.task-cards').prop('hidden', true);
+                $('.task-detail').prop('hidden', false);
+                let taskId = $(this).data('taskid');
+                refreshTaskDetail(taskId)
+            });
+        }
+
+        function refreshTaskDetail(taskId) {
+            if ($.fn.DataTable.isDataTable('#task-detail-table')) {
+                taskDetailTable.destroy();
+            }
+            taskDetailTable = $('#task-detail-table').DataTable({
+                processing: true,
+                // serverSide: true,
+                ajax: {
+                    url: "{{ route('teacher-course-task-detail', ['id' => $class->id]) }}",
+                    type: 'GET',
+                    data: {taskId: taskId}
+                },
+                columns: [
+                    { data: 'student_name', name: 'name' },
+                    {
+                        data: 'file',
+                        name: 'description',
+                        render: function(data, type, row) {
+                            if (data) {
+                                return `<a href="' + data + '" class="task-upload-download btn btn-primary" data-taskUploadId="${row.id}">Download File</a>`;
+                            } else {
+                                return '-';
+                            }
+                        }
+                    },
+                    { data: 'upload_date', name: 'upload' },
+                    { data: 'status', name: 'status' },
+                    { data: 'score', name: 'score' }
+                ],
+                drawCallback: function(){
+                    $(".task-upload-download").click(function(e){
+                        e.preventDefault();
+                        downloadTaskUpload($(this).data('taskuploadid'))
+                    });
+                }
+            });
+        }
+
+        function downloadTaskUpload(taskUploadId) {
+            var url = "{{ route('teacher-course-task-upload-download', ['id' => $class->id]) }}"
+            $.ajax({
+                url: url,
+                type: 'GET',
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                data: {
+                    taskUploadId: taskUploadId
+                },
+                success: function(res) {
+                    var url = window.URL.createObjectURL(new Blob([res]));
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'res.fileName';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            })
+        }
+    </script>
+
     {{-- people scripts --}}
     <script type="text/javascript">
         function getPeople(classId){
             $.ajax({
-                url: "{{ route('course-people-data', ['id' => $class->id]) }}",
+                url: "{{ route('teacher-course-people-data', ['id' => $class->id]) }}",
                 type: 'GET',
                 data: {},
                 success: function(res) {
@@ -1136,7 +1332,7 @@
                                                 src="{{ asset('assets') }}/images/profile/${st.student.user.image}"
                                                 alt="User profile picture">
                                         </div>
-                                        <h3 class="profile-username text-center">${st.student.user.name}</h3>
+                                        <p class="profile-username text-center">${st.student.user.name}</p>
                                         <p class="text-muted text-center">student_id</p>
                                     </div>
                                 </div>

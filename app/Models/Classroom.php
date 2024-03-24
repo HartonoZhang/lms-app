@@ -27,4 +27,9 @@ class Classroom extends Model
     public function period(){
         return $this->belongsTo(Period::class);
     }
+
+    public function tasks(){
+        return $this->hasMany(Task::class);
+    }
+    use HasFactory;
 }

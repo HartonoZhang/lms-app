@@ -85,7 +85,7 @@ class CourseController extends Controller
             'classrooms' => $classrooms,
             'userRole' => auth()->user()->role_id
         ];
-        return view('pages.courses.my-courses', $data);
+        return view('pages.courses.teacher.my-courses', $data);
     }
 
     public function courseDetail($id)
@@ -95,7 +95,7 @@ class CourseController extends Controller
             'class' => $class,
             'userRole' => auth()->user()->role_id
         ];
-        return view('pages.courses.detail', $data);
+        return view('pages.courses.teacher.detail', $data);
     }
 
     public function studentCourse()
@@ -157,5 +157,16 @@ class CourseController extends Controller
             'sessions' => $data['sessions'],
             'teacherClassroom' => $data['teacherClassroom']
         ]);
+    }
+
+    public function getPeopleData(Request $request, $id){
+        $class = Classroom::find($id);
+        $students = $class->studentClassroom->load([
+            'student.user'
+        ]);
+        $data = [
+            'students' => $students,
+        ];
+        return response()->json($data);
     }
 }
