@@ -46,6 +46,9 @@
                                                     href="#learningMaterial-{{ $item->id }}" data-toggle="pill">Learning
                                                     Material</a>
                                             </li>
+                                            <li class="nav-item"><a class="nav-link" href="#forum-{{ $item->id }}"
+                                                    data-toggle="pill">Forum</a>
+                                            </li>
                                         </ul>
                                     </div>
                                     <div class="card-body">
@@ -82,6 +85,9 @@
                                                         </a>
                                                     @endforeach
                                                 @endif
+                                            </div>
+                                            <div class="tab-pane fade" id="forum-{{ $item->id }}">
+                                                forum
                                             </div>
                                         </div>
                                     </div>

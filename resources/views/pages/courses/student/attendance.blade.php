@@ -38,13 +38,15 @@
                                     @if (count($item->attendances))
                                         @foreach ($item->attendances as $attendance)
                                             @if ($attendance->student->user->id === Auth::user()->id)
-                                                <span style="font-size: 2em; color: #41f1b6;">
-                                                    <i class="fas fa-check-circle"></i>
-                                                </span>
-                                            @else
-                                                <span style="font-size: 2em; color: #ff7782;">
-                                                    <i class="fas fa-times-circle"></i>
-                                                </span>
+                                                @if ($attendance->is_present)
+                                                    <span style="font-size: 2em; color: #41f1b6;">
+                                                        <i class="fas fa-check-circle"></i>
+                                                    </span>
+                                                @else
+                                                    <span style="font-size: 2em; color: #ff7782;">
+                                                        <i class="fas fa-times-circle"></i>
+                                                    </span>
+                                                @endif
                                             @endif
                                         @endforeach
                                     @else
