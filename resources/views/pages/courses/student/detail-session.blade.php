@@ -13,7 +13,7 @@
         @include('pages.courses.student.course-detail-info', [
             'classroom' => $classroom,
             'teacherClassroom' => $teacherClassroom,
-            'sessions' => $sessions
+            'sessions' => $sessions,
         ])
         @if (count($sessions))
             <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" data-interval="false">
@@ -52,21 +52,36 @@
                                         <div class="tab-content">
                                             <div class="active tab-pane show fade" id="description-{{ $item->id }}">
                                                 <h3>{{ $item->title }}</h3>
-                                                <p>{{ $item->description }}</p>
-                                                <p>Start Time : {{ $item->start_time->format('g:iA, d-m-y') }}</p>
-                                                <p>End Time : {{ $item->end_time->format('g:iA, d-m-y') }}</p>
+                                                <p class="pb-2 border-bottom" style="font-size: 1.25rem;">
+                                                    {{ $item->description }}</p>
+                                                <p>Start Time : {{ $item->start_time->format('g:i A, d-m-y') }}</p>
+                                                <p>End Time : {{ $item->end_time->format('g:i A, d-m-y') }}</p>
+                                                <a href="#" class="btn btn-primary">Join Now</a>
                                             </div>
                                             <div class="tab-pane fade" id="learningMaterial-{{ $item->id }}">
                                                 @if (count($item->materials) === 0)
                                                     <p>No have materials</p>
                                                 @else
                                                     @foreach ($item->materials as $material)
-                                                        <p>title : {{ $material->title }} <br> value:
-                                                            {{ $material->value }}
-                                                        </p>
+                                                        <a href="{{ $material->value }}" target="_blank">
+                                                            <div class="d-flex align-items-center">
+                                                                @if ($material->is_file)
+                                                                    <span class="p-2 rounded"
+                                                                        style="font-size: 1em; background-color: #7380ec; color: white">
+                                                                        <i class="fas fa-file"></i>
+                                                                    </span>
+                                                                @else
+                                                                    <span class="p-2 rounded"
+                                                                        style="font-size: 1em; background-color: #7380ec; color: white">
+                                                                        <i class="fas fa-external-link-alt"></i>
+                                                                    </span>
+                                                                @endif
+                                                                <span class="ml-2" style="font-size: 0.87rem;">
+                                                                    {{ $material->title }}</span>
+                                                            </div>
+                                                        </a>
                                                     @endforeach
                                                 @endif
-
                                             </div>
                                         </div>
                                     </div>
