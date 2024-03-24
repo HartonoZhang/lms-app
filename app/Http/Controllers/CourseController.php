@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Classroom;
 use App\Models\Course;
 use App\Models\Session as ModelsSession;
+use App\Models\StudentClassroom;
 use App\Models\TeacherClassroom;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
@@ -111,7 +112,7 @@ class CourseController extends Controller
     public function studentCourseDetail($id)
     {
         $classroom = Classroom::with('course')->findOrFail($id);
-        $sessions = ModelsSession::with('materials')->where('classroom_id', '=', $id)->get();
+        $sessions = ModelsSession::with('materials', 'attendances.student.user')->where('classroom_id', '=', $id)->get();
         $teacherClassroom = TeacherClassroom::with('teacher.user')->where('classroom_id', '=', $id)->get();
         return ['classroom' => $classroom, 'sessions' => $sessions, 'teacherClassroom' => $teacherClassroom];
     }
@@ -129,10 +130,12 @@ class CourseController extends Controller
     public function studentCourseDetailPeople($id)
     {
         $data = $this->studentCourseDetaiL($id);
+        $listStudent = StudentClassroom::with('student.user')->where('classroom_id', '=', $id)->paginate(15);
         return view('pages.courses.student.people', [
             'classroom' => $data['classroom'],
             'sessions' => $data['sessions'],
-            'teacherClassroom' => $data['teacherClassroom']
+            'teacherClassroom' => $data['teacherClassroom'],
+            'listStudent' => $listStudent
         ]);
     }
 
@@ -148,7 +151,7 @@ class CourseController extends Controller
 
     public function studentCourseDetailAssignment($id)
     {
-        $data = $this->studentCourseDetaiL($id);
+        $data = $this->studentCourseDetaiL($id); 
         return view('pages.courses.student.assignment', [
             'classroom' => $data['classroom'],
             'sessions' => $data['sessions'],
