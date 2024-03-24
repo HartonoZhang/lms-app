@@ -87,7 +87,42 @@
                                                 @endif
                                             </div>
                                             <div class="tab-pane fade" id="forum-{{ $item->id }}">
-                                                forum
+                                                <div class="d-flex justify-content-end">
+                                                    <button data-toggle="modal" data-target="#add-thread-modal"
+                                                        data-sessionId="{{ $item->id }}"
+                                                        class="btn btn-primary mb-2">Add Thread</button>
+                                                </div>
+                                                @if (count($item->threads))
+                                                    @foreach ($item->threads as $thread)
+                                                        <a href="{{ route('thread-detail', $thread->id) }}">
+                                                            <div class="card border">
+                                                                <div class="card-header pl-3 pt-2">
+                                                                    <div class="d-flex justify-content-between ">
+                                                                        <div class="d-flex flex-column ">
+                                                                            <div class="user-block">
+                                                                                <img loading="lazy" class="img-circle"
+                                                                                    src="{{ url('/assets/images/profile/') }}/{{ $thread->user->image }}"
+                                                                                    alt="User Image">
+                                                                                <span
+                                                                                    class="username fw-normal">{{ $thread->user->name }}</span>
+                                                                                <span
+                                                                                    class="description">{{ $thread->created_at->format('g:iA, d-m-y') }}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <span class="float-right text-muted"
+                                                                            style="font-size: 0.85rem;">{{ count($thread->comments) }}
+                                                                            comments</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <p class="my-0">{{ $thread->title }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    @endforeach
+                                                @else
+                                                    <div class="text-center">There are no forum yet</div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -115,9 +150,49 @@
             </div>
         @endif
     </div>
+
+    <div class="modal fade" id="add-thread-modal" tabindex="-1" role="dialog" aria-labelledby="add-thread-modal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Thread</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ route('thread-post') }}">
+                        @csrf
+                        <input type="text" class="form-control" name="sessionId" id="threadSessionIdInput"
+                            value="{{ old('sessionId') }}" hidden>
+                        <div class="form-group" data-input="title">
+                            <label for="threadTitle">Title</label>
+                            <input type="text" class="form-control" name="title" id="threadTitle"
+                                placeholder="Thread Title" value="{{ old('title') }}">
+                            @error('title')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="form-group" data-input="description">
+                            <label for="threadDescription">Description</label>
+                            <textarea type="text" class="form-control" name="description" id="threadDescription"
+                                placeholder="Thread Description" rows="3">{{ old('description') }}</textarea>
+                            @error('description')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post Thread</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('css-link')
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/toastr/toastr.min.css">
 
     <style>
         .carousel-inner {
@@ -157,15 +232,35 @@
 @endsection
 
 @section('js-script')
+    <!-- Toastr -->
+    <script src="{{ asset('assets') }}/plugins/toastr/toastr.min.js"></script>
 
     <script type="text/javascript">
         $(function() {
             $('#carouselExampleCaptions').on('slid.bs.carousel', function(e) {
                 var ele = $('#carouselExampleCaptions .carousel-indicators li.active');
                 var $sessions = $('#sessionText');
-
                 $sessions.text(`Session ${ele.data('slideTo') + 1}`);
             })
+
+            $('*[data-target="#add-thread-modal"]').click(function() {
+                var sessionId = $(this).attr('data-sessionId');
+                $("#threadSessionIdInput").val(sessionId);
+            });
+
+            @if ($errors->any())
+                @if (Session::has('failPostThread'))
+                    $('#add-thread-modal').modal('show');
+                @endif
+            @endif
+
+            @if (Session::has('status'))
+                @if (Session::get('status') === 'success')
+                    toastr.success('{{ Session::get('message') }}')
+                @elseif (Session::get('status') === 'fail')
+                    toastr.error('{{ Session::get('message') }}')
+                @endif
+            @endif
         })
     </script>
 @endsection
