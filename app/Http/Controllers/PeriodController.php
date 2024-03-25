@@ -16,11 +16,15 @@ class PeriodController extends Controller
     public function upsert($data){
         if($data->id == null){
             $result = Period::create([
-                'name' => $data->period_name
+                'name' => $data->period_name,
+                'start_date' => $data->start_date,
+                'end_date' => $data->end_date
             ]);
         } else {
             $result = Period::find($data->id)->update([
-                'name' => $data->period_name
+                'name' => $data->period_name,
+                'start_date' => $data->start_date,
+                'end_date' => $data->end_date
             ]);
         }
         return $result;
@@ -30,6 +34,8 @@ class PeriodController extends Controller
         $oldData = Period::find($id);
         $validation = $request->validate([
             'period_name' => ['required','unique:periods,name,'.$id],
+            'start_date' => ['required'],
+            'end_date' => ['required'],
         ],[
             'period_name.unique' => '"'.$request->period_name.'" period already has been created',
         ]);
@@ -45,6 +51,8 @@ class PeriodController extends Controller
     public function create(Request $request){
         $validation = $request->validate([
             'period_name' => ['required','unique:periods,name'],
+            'start_date' => ['required'],
+            'end_date' => ['required'],
         ],[
             'period_name.unique' => '"'.$request->period_name.'" period already has been created',
         ]);
