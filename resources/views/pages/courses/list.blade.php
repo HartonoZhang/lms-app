@@ -133,7 +133,7 @@
                 "autoWidth": false,
                 "columnDefs": [{
                     orderable: false,
-                    targets: 3
+                    targets: 2
                 }],
                 "buttons": [
                     "copy",
