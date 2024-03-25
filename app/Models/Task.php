@@ -11,6 +11,10 @@ class Task extends Model
     protected $guarded = ['id'];
     protected $dates = ['deadline'];
 
+    public function classroom(){
+        return $this->belongsTo(Classroom::class, 'classroom_id', 'id');
+    }
+
     public function category(){
         return $this->belongsTo(TaskCategory::class, 'task_category_id', 'id');
     }

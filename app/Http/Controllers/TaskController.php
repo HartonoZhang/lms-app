@@ -10,17 +10,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
-    
+
     public function message($msg, $status)
     {
         Session::flash('status', $status);
         Session::flash('message', $msg);
     }
-    
-    public function getTaskData(Request $request, $id){
+
+    public function getTaskData(Request $request, $id)
+    {
         $class = Classroom::find($id);
         $tasks = $class->tasks;
         $tasks->load('category');
@@ -36,7 +38,8 @@ class TaskController extends Controller
         return response()->json($data);
     }
 
-    public function getTaskDetail(Request $request, $id){
+    public function getTaskDetail(Request $request, $id)
+    {
         if (!$request->taskId) {
             return response()->json(['data' => null]);
         }
@@ -65,7 +68,8 @@ class TaskController extends Controller
         return response()->json($json);
     }
 
-    public function getTaskUploadFile(Request $request, $id){
+    public function getTaskUploadFile(Request $request, $id)
+    {
         $taskUpload = TaskUpload::find($request->taskUploadId);
         if (!$taskUpload) {
             abort(404);
@@ -81,24 +85,39 @@ class TaskController extends Controller
 
     public function taskUpload(Request $request, $id)
     {
-        $validation = $request->validate([
-            'file_upload' => ['required', 'mimes:pdf,zip,ppt,pptx,xlx,xlsx,docx,doc', 'max:2048'],
+        $validate = Validator::make($request->all(), [
+            'file_upload_'.$id => ['required', 'mimes:pdf,zip,ppt,pptx,xlx,xlsx,docx,doc', 'max:2048']
         ]);
 
-        if($validation) {
-            $extension = $request->file('file_upload')->getClientOriginalExtension();
+        if ($validate->fails()) {
+            Session::flash('failSubmitAnswer', $id);
+            return back()->withErrors($validate);
+        } else {
+            $extension = $request->file('file_upload_'.$id)->getClientOriginalExtension();
             $fileName = Auth::user()->id . '-' . now()->timestamp . '.' . $extension;
-            $request->file('file_upload')->move('assets/tasks/upload', $fileName);
+            $request->file('file_upload_'.$id)->move('assets/tasks/answer', $fileName);
 
             $student = Student::where('user_id', '=', Auth::user()->id)->first();
+            $isTaskUploaded = TaskUpload::where([
+                ['student_id', '=', $student->id],
+                ['task_id', '=', $id],
+            ])->first();
 
-            TaskUpload::create([
-                'task_id' => $id,
-                'student_id' => $student->id,
-                'file_upload' => $fileName,
-                'status' => 'In Review'
-            ]);
+            if($isTaskUploaded === null) {
+                TaskUpload::create([
+                    'task_id' => $id,
+                    'student_id' => $student->id,
+                    'file_upload' => $fileName,
+                    'status' => 'In Review'
+                ]);
+            }else {
+                $isTaskUploaded->update([
+                    'file_upload' => $fileName,
+                    'status' => 'In Review'
+                ]);
+            }
 
+        
             $this->message('Upload task successfully', 'success');
             return back();
         }
