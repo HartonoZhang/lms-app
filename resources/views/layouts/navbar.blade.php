@@ -64,6 +64,15 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('teacher-quest') }}"
+                            class="{{ request()->is('teacher/quest') ? 'active' : '' }} nav-link">
+                            <i class="fas fa-exclamation-circle nav-icon"></i>
+                            <p>
+                                My Question
+                            </p>
+                        </a>
+                    </li>
                 @endif
                 @if (Auth::user()->role_id === 3)
                     <li class="nav-item">

@@ -120,6 +120,15 @@ Route::middleware('auth')->group(function () {
             Route::put('/updateProfile', [TeacherController::class, 'saveProfiles'])->name('update-teacher-profile');
             Route::put('/updatePhoto', [TeacherController::class, 'savePhoto'])->name('update-teacher-photo');
             Route::put('/updatePassword', [TeacherController::class, 'savePassword'])->name('update-teacher-password');
+            
+            Route::prefix('quest')->group(function () {
+                Route::get('/', [QuestController::class, 'teacherView'])->name('teacher-quest');
+                Route::get('/create', [QuestController::class, 'addQuestion'])->name('create-question');
+                Route::get('/edit/{id}', [QuestController::class, 'updateQuestion'])->name('update-question');
+                Route::get('/delete/{id}', [QuestController::class, 'deleteQuestion'])->name('delete-question');
+                
+                Route::post('/create', [QuestController::class, 'createQuestion'])->name('create-question');
+            });
 
             Route::controller(CourseController::class)->prefix('course')->name('teacher-course-')->group(function () {
                 Route::get('/', 'courses')->name('courses');
@@ -154,12 +163,14 @@ Route::middleware('auth')->group(function () {
             Route::put('/updatePhoto', [StudentController::class, 'savePhoto'])->name('update-student-photo');
             Route::put('/updatePassword', [StudentController::class, 'savePassword'])->name('update-student-password');
 
-            Route::get('/course', [CourseController::class, 'studentCourse'])->name('student-course');
-            Route::get('/course/{id}', [CourseController::class, 'studentCourseDetailSession'])->name('student-course-detail');
-            Route::get('/course/{id}/assignment', [CourseController::class, 'studentCourseDetailAssignment'])->name('student-course-detail-assignment');
-            Route::get('/course/{id}/attendance', [CourseController::class, 'studentCourseDetailAttendace'])->name('student-course-detail-attendance');
-            Route::get('/course/{id}/people', [CourseController::class, 'studentCourseDetailPeople'])->name('student-course-detail-people');
-            Route::get('/course/{id}/score', [CourseController::class, 'studentCourseDetailScore'])->name('student-course-detail-score');
+            Route::prefix('course')->group(function () {
+                Route::get('/', [CourseController::class, 'studentCourse'])->name('student-course');
+                Route::get('/{id}', [CourseController::class, 'studentCourseDetailSession'])->name('student-course-detail');
+                Route::get('/{id}/assignment', [CourseController::class, 'studentCourseDetailAssignment'])->name('student-course-detail-assignment');
+                Route::get('/{id}/attendance', [CourseController::class, 'studentCourseDetailAttendace'])->name('student-course-detail-attendance');
+                Route::get('/{id}/people', [CourseController::class, 'studentCourseDetailPeople'])->name('student-course-detail-people');
+                Route::get('/{id}/score', [CourseController::class, 'studentCourseDetailScore'])->name('student-course-detail-score');
+            });
 
             Route::post('/task-upload/{id}', [TaskController::class, 'taskUpload'])->name('task-upload');
 
