@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Classroom;
 use App\Models\Course;
 use App\Models\Session as ModelsSession;
+use App\Models\Student;
 use App\Models\StudentClassroom;
+use App\Models\TaskUpload;
 use App\Models\TeacherClassroom;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
@@ -19,8 +21,9 @@ class CourseController extends Controller
         Session::flash('message', $msg);
     }
 
-    public function upsert($data){
-        if($data->id == null){
+    public function upsert($data)
+    {
+        if ($data->id == null) {
             $result = Course::create([
                 'name' => str($data->course_name)->title(),
                 'code' => strtoupper($data->course_code),
@@ -36,43 +39,46 @@ class CourseController extends Controller
         return $result;
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $oldData = Course::find($id);
         $validation = $request->validate([
             'course_code' => ['max:10'],
-            'course_name' => ['required','unique:courses,name,'.$id],
-            'min_score' => ['required','integer','min:0','max:100'],
-        ],[
-            'course_name.unique' => '"'.$request->course_name.'" course already has been created',
+            'course_name' => ['required', 'unique:courses,name,' . $id],
+            'min_score' => ['required', 'integer', 'min:0', 'max:100'],
+        ], [
+            'course_name.unique' => '"' . $request->course_name . '" course already has been created',
         ]);
-        if($validation){
+        if ($validation) {
             $request->merge(['id' => $id]);
             $this->upsert($request);
-            return redirect()->route('course-list')->with(['status'=> 'success','message'=> 'Course successfully updated.']);
+            return redirect()->route('course-list')->with(['status' => 'success', 'message' => 'Course successfully updated.']);
         }
         $request->flash();
         return redirect()->back()->withErrors($validation);
     }
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
         $validation = $request->validate([
             'course_code' => ['max:10'],
-            'course_name' => ['required','unique:courses,name'],
-            'min_score' => ['required','integer','min:0','max:100'],
-        ],[
-            'course_name.unique' => '"'.$request->course_name.'" course already has been created',
+            'course_name' => ['required', 'unique:courses,name'],
+            'min_score' => ['required', 'integer', 'min:0', 'max:100'],
+        ], [
+            'course_name.unique' => '"' . $request->course_name . '" course already has been created',
         ]);
-        if($validation){
+        if ($validation) {
             $this->upsert($request);
-            return redirect()->route('course-list')->with(['status'=> 'success','message'=> 'Course successfully created.']);
+            return redirect()->route('course-list')->with(['status' => 'success', 'message' => 'Course successfully created.']);
         }
         $request->flash();
         return redirect()->back()->withErrors($validation);
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $course = Course::findOrFail($id);
-        $this->message('Successfully remove course "'.$course->name.'"', 'success');
+        $this->message('Successfully remove course "' . $course->name . '"', 'success');
         $course->delete();
         return back();
     }
@@ -100,7 +106,7 @@ class CourseController extends Controller
 
     public function studentCourse()
     {
-        $classrooms =Classroom::with('studentClassroom.student', 'course', 'sessions')->whereHas('studentClassroom.student', function ($q) {
+        $classrooms = Classroom::with('studentClassroom.student', 'course', 'sessions')->whereHas('studentClassroom.student', function ($q) {
             $q->where('user_id', Auth::user()->id);
         })->get();
 
@@ -111,7 +117,7 @@ class CourseController extends Controller
 
     public function studentCourseDetail($id)
     {
-        $classroom = Classroom::with('course', 'tasks.category')->findOrFail($id);
+        $classroom = Classroom::with('course', 'tasks.category', 'tasks.uploads')->findOrFail($id);
         $sessions = ModelsSession::with('materials', 'attendances.student.user', 'threads.user', 'threads.comments')->where('classroom_id', '=', $id)->get();
         $teacherClassroom = TeacherClassroom::with('teacher.user')->where('classroom_id', '=', $id)->get();
         return ['classroom' => $classroom, 'sessions' => $sessions, 'teacherClassroom' => $teacherClassroom];
@@ -151,7 +157,7 @@ class CourseController extends Controller
 
     public function studentCourseDetailAssignment($id)
     {
-        $data = $this->studentCourseDetaiL($id); 
+        $data = $this->studentCourseDetaiL($id);
         return view('pages.courses.student.assignment', [
             'classroom' => $data['classroom'],
             'sessions' => $data['sessions'],
@@ -159,7 +165,8 @@ class CourseController extends Controller
         ]);
     }
 
-    public function getPeopleData(Request $request, $id){
+    public function getPeopleData(Request $request, $id)
+    {
         $class = Classroom::find($id);
         $students = $class->studentClassroom->load([
             'student.user'
