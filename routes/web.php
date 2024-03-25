@@ -159,6 +159,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/course/{id}/assignment', [CourseController::class, 'studentCourseDetailAssignment'])->name('student-course-detail-assignment');
             Route::get('/course/{id}/attendance', [CourseController::class, 'studentCourseDetailAttendace'])->name('student-course-detail-attendance');
             Route::get('/course/{id}/people', [CourseController::class, 'studentCourseDetailPeople'])->name('student-course-detail-people');
+            Route::get('/course/{id}/score', [CourseController::class, 'studentCourseDetailScore'])->name('student-course-detail-score');
 
             Route::post('/task-upload/{id}', [TaskController::class, 'taskUpload'])->name('task-upload');
 

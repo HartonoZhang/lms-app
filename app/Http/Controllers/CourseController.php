@@ -165,6 +165,16 @@ class CourseController extends Controller
         ]);
     }
 
+    public function studentCourseDetailScore($id)
+    {
+        $data = $this->studentCourseDetaiL($id);
+        return view('pages.courses.student.score', [
+            'classroom' => $data['classroom'],
+            'sessions' => $data['sessions'],
+            'teacherClassroom' => $data['teacherClassroom']
+        ]); 
+    }
+
     public function getPeopleData(Request $request, $id)
     {
         $class = Classroom::find($id);

@@ -104,7 +104,7 @@
                             @endforeach
                         </div>
                     </div>
-                    <div class="tab-pane show fade" id="status">
+                    <div class="tab-pane fade" id="status">
                         <table id="tabel-assignment" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
