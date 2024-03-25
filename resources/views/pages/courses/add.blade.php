@@ -40,16 +40,6 @@
                             <p class="text-danger mb-1">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div class="col-sm-4 mb-3">
-                            <div class="form-label-group in-border mb-1">
-                                <input type="text" id="phoneNumber" class="form-control form-control-mb"
-                                    placeholder="Phone Number" name="min_score" value="{{old('min_score')}}"/>
-                                <label for="phoneNumber">Minimun Score*</label>
-                            </div>
-                            @error('min_score')
-                            <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
-                        </div>
                     </div>
                     <a type="button" href="{{route('course-list')}}" class="btn btn-danger">Cancel</a>
                     <button type="submit" class="btn btn-primary">Add</button>

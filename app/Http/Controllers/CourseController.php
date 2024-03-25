@@ -27,13 +27,11 @@ class CourseController extends Controller
             $result = Course::create([
                 'name' => str($data->course_name)->title(),
                 'code' => strtoupper($data->course_code),
-                'min_score' => $data->min_score,
             ]);
         } else {
             $result = Course::find($data->id)->update([
                 'name' => str($data->course_name)->title(),
                 'code' => strtoupper($data->course_code),
-                'min_score' => $data->min_score,
             ]);
         }
         return $result;
@@ -45,7 +43,6 @@ class CourseController extends Controller
         $validation = $request->validate([
             'course_code' => ['max:10'],
             'course_name' => ['required', 'unique:courses,name,' . $id],
-            'min_score' => ['required', 'integer', 'min:0', 'max:100'],
         ], [
             'course_name.unique' => '"' . $request->course_name . '" course already has been created',
         ]);
@@ -63,7 +60,6 @@ class CourseController extends Controller
         $validation = $request->validate([
             'course_code' => ['max:10'],
             'course_name' => ['required', 'unique:courses,name'],
-            'min_score' => ['required', 'integer', 'min:0', 'max:100'],
         ], [
             'course_name.unique' => '"' . $request->course_name . '" course already has been created',
         ]);
