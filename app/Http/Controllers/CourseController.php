@@ -27,13 +27,11 @@ class CourseController extends Controller
             $result = Course::create([
                 'name' => str($data->course_name)->title(),
                 'code' => strtoupper($data->course_code),
-                'min_score' => $data->min_score,
             ]);
         } else {
             $result = Course::find($data->id)->update([
                 'name' => str($data->course_name)->title(),
                 'code' => strtoupper($data->course_code),
-                'min_score' => $data->min_score,
             ]);
         }
         return $result;
@@ -45,7 +43,6 @@ class CourseController extends Controller
         $validation = $request->validate([
             'course_code' => ['max:10'],
             'course_name' => ['required', 'unique:courses,name,' . $id],
-            'min_score' => ['required', 'integer', 'min:0', 'max:100'],
         ], [
             'course_name.unique' => '"' . $request->course_name . '" course already has been created',
         ]);
@@ -63,7 +60,6 @@ class CourseController extends Controller
         $validation = $request->validate([
             'course_code' => ['max:10'],
             'course_name' => ['required', 'unique:courses,name'],
-            'min_score' => ['required', 'integer', 'min:0', 'max:100'],
         ], [
             'course_name.unique' => '"' . $request->course_name . '" course already has been created',
         ]);
@@ -83,7 +79,7 @@ class CourseController extends Controller
         return back();
     }
 
-    public function courses()
+    public function teacherCourses()
     {
         //TODO get class per period
         $classrooms = Classroom::all();
@@ -94,14 +90,44 @@ class CourseController extends Controller
         return view('pages.courses.teacher.my-courses', $data);
     }
 
-    public function courseDetail($id)
+    public function teacherCourseDetail($id)
     {
-        $class = Classroom::find($id);
-        $data = [
-            'class' => $class,
-            'userRole' => auth()->user()->role_id
-        ];
-        return view('pages.courses.teacher.detail', $data);
+        $classroom = Classroom::with('course', 'tasks.category', 'tasks.uploads')->findOrFail($id);
+        $sessions = ModelsSession::with('materials', 'attendances.student.user', 'threads.user', 'threads.comments')->where('classroom_id', '=', $id)->get();
+        $teacherClassroom = TeacherClassroom::with('teacher.user')->where('classroom_id', '=', $id)->get();
+        return ['classroom' => $classroom, 'sessions' => $sessions, 'teacherClassroom' => $teacherClassroom];
+    }
+
+    public function teacherCourseDetailSession($id)
+    {
+        $data = $this->teacherCourseDetail($id);
+        return view('pages.courses.teacher.detail-session', [
+            'classroom' => $data['classroom'],
+            'sessions' => $data['sessions'],
+            'teacherClassroom' => $data['teacherClassroom']
+        ]);
+    }
+
+    public function teacherCourseDetailPeople($id)
+    {
+        $data = $this->teacherCourseDetail($id);
+        $listStudent = StudentClassroom::with('student.user')->where('classroom_id', '=', $id)->paginate(15);
+        return view('pages.courses.teacher.people', [
+            'classroom' => $data['classroom'],
+            'sessions' => $data['sessions'],
+            'teacherClassroom' => $data['teacherClassroom'],
+            'listStudent' => $listStudent
+        ]);
+    }
+
+    public function teacherCourseDetailAssignment($id)
+    {
+        $data = $this->teacherCourseDetail($id);
+        return view('pages.courses.teacher.assignment', [
+            'classroom' => $data['classroom'],
+            'sessions' => $data['sessions'],
+            'teacherClassroom' => $data['teacherClassroom']
+        ]);
     }
 
     public function studentCourse()

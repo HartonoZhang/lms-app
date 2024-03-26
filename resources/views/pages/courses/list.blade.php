@@ -26,7 +26,6 @@
                         <tr>
                             <th>Course name</th>
                             <th>Course code</th>
-                            <th>Minimum score required to pass</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -37,7 +36,6 @@
                                 <td class="text-truncate {{$data->code == null ? "font-italic" : ""}}">
                                     {{$data->code == null ? "No code" : $data->code}}
                                 </td>
-                                <td>{{$data->min_score}}</td>
                                 <td>
                                     <ul class="list-inline m-0">
                                         <li class="list-inline-item">
@@ -135,7 +133,7 @@
                 "autoWidth": false,
                 "columnDefs": [{
                     orderable: false,
-                    targets: 3
+                    targets: 2
                 }],
                 "buttons": [
                     "copy",

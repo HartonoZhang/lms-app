@@ -195,33 +195,31 @@
                             </li>
                         </ul>
                     </li>
-                    @if ($organization->category_id != 2)
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-clock nav-icon"></i>
-                                <p>
-                                    Period
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('period-list') }}"
-                                        class="{{ request()->is('period/list') ? 'active' : '' }} nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Period List</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('period-add') }}"
-                                        class="{{ request()->is('period/add') ? 'active' : '' }} nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Period Add</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-clock nav-icon"></i>
+                            <p>
+                                Period
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('period-list') }}"
+                                    class="{{ request()->is('period/list') ? 'active' : '' }} nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Period List</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('period-add') }}"
+                                    class="{{ request()->is('period/add') ? 'active' : '' }} nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Period Add</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="fas fa-chalkboard nav-icon"></i>

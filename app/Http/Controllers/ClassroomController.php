@@ -18,6 +18,9 @@ class ClassroomController extends Controller
     }
 
     public function upsertClassroom ($data){
+        $assignment = $data->asg == null ? 0 : $data->asg;
+        $exam = $data->exam == null ? 0 : $data->exam;
+        $project = $data->project == null ? 0 : $data->project;
         if ($data->id == null) {
             $result = Classroom::create([
                 "code"=> $data->code,
@@ -25,6 +28,9 @@ class ClassroomController extends Controller
                 "course_id" => $data->course,
                 "student_capacity" => $data->student_capacity,
                 "period_id" => $data->period,
+                "asg" => $assignment,
+                "project" => $exam,
+                "exam" => $project,
             ]);
         } else {
             $result = Classroom::find($data->id)->update([
@@ -33,6 +39,9 @@ class ClassroomController extends Controller
                 "course_id"=> $data->course,
                 "student_capacity" => $data->student_capacity,
                 "period_id" => $data->period,
+                "asg" => $assignment,
+                "project" => $exam,
+                "exam" => $project,
             ]);
         }
         return $result;
@@ -53,7 +62,10 @@ class ClassroomController extends Controller
         foreach ($data->students as $student) {
             $result = StudentClassroom::create([
                 "classroom_id"=> $data->classroom_id,
-                "student_id"=> (int)$student
+                "student_id"=> (int)$student,
+                "asg" => 0,
+                "project" => 0,
+                "exam" => 0,
             ]);
         }
     }
@@ -82,9 +94,23 @@ class ClassroomController extends Controller
             "teacherLists"=> [
                 "required",
             ],
+            "taskScore" => [
+                function(string $attribute, mixed $value, Closure $fail) use ($request) {
+                    $assignment = $request->asg == null ? 0 : $request->asg;
+                    $exam = $request->exam == null ? 0 : $request->exam;
+                    $project = $request->project == null ? 0 : $request->project;
+                    $totalScore = $assignment + $exam + $project;
+                    if ($totalScore != 100) {
+                        $fail("Total sum of 3 fields must be 100 (currently is ".$totalScore.")");
+                    }
+                }
+            ]
         ],[
             "studentLists.required" => "Must be at least 1 student in the class",
-            "teacherLists.required" => "Must be at least 1 teacher in the class"
+            "teacherLists.required" => "Must be at least 1 teacher in the class",
+            'asg.integer' => 'The assignment must be an integer.',
+            'asg.min' => 'The assignment must be at least 0',
+            'asg.max' => 'The assignment must not be greater than 100.',
         ]);
 
         if($validation){
@@ -109,6 +135,9 @@ class ClassroomController extends Controller
             "name" => ["required"],
             "course" => ["required"],
             'period' => ['required'],
+            'asg' => ['nullable', 'integer', 'min:0', 'max:100'],
+            'exam' => ['nullable', 'integer', 'min:0', 'max:100'],
+            'project' => ['nullable', 'integer', 'min:0', 'max:100'],
             "student_capacity" => ['nullable','regex:/^[1-9]+$/'],
             "studentLists" => [
                 "required",
@@ -123,14 +152,27 @@ class ClassroomController extends Controller
                     }
                 }
             ],
-            "teacherLists"=> [
+            "teacherLists" => [
                 "required",
             ],
+            "taskScore" => [
+                function(string $attribute, mixed $value, Closure $fail) use ($request) {
+                    $assignment = $request->asg == null ? 0 : $request->asg;
+                    $exam = $request->exam == null ? 0 : $request->exam;
+                    $project = $request->project == null ? 0 : $request->project;
+                    $totalScore = $assignment + $exam + $project;
+                    if ($totalScore != 100) {
+                        $fail("Total sum of 3 fields must be 100 (currently is ".$totalScore.")");
+                    }
+                }
+            ]
         ],[
             "studentLists.required" => "Must be at least 1 student in the class",
-            "teacherLists.required" => "Must be at least 1 teacher in the class"
+            "teacherLists.required" => "Must be at least 1 teacher in the class",
+            'asg.integer' => 'The assignment must be an integer.',
+            'asg.min' => 'The assignment must be at least 0',
+            'asg.max' => 'The assignment must not be greater than 100.',
         ]);
-
         if($validation){
             $classroom = $this->upsertClassroom($request);
             $request->merge(['classroom_id' => $classroom->id]);  

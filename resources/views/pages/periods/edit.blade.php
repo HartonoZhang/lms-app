@@ -31,9 +31,44 @@
                             <p class="text-danger mb-1">{{ $message }}</p>
                             @enderror
                         </div>
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
+                                <input type="date" id="startDate" class="form-control form-control-mb"
+                                    placeholder="Start Date" name="start_date" value="{{old('start_date') ? old('start_date') : $data->start_date}}" onchange=check() />
+                                <label for="startDate">Start Date*</label>
+                            </div>
+                            @error('start_date')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="col-sm-4 mb-3">
+                            <div class="form-label-group in-border mb-1">
+                                <input type="date" id="endDate" class="form-control form-control-mb"
+                                    placeholder="End Date" name="end_date" min="{{old('end_date') ? old('end_date') : $data->end_date}}" value="{{old('end_date') ? old('end_date') : $data->end_date}}"/>
+                                <label for="endDate">End Date*</label>
+                            </div>
+                            @error('end_date')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                     <a type="button" href="{{route('period-list')}}" class="btn btn-danger">Cancel</a>
                     <button type="submit" class="btn btn-primary">Edit</button>
+                    <script type="text/javascript">
+                        var startDate = document.getElementById('startDate');
+                        var endDate = document.getElementById('endDate');
+                        function check(){
+                            if(startDate.value){
+                                endDate.removeAttribute('disabled')
+                                if(startDate.value > endDate.value)
+                                    endDate.value = ""
+                                endDate.setAttribute('min',startDate.value)
+                            }else{
+                                endDate.setAttribute('disabled','')
+                                endDate.value = ""
+                            }
+                        }
+                    </script>
                 </form>
             </div>
         </div>

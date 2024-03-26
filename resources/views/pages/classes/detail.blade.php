@@ -53,6 +53,33 @@
                         </div>
                     </div>
                 </div>
+                <h3 class="card-title">
+                    Task percentage score
+                </h3>
+                <br>
+                <div class="form-row mt-3">
+                    <div class="col-sm-4 mb-3">
+                        <div class="form-label-group in-border mb-1">
+                            <input type="text" id="asg" class="form-control form-control-mb"
+                                placeholder="Assignment" name="asg" value="{{$data->asg}}" disabled />
+                            <label for="asg">Assignment*</label>
+                        </div> 
+                    </div>
+                    <div class="col-sm-4 mb-3">
+                        <div class="form-label-group in-border mb-1">
+                            <input type="text" id="exam" class="form-control form-control-mb"
+                                placeholder="Exam" name="exam" value="{{$data->exam}}" disabled />
+                            <label for="exam">Exam*</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 mb-3">
+                        <div class="form-label-group in-border mb-1">
+                            <input type="text" id="project" class="form-control form-control-mb"
+                                placeholder="Project" name="project" value="{{$data->project}}" disabled />
+                            <label for="project">Project*</label>
+                        </div>
+                    </div>
+                </div>
                 <div class="card border">
                     <div class="card-body">
                         <table id="table-students" class="table table-bordered table-striped">

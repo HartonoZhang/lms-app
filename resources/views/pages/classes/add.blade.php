@@ -80,6 +80,47 @@
                                 @enderror
                             </div>
                         </div>
+                        <h3 class="card-title">
+                            Task percentage score (total sum of 3 fields must be 100)
+                        </h3>
+                        <input type="text" id="taskScore" class="form-control form-control-mb"
+                            hidden name="taskScore" value="{{old("taskScore")}}" />
+                        <br>
+                        @error('taskScore')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                        @enderror
+                        <div class="form-row mt-3">
+                            <div class="col-sm-4 mb-3">
+                                <div class="form-label-group in-border mb-1">
+                                    <input type="text" id="asg" class="form-control form-control-mb"
+                                        placeholder="Assignment" name="asg" value="{{old("asg")}}" />
+                                    <label for="asg">Assignment*</label>
+                                </div>
+                                @error('asg')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="col-sm-4 mb-3">
+                                <div class="form-label-group in-border mb-1">
+                                    <input type="text" id="exam" class="form-control form-control-mb"
+                                        placeholder="Exam" name="exam" value="{{old("exam")}}" />
+                                    <label for="exam">Exam*</label>
+                                </div>
+                                @error('exam')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="col-sm-4 mb-3">
+                                <div class="form-label-group in-border mb-1">
+                                    <input type="text" id="project" class="form-control form-control-mb"
+                                        placeholder="Project" name="project" value="{{old("project")}}" />
+                                    <label for="project">Project*</label>
+                                </div>
+                                @error('project')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
                         @php
                             if (old('studentLists')) {
                                 $oldCheckedStudent = explode(',',old('studentLists'));

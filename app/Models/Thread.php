@@ -12,6 +12,11 @@ class Thread extends Model
     protected $guarded = ['id'];
     protected $fillable = ['session_id', 'user_id', 'title', 'description'];
 
+    public function session()
+    {
+        return $this->belongsTo(Session::class);
+    }
+
     public function comments()
     {
         return $this->hasMany(Comment::class);

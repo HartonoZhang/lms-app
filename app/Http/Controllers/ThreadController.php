@@ -51,7 +51,8 @@ class ThreadController extends Controller
 
         return view('pages.threads.detail', [
             'thread' => $thread,
-            'comments' => $comments
+            'comments' => $comments,
+            'session' => $thread->session
         ]);
     }
 

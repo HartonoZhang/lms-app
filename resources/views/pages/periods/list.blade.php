@@ -26,15 +26,25 @@
                         <tr>
                             <th>Period name</th>
                             <th>Total classroom on this period</th>
+                            <th>Start date</th>
+                            <th>End date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($datas as $data)
                             <tr>
-                                <td class="text-truncate">{{$data->name}}</td>
+                                <td class="text-truncate">
+                                    {{$data->name}}
+                                </td>
                                 <td class="text-truncate">
                                     {{$data->classroom->count()}}
+                                </td>
+                                <td class="text-truncate">
+                                    {{$data->start_date}}
+                                </td>
+                                <td class="text-truncate">
+                                    {{$data->end_date}}
                                 </td>
                                 <td>
                                     <ul class="list-inline m-0">
@@ -134,7 +144,7 @@
                 "autoWidth": false,
                 "columnDefs": [{
                     orderable: false,
-                    targets: 2
+                    targets: 4
                 }],
                 "buttons": [
                     "copy",

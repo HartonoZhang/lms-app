@@ -131,28 +131,41 @@ Route::middleware('auth')->group(function () {
             });
 
             Route::controller(CourseController::class)->prefix('course')->name('teacher-course-')->group(function () {
-                Route::get('/', 'courses')->name('courses');
-                Route::get('/{id}', 'courseDetail')->name('detail');
-                Route::get('/{id}/people', 'getPeopleData')->name('people-data');
-                Route::controller(SessionController::class)->prefix('{id}/session')->group(function () {
-                    Route::get('/session', 'getSessionData')->name('session-data');
-                    Route::put('/update', 'updateDescription')->name('session-description-update');
-                    Route::controller(MaterialController::class)->prefix('material')->name('material-')->group(function () {
-                        Route::get('/', 'getMaterialFile')->name('download');
-                        Route::post('/add', 'addMaterial')->name('add');
-                        Route::put('/edit', 'editMaterial')->name('edit');
-                        Route::delete('/delete', 'deleteMaterial')->name('delete');
-                    });
-                    Route::controller(AttendanceController::class)->prefix('attendance')->name('attendance-')->group(function () {
-                        Route::get('/filter', 'filterAttendance')->name('filter');
-                        Route::post('/save', 'saveAttendance')->name('save');
-                    });
+                Route::get('/', 'teacherCourses')->name('courses');
+                Route::get('/{id}', 'teacherCourseDetailSession')->name('detail');
+
+                Route::get('/{id}/assignment', 'teacherCourseDetailAssignment')->name('detail-assignment');
+                Route::controller(AttendanceController::class)->group(function () {
+                    Route::get('/{id}/attendance', 'teacherCourseDetailAttendance')->name('detail-attendance');
+                    Route::get('/{id}/attendance/{sessionId}', 'teacherCourseDetailAttendanceView')->name('detail-attendance-view');
+                    Route::post('/{id}/attendance/{sessionId}', 'teacherCourseDetailAttendanceSave')->name('detail-attendance-save');
                 });
-                Route::controller(TaskController::class)->prefix('/{id}/task')->name('task-')->group(function(){
-                    Route::get('/data', 'getTaskData')->name('data');
-                    Route::get('/detail', 'getTaskDetail')->name('detail');
-                    Route::get('/upload', 'getTaskUploadFile')->name('upload-download');
-                });
+                Route::get('/{id}/people', 'teacherCourseDetailPeople')->name('detail-people');
+                // Route::post('/task-upload/{id}', [TaskController::class, 'taskUpload'])->name('task-upload');
+
+
+                // Route::get('/{id}', 'teacherCourseDetail')->name('detail');
+                // Route::get('/course/{id}', [CourseController::class, 'teacherCourseDetailSession'])->name('teacher-course-detail');
+                // Route::get('/{id}/people', 'getPeopleData')->name('people-data');
+                // Route::controller(SessionController::class)->prefix('{id}/session')->group(function () {
+                //     Route::get('/session', 'getSessionData')->name('session-data');
+                //     Route::put('/update', 'updateDescription')->name('session-description-update');
+                //     Route::controller(MaterialController::class)->prefix('material')->name('material-')->group(function () {
+                //         Route::get('/', 'getMaterialFile')->name('download');
+                //         Route::post('/add', 'addMaterial')->name('add');
+                //         Route::put('/edit', 'editMaterial')->name('edit');
+                //         Route::delete('/delete', 'deleteMaterial')->name('delete');
+                //     });
+                //     Route::controller(AttendanceController::class)->prefix('attendance')->name('attendance-')->group(function () {
+                //         Route::get('/filter', 'filterAttendance')->name('filter');
+                //         Route::post('/save', 'saveAttendance')->name('save');
+                //     });
+                // });
+                // Route::controller(TaskController::class)->prefix('/{id}/task')->name('task-')->group(function(){
+                //     Route::get('/data', 'getTaskData')->name('data');
+                //     Route::get('/detail', 'getTaskDetail')->name('detail');
+                //     Route::get('/upload', 'getTaskUploadFile')->name('upload-download');
+                // });
             });
         });
     });
