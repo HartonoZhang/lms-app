@@ -15,6 +15,10 @@ class Task extends Model
         return $this->belongsTo(Classroom::class, 'classroom_id', 'id');
     }
 
+    public function teacher(){
+        return $this->belongsTo(Teacher::class);
+    }
+
     public function category(){
         return $this->belongsTo(TaskCategory::class, 'task_category_id', 'id');
     }

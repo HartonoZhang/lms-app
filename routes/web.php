@@ -151,8 +151,13 @@ Route::middleware('auth')->group(function () {
                 Route::get('/update-material/{id}', [MaterialController::class, 'updateMaterial'])->name('edit-material');
                 Route::put('/update-material/{id}', [MaterialController::class, 'editMaterial'])->name('edit-material');
 
-                
                 Route::get('/{classroom}/assignment/{task}', [TaskController::class, 'taskDetail'])->name('task-detail');
+                Route::get('/{classroom}/assignment/{task}/edit', [TaskController::class, 'updateTask'])->name('update-task');
+                Route::put('/{classroom}/assignment/{task}/edit', [TaskController::class, 'editTask'])->name('update-task');
+                Route::delete('/{classroom}/assignment/{task}/delete', [TaskController::class, 'deleteTask'])->name('delete-task');
+
+                Route::put('/assignment/{task}/done/{student}', [TaskController::class, 'doneUpload'])->name('done-upload');
+                Route::put('/assignment/{task}/revision/{student}', [TaskController::class, 'revisionUpload'])->name('revision-upload');
             });
 
             // Route::controller(CourseController::class)->prefix('course')->name('teacher-course-')->group(function () {
