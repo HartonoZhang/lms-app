@@ -19,84 +19,64 @@ class CourseSeeder extends Seeder
         $data = [
             [
                 "code" => "MATH",
-                "name" => "Algebra",
-                "min_score" => 75,
+                "name" => "Algebra"
             ],[
                 "code" => "MATH",
-                "name" => "Algebra II",
-                "min_score" => 75,
+                "name" => "Algebra II"
             ],[
                 "code" => "MATH",
-                "name" => "Matrix",
-                "min_score" => 50,
+                "name" => "Matrix"
             ],[
                 "code" => "COMP",
-                "name" => "Algorithm and Programming",
-                "min_score" => 65,
+                "name" => "Algorithm and Programming"
             ],[
                 "code" => "ART",
-                "name" => "Drawing",
-                "min_score" => 45,
+                "name" => "Drawing"
             ],[
                 "code" => "ART",
-                "name" => "Music",
-                "min_score" => 50,
+                "name" => "Music"
             ],[
                 "code" => "ART",
-                "name" => "Teather",
-                "min_score" => 77,
+                "name" => "Teather"
             ],[
                 "code" => "LAW",
-                "name" => "Law & Policies",
-                "min_score" => 55,
+                "name" => "Law & Policies"
             ],[
                 "code" => "Law",
-                "name" => "Public Relation",
-                "min_score" => 70,
+                "name" => "Public Relation"
             ],[
                 "code" => "",
-                "name" => "English",
-                "min_score" => 60,
+                "name" => "English"
             ],[
                 "code" => "",
-                "name" => "Basic Mathematic",
-                "min_score" => 50,
+                "name" => "Basic Mathematic"
             ],[
                 "code" => "",
-                "name" => "Sports",
-                "min_score" => 45,
+                "name" => "Sports"
             ],[
                 "code" => "",
-                "name" => "History of Java",
-                "min_score" => 65,
+                "name" => "History of Java"
             ],[
                 "code" => "ART",
-                "name" => "Sculpture",
-                "min_score" => 44,
+                "name" => "Sculpture"
             ],[
                 "code" => "Math",
-                "name" => "2D Shapes",
-                "min_score" => 67,
+                "name" => "2D Shapes"
             ],[
                 "code" => "ART",
-                "name" => "Digital Drawing",
-                "min_score" => 76,
+                "name" => "Digital Drawing"
             ],[
                 "code" => "COMP",
-                "name" => "Introduction of Python Language",
-                "min_score" => 50,
+                "name" => "Introduction of Python Language"
             ],[
                 "code" => "Cook",
-                "name" => "Western Dish",
-                "min_score" => 55,
+                "name" => "Western Dish"
             ],[
                 "code" => "Cook",
-                "name" => "Asia Dish",
-                "min_score" => 65,
+                "name" => "Asia Dish"
             ],[
                 "code" => "COMP",
-                "name" => "Introduction of Python Language II",
-                "min_score" => 60,
+                "name" => "Introduction of Python Language II"
             ]
         ];
 
@@ -104,7 +84,6 @@ class CourseSeeder extends Seeder
             Course::insert([
                 "code"=> $value["code"],
                 "name"=> $value["name"],
-                "min_score"=> $value["min_score"],
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);

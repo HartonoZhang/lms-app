@@ -23,6 +23,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('code')->nullable();
             $table->integer('student_capacity')->nullable();
+            $table->integer('asg');
+            $table->integer('exam');
+            $table->integer('project');
         });
     }
 
