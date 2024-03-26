@@ -5,7 +5,7 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/{{ strtolower(Auth::user()->role->name) }}">Home</a></li>
     <li class="breadcrumb-item"><a href="/{{ strtolower(Auth::user()->role->name) }}/course">My Courses</a></li>
-    <li class="breadcrumb-item active"><a href="/{{ strtolower(Auth::user()->role->name) }}/course/{{$thread->session_id}}">Courses Detail</a></li>
+    <li class="breadcrumb-item active"><a href="/{{ strtolower(Auth::user()->role->name) }}/course/{{$session->classroom_id}}">Courses Detail</a></li>
     <li class="breadcrumb-item active">Thread Detail</li>
 @endsection
 

@@ -79,7 +79,7 @@ class CourseController extends Controller
         return back();
     }
 
-    public function courses()
+    public function teacherCourses()
     {
         //TODO get class per period
         $classrooms = Classroom::all();
@@ -90,14 +90,44 @@ class CourseController extends Controller
         return view('pages.courses.teacher.my-courses', $data);
     }
 
-    public function courseDetail($id)
+    public function teacherCourseDetail($id)
     {
-        $class = Classroom::find($id);
-        $data = [
-            'class' => $class,
-            'userRole' => auth()->user()->role_id
-        ];
-        return view('pages.courses.teacher.detail', $data);
+        $classroom = Classroom::with('course', 'tasks.category', 'tasks.uploads')->findOrFail($id);
+        $sessions = ModelsSession::with('materials', 'attendances.student.user', 'threads.user', 'threads.comments')->where('classroom_id', '=', $id)->get();
+        $teacherClassroom = TeacherClassroom::with('teacher.user')->where('classroom_id', '=', $id)->get();
+        return ['classroom' => $classroom, 'sessions' => $sessions, 'teacherClassroom' => $teacherClassroom];
+    }
+
+    public function teacherCourseDetailSession($id)
+    {
+        $data = $this->teacherCourseDetail($id);
+        return view('pages.courses.teacher.detail-session', [
+            'classroom' => $data['classroom'],
+            'sessions' => $data['sessions'],
+            'teacherClassroom' => $data['teacherClassroom']
+        ]);
+    }
+
+    public function teacherCourseDetailPeople($id)
+    {
+        $data = $this->teacherCourseDetail($id);
+        $listStudent = StudentClassroom::with('student.user')->where('classroom_id', '=', $id)->paginate(15);
+        return view('pages.courses.teacher.people', [
+            'classroom' => $data['classroom'],
+            'sessions' => $data['sessions'],
+            'teacherClassroom' => $data['teacherClassroom'],
+            'listStudent' => $listStudent
+        ]);
+    }
+
+    public function teacherCourseDetailAssignment($id)
+    {
+        $data = $this->teacherCourseDetail($id);
+        return view('pages.courses.teacher.assignment', [
+            'classroom' => $data['classroom'],
+            'sessions' => $data['sessions'],
+            'teacherClassroom' => $data['teacherClassroom']
+        ]);
     }
 
     public function studentCourse()
