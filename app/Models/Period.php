@@ -10,7 +10,9 @@ class Period extends Model
     protected $table = 'periods';
 
     protected $fillable = [
-        'name'
+        'name',
+        'start_date',
+        'end_date'
     ];
 
     public function classroom(){
