@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Classroom;
 use App\Models\Course;
+use App\Models\Period;
 use App\Models\Session as ModelsSession;
 use App\Models\Student;
 use App\Models\StudentClassroom;
@@ -79,15 +80,32 @@ class CourseController extends Controller
         return back();
     }
 
-    public function teacherCourses()
+    public function teacherCourses(Request $request)
     {
         //TODO get class per period
-        $classrooms = Classroom::all();
-        $data = [
-            'classrooms' => $classrooms,
-            'userRole' => auth()->user()->role_id
-        ];
-        return view('pages.courses.teacher.my-courses', $data);
+        // $teacherClassrooms = TeacherClassroom::where('teacher_id','=',auth()->user()->teacher[0]->id)->get();
+        $periods = Period::whereHas('classroom',function($x){
+            return $x->whereHas('teacherClassroom',function ($y){
+                return $y->where('teacher_id', '=', auth()->user()->teacher[0]->id);
+            });
+        })->get()->sortByDesc('id')->values();
+
+        if ($request->period != null) {
+            $period_id = $request->period;
+            $request->flash();
+        } else {
+            $period_id = $periods[0]->id;
+        }
+        $periodClassrooms = Classroom::where('period_id', (int)$period_id)
+                            ->whereHas('teacherClassroom',function($x){
+                                return $x->where('teacher_id',auth()->user()->teacher[0]->id);
+                            })
+                            ->get();
+        
+        return view('pages.courses.teacher.my-courses')->with([
+            'periods' => $periods,
+            'classrooms' => $periodClassrooms,
+        ]);
     }
 
     public function teacherCourseDetail($id)
@@ -130,14 +148,29 @@ class CourseController extends Controller
         ]);
     }
 
-    public function studentCourse()
+    public function studentCourse(Request $request)
     {
-        $classrooms = Classroom::with('studentClassroom.student', 'course', 'sessions')->whereHas('studentClassroom.student', function ($q) {
-            $q->where('user_id', Auth::user()->id);
-        })->get();
+        $periods = Period::whereHas('classroom',function($x){
+            return $x->whereHas('studentClassroom',function ($y){
+                return $y->where('student_id', '=', auth()->user()->student[0]->id);
+            });
+        })->get()->sortByDesc('id')->values();
+
+        if ($request->period != null) {
+            $period_id = $request->period;
+            $request->flash();
+        } else {
+            $period_id = $periods[0]->id;
+        }
+        $periodClassrooms = Classroom::where('period_id', (int)$period_id)
+                            ->whereHas('studentClassroom',function($x){
+                                return $x->where('student_id',auth()->user()->student[0]->id);
+                            })
+                            ->get();
 
         return view('pages.courses.student.my-courses', [
-            'classrooms' => $classrooms
+            'classrooms' => $periodClassrooms,
+            'periods' => $periods
         ]);
     }
 

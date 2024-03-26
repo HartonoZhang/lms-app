@@ -8,6 +8,22 @@
 @endsection
 
 @section('content')
+    <form class="form-horizontal" action="{{route('teacher-course-courses')}}" method="GET" enctype="multipart/form-data">
+        <div class="form-row justify-content-between">
+            <div class="col-sm-4 mb-3">
+                <div class="form-label-group in-border mb-1">
+                    <select class="form-control form-control-mb select2" style="width: 100%;" name="period">
+                        @foreach ($periods as $period)
+                            <option value={{$period->id}} {{old('period') == $period->id ? "selected" : ''}}>{{$period->name}} </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-4 mb-3 text-right mx-3">
+                <button class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
     <div class="container-fluid h-100">
         <div class="row">
             @foreach ($classrooms as $item)
