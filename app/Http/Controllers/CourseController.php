@@ -81,13 +81,13 @@ class CourseController extends Controller
 
     public function teacherCourses()
     {
-        //TODO get class per period
-        $classrooms = Classroom::all();
-        $data = [
-            'classrooms' => $classrooms,
-            'userRole' => auth()->user()->role_id
-        ];
-        return view('pages.courses.teacher.my-courses', $data);
+        $classrooms = Classroom::with('teacherClassroom.teacher', 'course', 'sessions')->whereHas('teacherClassroom.teacher', function ($q) {
+            $q->where('user_id', Auth::user()->id);
+        })->get();
+
+        return view('pages.courses.teacher.my-courses', [
+            'classrooms' => $classrooms
+        ]);
     }
 
     public function teacherCourseDetail($id)
@@ -101,10 +101,12 @@ class CourseController extends Controller
     public function teacherCourseDetailSession($id)
     {
         $data = $this->teacherCourseDetail($id);
+        $listStudent = StudentClassroom::with('student.user')->where('classroom_id', '=', $id)->get();
         return view('pages.courses.teacher.detail-session', [
             'classroom' => $data['classroom'],
             'sessions' => $data['sessions'],
-            'teacherClassroom' => $data['teacherClassroom']
+            'teacherClassroom' => $data['teacherClassroom'],
+            'listStudent' => $listStudent
         ]);
     }
 
@@ -124,6 +126,26 @@ class CourseController extends Controller
     {
         $data = $this->teacherCourseDetail($id);
         return view('pages.courses.teacher.assignment', [
+            'classroom' => $data['classroom'],
+            'sessions' => $data['sessions'],
+            'teacherClassroom' => $data['teacherClassroom']
+        ]);
+    }
+
+    // public function teacherCourseDetailAttendace($id)
+    // {
+    //     $data = $this->teacherCourseDetail($id);
+    //     return view('pages.courses.teacher.attendance', [
+    //         'classroom' => $data['classroom'],
+    //         'sessions' => $data['sessions'],
+    //         'teacherClassroom' => $data['teacherClassroom']
+    //     ]);
+    // }
+
+    public function teacherCourseDetailScore($id)
+    {
+        $data = $this->teacherCourseDetail($id);
+        return view('pages.courses.teacher.score', [
             'classroom' => $data['classroom'],
             'sessions' => $data['sessions'],
             'teacherClassroom' => $data['teacherClassroom']
@@ -198,7 +220,7 @@ class CourseController extends Controller
             'classroom' => $data['classroom'],
             'sessions' => $data['sessions'],
             'teacherClassroom' => $data['teacherClassroom']
-        ]); 
+        ]);
     }
 
     public function getPeopleData(Request $request, $id)

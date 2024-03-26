@@ -20,7 +20,6 @@ class TaskUploadSeeder extends Seeder
                 'task_id' => 1,
                 'student_id' => 1,
                 'file_upload' => 'test.txt',
-                'upload_date' => now(),
                 'status' => 'In Review',
             ]
         ];

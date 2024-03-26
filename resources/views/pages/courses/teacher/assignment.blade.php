@@ -3,14 +3,14 @@
 @section('title', 'Courses Detail - Assignment')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('student-dashboard') }}">Home</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('student-course') }}">My Courses</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('teacher-dashboard') }}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('teacher-course') }}">My Courses</a></li>
     <li class="breadcrumb-item active">Courses Detail - Assignment</li>
 @endsection
 
 @section('content')
     <div class="container-fluid h-100">
-        @include('pages.courses.student.course-detail-info', [
+        @include('pages.courses.teacher.course-detail-info', [
             'classroom' => $classroom,
             'teacherClassroom' => $teacherClassroom,
             'sessions' => $sessions,
@@ -20,8 +20,6 @@
                 <ul class="nav nav-pills">
                     <li class="nav-item"><a class="nav-link active" href="#list" data-toggle="pill">Assignment</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="#status" data-toggle="pill">Status Assignment</a>
-                    </li>
                 </ul>
             </div>
             <div class="card-body">
@@ -29,7 +27,7 @@
                     <div class="active tab-pane show fade" id="list">
                         <div class="row">
                             @foreach ($classroom->tasks as $task)
-                                <a href="#" data-toggle="modal" data-target="#submit-assigment-{{ $task->id }}"
+                                <a href="{{ route('task-detail',['classroom' => $classroom->id, 'task' => $task->id]) }}"
                                     class="col-md-4">
                                     <div class="classroom-task">
                                         <div class="card card-primary card-outline">
@@ -49,7 +47,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                <div class="modal fade" id="submit-assigment-{{ $task->id }}" tabindex="-1"
+                                {{-- <div class="modal fade" id="submit-assigment-{{ $task->id }}" tabindex="-1"
                                     role="dialog" aria-labelledby="submit-assigment" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -100,11 +98,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             @endforeach
                         </div>
                     </div>
-                    <div class="tab-pane show fade" id="status">
+                    {{-- <div class="tab-pane show fade" id="status">
                         <table id="tabel-assignment" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
@@ -146,18 +144,6 @@
                                             @endphp
                                             {{ $status }}
                                         </td>
-                                        {{-- <td>
-                                            @php
-                                                $score = 0;
-                                                foreach ($task->uploads as $upload) {
-                                                    if ($upload->student->user->id === Auth::user()->id) {
-                                                        $score = $upload->score ? $upload->score : 0;
-                                                        break;
-                                                    }
-                                                }
-                                            @endphp
-                                            {{ $score }}
-                                        </td> --}}
                                         <td>
                                             @php
                                                 $file = 'No data';
@@ -179,7 +165,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -260,12 +246,6 @@
                     toastr.success('{{ Session::get('message') }}')
                 @elseif (Session::get('status') === 'fail')
                     toastr.error('{{ Session::get('message') }}')
-                @endif
-            @endif
-
-            @if ($errors->any())
-                @if (Session::has('failSubmitAnswer'))
-                    $('#submit-assigment-{{ Session::get('failSubmitAnswer') }}').modal('show');
                 @endif
             @endif
         })

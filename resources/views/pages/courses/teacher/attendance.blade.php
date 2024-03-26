@@ -3,8 +3,8 @@
 @section('title', 'Courses Detail - Attendance')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('teacher-dashboard') }}">Home</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('teacher-course-courses') }}">My Courses</a></li>
+<li class="breadcrumb-item"><a href="{{ route('teacher-dashboard') }}">Home</a></li>
+<li class="breadcrumb-item"><a href="{{ route('teacher-course') }}">My Courses</a></li>
     <li class="breadcrumb-item active">Courses Detail - Attendance</li>
 @endsection
 
@@ -35,7 +35,7 @@
                                 <td>{{ $item->start_time->format('g:i A, d-m-y') }}</td>
                                 <td>{{ $item->end_time->format('g:i A, d-m-y') }}</td>
                                 <td>
-                                    <a class="btn btn-warning" href="{{route('teacher-course-detail-attendance-view', ['id' => $classroom->id, 'sessionId' => $item->id])}}">Edit</a>
+                                    {{-- <a class="btn btn-warning" href="{{route('teacher-course-detail-attendance-view', ['id' => $classroom->id, 'sessionId' => $item->id])}}">Edit</a> --}}
                                 </td>
                             </tr>
                         @endforeach

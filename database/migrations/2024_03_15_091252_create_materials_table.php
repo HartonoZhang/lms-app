@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('session_id')->references('id')->on('sessions')->onDelete('cascade');
             $table->string('title');
             $table->string('value');
-            $table->boolean('is_file');
+            $table->integer('is_file');
             $table->timestamps();
         });
     }

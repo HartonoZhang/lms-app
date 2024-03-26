@@ -56,7 +56,7 @@
                 </li>
                 @if (Auth::user()->role_id === 2)
                     <li class="nav-item">
-                        <a href="{{ route('teacher-course-courses') }}"
+                        <a href="{{ route('teacher-course') }}"
                             class="{{ request()->is('teacher/course') ? 'active' : '' }} nav-link">
                             <i class="fas fa-book nav-icon"></i>
                             <p>

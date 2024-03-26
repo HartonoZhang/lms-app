@@ -130,17 +130,44 @@ Route::middleware('auth')->group(function () {
                 Route::post('/create', [QuestController::class, 'createQuestion'])->name('create-question');
             });
 
-            Route::controller(CourseController::class)->prefix('course')->name('teacher-course-')->group(function () {
-                Route::get('/', 'teacherCourses')->name('courses');
-                Route::get('/{id}', 'teacherCourseDetailSession')->name('detail');
+            Route::prefix('course')->group(function () {
+                Route::get('/', [CourseController::class, 'teacherCourses'])->name('teacher-course');
+                Route::get('/{id}', [CourseController::class, 'teacherCourseDetailSession'])->name('teacher-course-detail');
+                Route::get('/{id}/assignment', [CourseController::class, 'teacherCourseDetailAssignment'])->name('teacher-course-detail-assignment');
+                // Route::get('/{id}/attendance', [CourseController::class, 'teacherCourseDetailAttendace'])->name('teacher-course-detail-attendance');
+                Route::get('/{id}/people', [CourseController::class, 'teacherCourseDetailPeople'])->name('teacher-course-detail-people');
+                Route::get('/{id}/score', [CourseController::class, 'teacherCourseDetailScore'])->name('teacher-course-detail-score');
 
-                Route::get('/{id}/assignment', 'teacherCourseDetailAssignment')->name('detail-assignment');
-                Route::controller(AttendanceController::class)->group(function () {
-                    Route::get('/{id}/attendance', 'teacherCourseDetailAttendance')->name('detail-attendance');
-                    Route::get('/{id}/attendance/{sessionId}', 'teacherCourseDetailAttendanceView')->name('detail-attendance-view');
-                    Route::post('/{id}/attendance/{sessionId}', 'teacherCourseDetailAttendanceSave')->name('detail-attendance-save');
-                });
-                Route::get('/{id}/people', 'teacherCourseDetailPeople')->name('detail-people');
+                Route::get('/{id}/create-session', [SessionController::class, 'createSession'])->name('create-session');
+                Route::post('/{id}/create-session', [SessionController::class, 'addSession'])->name('create-session');
+
+                Route::get('/update-session/{id}', [SessionController::class, 'updateSession'])->name('update-session');
+                Route::put('/update-session/{id}', [SessionController::class, 'editSession'])->name('update-session');
+                Route::delete('/delete-session/{id}', [SessionController::class, 'deleteSession'])->name('delete-session');
+
+                Route::post('/create-material', [MaterialController::class, 'addMaterial'])->name('create-material');
+                Route::delete('/delete-material/{id}', [MaterialController::class, 'deleteMaterial'])->name('delete-material');
+
+                Route::get('/update-material/{id}', [MaterialController::class, 'updateMaterial'])->name('edit-material');
+                Route::put('/update-material/{id}', [MaterialController::class, 'editMaterial'])->name('edit-material');
+
+                
+                Route::get('/{classroom}/assignment/{task}', [TaskController::class, 'taskDetail'])->name('task-detail');
+            });
+
+            // Route::controller(CourseController::class)->prefix('course')->name('teacher-course-')->group(function () {
+            //     Route::get('/', 'teacherCourses')->name('courses');
+            //     Route::get('/{id}', 'teacherCourseDetailSession')->name('detail');
+
+            //     Route::get('/{id}/assignment', 'teacherCourseDetailAssignment')->name('detail-assignment');
+
+            //     Route::controller(AttendanceController::class)->group(function () {
+            //         Route::get('/{id}/attendance', 'teacherCourseDetailAttendance')->name('detail-attendance');
+            //         Route::get('/{id}/attendance/{sessionId}', 'teacherCourseDetailAttendanceView')->name('detail-attendance-view');
+            //         Route::post('/{id}/attendance/{sessionId}', 'teacherCourseDetailAttendanceSave')->name('detail-attendance-save');
+            //     });
+
+            //     Route::get('/{id}/people', 'teacherCourseDetailPeople')->name('detail-people');
                 // Route::post('/task-upload/{id}', [TaskController::class, 'taskUpload'])->name('task-upload');
 
 
@@ -166,7 +193,7 @@ Route::middleware('auth')->group(function () {
                 //     Route::get('/detail', 'getTaskDetail')->name('detail');
                 //     Route::get('/upload', 'getTaskUploadFile')->name('upload-download');
                 // });
-            });
+            // });
         });
     });
     Route::middleware('student-only')->group(function () {

@@ -66,23 +66,32 @@
                                                     <p>No have materials</p>
                                                 @else
                                                     @foreach ($item->materials as $material)
-                                                        <a href="{{ $material->value }}" target="_blank">
-                                                            <div class="d-flex align-items-center">
-                                                                @if ($material->is_file)
-                                                                    <span class="p-2 rounded"
-                                                                        style="font-size: 1em; background-color: #7380ec; color: white">
-                                                                        <i class="fas fa-file"></i>
+                                                        @if ($material->is_file)
+                                                            <a href="{{ asset('assets/material') }}/{{ $material->value }}"
+                                                                target="_blank">
+                                                                <div class="d-flex align-items-center mb-2">
+                                                                    <span class="p-2 rounded text-center"
+                                                                        style="font-size: 1em; background-color: #7380ec; color: white; height: 40px; width: 40px">
+                                                                        <i class="fas fa-file"
+                                                                            style="height: 40px; widht: 40px"></i>
                                                                     </span>
-                                                                @else
-                                                                    <span class="p-2 rounded"
-                                                                        style="font-size: 1em; background-color: #7380ec; color: white">
+                                                                    <span class="ml-2" style="font-size: 0.87rem;">
+                                                                        {{ $material->title }}</span>
+                                                                </div>
+                                                            </a>
+                                                        @else
+                                                            <a href="{{ $material->value }}" target="_blank">
+                                                                <div class="d-flex align-items-center mb-2">
+
+                                                                    <span class="p-2 rounded text-center"
+                                                                        style="font-size: 1em; background-color: #7380ec; color: white; height: 40px; width: 40px">
                                                                         <i class="fas fa-external-link-alt"></i>
                                                                     </span>
-                                                                @endif
-                                                                <span class="ml-2" style="font-size: 0.87rem;">
-                                                                    {{ $material->title }}</span>
-                                                            </div>
-                                                        </a>
+                                                                    <span class="ml-2" style="font-size: 0.87rem;">
+                                                                        {{ $material->title }}</span>
+                                                                </div>
+                                                            </a>
+                                                        @endif
                                                     @endforeach
                                                 @endif
                                             </div>
