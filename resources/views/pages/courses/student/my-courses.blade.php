@@ -9,6 +9,21 @@
 
 @section('content')
     <div class="container-fluid h-100">
+        <form class="form-horizontal" action="{{ route('student-course') }}" method="GET" enctype="multipart/form-data">
+            <div class="form-row justify-content-between">
+                <div class="col-sm-4 mb-3">
+                    <div class="form-label-group in-border mb-1">
+                        <select id="period" onchange="periodChange()" class="form-control form-control-mb select2" style="width: 100%;"
+                            name="period">
+                            @foreach ($periods as $period)
+                                <option value={{ $period->id }} {{ old('period') == $period->id ? 'selected' : '' }}>
+                                    {{ $period->name }} </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
         <div class="row">
             @foreach ($classrooms as $item)
                 <div class="col-md-4 col-sm-6 col-12">
@@ -48,7 +63,9 @@
                                     </div>
                                     <span class="ml-2">{{ $progressbarPercent }}</span>
                                 </div>
-                                <p class="card-subtitle text-muted">{{ $sessionDone }} out of {{ $totalSession }} sessions completed</span>
+                                <p class="card-subtitle text-muted">{{ $sessionDone }} out of {{ $totalSession }}
+                                    sessions
+                                    completed</span>
                             </div>
                         </div>
                     </a>
@@ -60,8 +77,19 @@
 @endsection
 
 @section('css-link')
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 
     <style>
+        .select2-container--bootstrap4.select2-container--focus .select2-selection {
+            box-shadow: none !important;
+        }
+
+        .select2-container--bootstrap4 .select2-selection {
+            -webkit-transition: none !important;
+        }
+
         .card:hover {
             transform: scale(1.04);
             transition: 0.2s ease-in-out;
@@ -70,6 +98,22 @@
 @endsection
 
 @section('js-script')
+    <!-- Select2 -->
+    <script src="{{ asset('assets') }}/plugins/select2/js/select2.full.min.js"></script>
 
-    <script type="text/javascript"></script>
+    <script type="text/javascript">
+        function periodChange() {
+            let queryString = window.location.search;
+            let params = new URLSearchParams(queryString);
+            params.delete('period');
+            params.append('period', document.getElementById("period").value);
+            document.location.href = "?" + params.toString();
+        }
+
+        $(function() {
+            $('select').select2({
+                theme: 'bootstrap4',
+            });
+        })
+    </script>
 @endsection
