@@ -79,7 +79,7 @@ class TeacherController extends Controller
 
         if ($validation) {
             $user = new User();
-            $user->role_id = 3;
+            $user->role_id = 2;
             $user->name = $request->name;
             $user->email = $request->email;
             $user->image = 'default.png';

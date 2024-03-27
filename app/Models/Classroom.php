@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Classroom extends Model
 {
-    protected $fillable = ['course_id','period_id','code', 'name', 'student_capacity', 'asg', 'exam', 'project'];
+    protected $fillable = ['course_id','period_id','code', 'name', 'student_capacity', 'asg', 'exam', 'project', 'min_score'];
     use HasFactory;
     public function course(){
         return $this->belongsTo(Course::class);
