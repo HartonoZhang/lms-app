@@ -25,6 +25,8 @@ class SessionSeeder extends Seeder
                 'description' => 'desc 1',
                 'start_time' => '2024-03-29 12:00:00',
                 'end_time' => '2024-03-29 13:00:00',
+                'value' => 'Ruang 1',
+                'is_online' => false,
             ],
             [
                 'classroom_id' => 1,
@@ -32,6 +34,8 @@ class SessionSeeder extends Seeder
                 'description' => 'desc 2',
                 'start_time' => '2024-04-01 12:00:00',
                 'end_time' => '2024-04-01 13:00:00',
+                'value' => 'https://www.youtube.com',
+                'is_online' => true,
             ],
             [
                 'classroom_id' => 1,
@@ -39,6 +43,8 @@ class SessionSeeder extends Seeder
                 'description' => 'desc 3',
                 'start_time' => '2024-04-02 12:00:00',
                 'end_time' => '2024-04-02 13:00:00',
+                'value' => 'Ruang 1',
+                'is_online' => false,
             ],
             [
                 'classroom_id' => 1,
@@ -46,6 +52,8 @@ class SessionSeeder extends Seeder
                 'description' => 'desc 4',
                 'start_time' => '2024-04-03 12:00:00',
                 'end_time' => '2024-04-03 13:00:00',
+                'value' => 'Ruang 1',
+                'is_online' => false,
             ],
             [
                 'classroom_id' => 1,
@@ -53,6 +61,8 @@ class SessionSeeder extends Seeder
                 'description' => 'desc 5',
                 'start_time' => '2024-04-04 12:00:00',
                 'end_time' => '2024-04-04 13:00:00',
+                'value' => 'Ruang 1',
+                'is_online' => false,
             ],
         ];
 

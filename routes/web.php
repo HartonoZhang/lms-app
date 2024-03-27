@@ -120,13 +120,13 @@ Route::middleware('auth')->group(function () {
             Route::put('/updateProfile', [TeacherController::class, 'saveProfiles'])->name('update-teacher-profile');
             Route::put('/updatePhoto', [TeacherController::class, 'savePhoto'])->name('update-teacher-photo');
             Route::put('/updatePassword', [TeacherController::class, 'savePassword'])->name('update-teacher-password');
-            
+
             Route::prefix('quest')->group(function () {
                 Route::get('/', [QuestController::class, 'teacherView'])->name('teacher-quest');
                 Route::get('/create', [QuestController::class, 'addQuestion'])->name('create-question');
                 Route::get('/edit/{id}', [QuestController::class, 'updateQuestion'])->name('update-question');
                 Route::get('/delete/{id}', [QuestController::class, 'deleteQuestion'])->name('delete-question');
-                
+
                 Route::post('/create', [QuestController::class, 'createQuestion'])->name('create-question');
             });
 
@@ -149,7 +149,9 @@ Route::middleware('auth')->group(function () {
 
                 Route::get('/update-material/{id}', [MaterialController::class, 'updateMaterial'])->name('edit-material');
                 Route::put('/update-material/{id}', [MaterialController::class, 'editMaterial'])->name('edit-material');
-                
+
+                Route::post('/{id}/attendance/{sessionId}/save', [AttendanceController::class, 'saveAttendance'])->name('save-attendance');
+
                 Route::get('/{classroom}/assignment/create', [TaskController::class, 'createTask'])->name('create-task');
                 Route::post('/{classroom}/assignment/create', [TaskController::class, 'addTask'])->name('create-task');
 
@@ -162,7 +164,7 @@ Route::middleware('auth')->group(function () {
 
                 Route::put('/assignment/{task}/done/{student}', [TaskController::class, 'doneUpload'])->name('done-upload');
                 Route::put('/assignment/{task}/revision/{student}', [TaskController::class, 'revisionUpload'])->name('revision-upload');
-                
+
                 Route::get('/{classroom}/score/{student}/update', [ClassroomController::class, 'updateStudentScore'])->name('student-score-update');
                 Route::put('/{classroom}/score/{student}/update', [ClassroomController::class, 'editStudentScore'])->name('student-score-update');
             });

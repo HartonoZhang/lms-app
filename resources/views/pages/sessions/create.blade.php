@@ -69,6 +69,29 @@
                                 <p class="text-danger mb-1">{{ $message }}</p>
                             @enderror
                         </div>
+                        <div class="col-sm-6 mb-3">
+                            <div class="form-label-group in-border mb-1">
+                                <input type="text" id="value" class="form-control form-control-mb"
+                                    placeholder="Online Link / Offline Location" name="value" value="{{ old('value') }}" />
+                                <label for="value">Online Link / Offline Location</label>
+                            </div>
+                            @error('value')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="col-sm-6 mb-3 d-flex flex-column align-items-start">
+                            <div class="d-flex align-items-center">
+                                <label class="radio-inline m-1">
+                                    <input type="radio" name="is_online" value="1" {{ old('is_online') == 1 ? 'checked' : '' }}> Online
+                                </label>
+                                <label class="radio-inline m-1">
+                                    <input type="radio" name="is_online" value="0" {{ old('is_online') == 0 ? 'checked' : '' }}> Offline
+                                </label>
+                            </div>
+                            @error('is_online')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
                     <a type="button" href="{{ route('teacher-course-detail', $classroom->id) }}"
                         class="btn btn-danger">Cancel</a>

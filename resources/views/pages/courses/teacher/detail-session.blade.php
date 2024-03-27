@@ -104,7 +104,12 @@
                                                     {{ $item->description }}</p>
                                                 <p>Start Time : {{ $item->start_time->format('g:i A, d-m-y') }}</p>
                                                 <p>End Time : {{ $item->end_time->format('g:i A, d-m-y') }}</p>
-                                                <a href="#" class="btn btn-primary">Join Now</a>
+                                                @if ($item->is_online)
+                                                    <p>Online Link: <a href="{{$item->value}}">{{$item->value}}</a></p>
+                                                    <a href="{{$item->value}}" class="btn btn-primary">Join Now</a>
+                                                @else
+                                                    <p>Offline Location: {{$item->value}}</p>
+                                                @endif
                                             </div>
                                             <div class="tab-pane fade" id="learningMaterial-{{ $item->id }}">
                                                 <div class="d-flex justify-content-end">
@@ -239,15 +244,15 @@
                                                 @endif
                                             </div>
                                             <div class="tab-pane fade" id="attendance-{{ $item->id }}">
-                                                <form class="form-horizontal" action="#" method="POST"
+                                                <form class="form-horizontal" action="{{route('save-attendance', ['id' => $classroom->id, 'sessionId' => $item->id])}}" method="POST"
                                                     enctype="multipart/form-data" data-remote="true">
                                                     @csrf
                                                     <table id="tabel-attendances"
                                                         class="table table-bordered table-striped">
                                                         <thead>
                                                             <tr>
-                                                                <th>Student Name</th>
-                                                                <th>Present</th>
+                                                                <th class="attendance-name">Student Name</th>
+                                                                <th class="attendance-input">Present</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -265,11 +270,27 @@
                                                                                 {{ $student->student->user->email }}</span>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td class="student-attendance">
                                                                         <div class="custom-control custom-checkbox">
-                                                                            <input type="checkbox"
-                                                                                class="custom-control-input"
-                                                                                id="student-checkbox-{{ $student->id }}" />
+                                                                            @foreach ($item->attendances as $attendance)
+                                                                                @if ($attendance->student_id == $student->id)
+                                                                                    <input type="checkbox" name="present[]"
+                                                                                        class="student-checkbox custom-control-input" value="{{$student->id}}"
+                                                                                        id="student-checkbox-{{ $student->id }}" @checked($attendance->is_present)/>
+                                                                                    <input id="hidden-student-checkbox-{{ $student->id }}" type="text"
+                                                                                        class="hidden-student-checkbox" name="notPresent[]" value="{{$student->id}}"
+                                                                                        @disabled($attendance->is_present) hidden>
+                                                                                    @break
+                                                                                @elseif ($loop->last)
+                                                                                    <input type="checkbox" name="present[]"
+                                                                                        class="student-checkbox custom-control-input" value="{{$student->id}}"
+                                                                                        id="student-checkbox-{{ $student->id }}" />
+                                                                                    <input id="hidden-student-checkbox-{{ $student->id }}" type="text"
+                                                                                        class="hidden-student-checkbox" name="notPresent[]" value="{{$student->id}}"
+                                                                                        hidden>
+                                                                                    @break
+                                                                                @endif
+                                                                            @endforeach
                                                                             <label class="custom-control-label"
                                                                                 for="student-checkbox-{{ $student->id }}"></label>
                                                                         </div>
@@ -480,6 +501,18 @@
             color: white;
             text-align: center;
         }
+
+        .attendance-name{
+            width: 90%;
+        }
+
+        .attendance-input{
+            width: 10%;
+        }
+
+        .student-attendance{
+            cursor: pointer;
+        }
     </style>
 @endsection
 
@@ -552,6 +585,18 @@
                     $('#link_input').show();
                     $('#file_input').hide();
                 }
+            });
+
+            $('.student-attendance').click(function() {
+                let element = $(this);
+                element.find('.custom-checkbox .student-checkbox').prop('checked', function(i, checked) {
+                    if (checked) {
+                        element.find('.custom-checkbox .hidden-student-checkbox').prop('disabled', false);
+                    } else {
+                        element.find('.custom-checkbox .hidden-student-checkbox').prop('disabled', true);
+                    }
+                    return !checked;
+                });
             });
 
             @if ($errors->any())
