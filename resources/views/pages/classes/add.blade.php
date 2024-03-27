@@ -53,6 +53,16 @@
                             </div>
                             <div class="col-sm-4 mb-3">
                                 <div class="form-label-group in-border mb-1">
+                                    <input type="text" id="minScore" class="form-control form-control-mb"
+                                        placeholder="Minimum score" name="min_score" value="{{old("min_score")}}" />
+                                    <label for="minScore">Minimum score to pass*</label>
+                                </div>
+                                @error('min_score')
+                                <p class="text-danger mb-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="col-sm-4 mb-3">
+                                <div class="form-label-group in-border mb-1">
                                     <select class="form-control form-control-mb select2" style="width: 100%;" name="course">
                                         <option disabled selected>Select course</option>
                                         @foreach ($courses as $course)

@@ -23,9 +23,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('code')->nullable();
             $table->integer('student_capacity')->nullable();
-            $table->integer('asg');
-            $table->integer('exam');
-            $table->integer('project');
+            $table->integer('asg')->nullable();
+            $table->integer('exam')->nullable();
+            $table->integer('project')->nullable();
+            $table->integer('min_score');
         });
     }
 
