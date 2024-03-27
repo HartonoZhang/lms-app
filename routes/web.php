@@ -128,7 +128,6 @@ Route::middleware('auth')->group(function () {
                 Route::get('/edit/{id}', [QuestController::class, 'updateQuestion'])->name('update-question');
                 Route::put('/edit/{id}', [QuestController::class, 'editQuestion'])->name('update-question');
                 Route::delete('/delete/{id}', [QuestController::class, 'deleteQuestion'])->name('delete-question');
-                
             });
 
             Route::prefix('course')->group(function () {

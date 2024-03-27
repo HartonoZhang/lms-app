@@ -1,6 +1,8 @@
 @extends('layouts.template')
 
-@section('title', 'Welcome to The Dashboard, Teacher!')
+@section('title')
+    Welcome to The {{ $organization->name }}, {{ Auth::user()->name }}!
+@endsection
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('teacher-dashboard') }}">Home</a></li>
@@ -9,67 +11,59 @@
 
 @section('content')
     <div class="container-fluid h-100">
-      <div class="row">
-        <div class="col-md-3 col-sm-6 col-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-info"><i class="fas fa-chalkboard"></i></span>
 
-            <div class="info-box-content">
-              <span class="info-box-text">Messages</span>
-              <span class="info-box-number">1,410</span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Class</span>
+                        <span class="info-box-number">{{ count($teacherClassroom) }}</span>
+                    </div>
+                </div>
             </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-success"><i class="far fa-flag"></i></span>
+            <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-success"><i class="fas fa-globe"></i></span>
 
-            <div class="info-box-content">
-              <span class="info-box-text">Bookmarks</span>
-              <span class="info-box-number">410</span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Post</span>
+                        <span class="info-box-number">{{ count($teacherPost) }}</span>
+                    </div>
+                </div>
             </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+            <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-warning"><i class="fas fa-exclamation-circle"></i></span>
 
-            <div class="info-box-content">
-              <span class="info-box-text">Uploads</span>
-              <span class="info-box-number">13,648</span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Question</span>
+                        <span class="info-box-number">{{ count($teacherQuestion) }}</span>
+                    </div>
+                </div>
             </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Likes</span>
-              <span class="info-box-number">93,139</span>
+            @php
+                $isChecked = false;
+                $totalStudent = 0;
+                foreach ($teacherClassroom as $classroom) {
+                    $totalStudent += count($classroom->classroom->studentClassroom);
+                }
+            @endphp
+            <div class="col-md-3 col-sm-6 col-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-danger"><i class="fas fa-graduation-cap"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total Student</span>
+                        <span class="info-box-number">{{ $totalStudent }}</span>
+                    </div>
+                </div>
             </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
         </div>
-        <!-- /.col -->
-      </div>
     </div>
 @endsection
 
 @section('css-link')
-    
 @endsection
 
 @section('js-script')
-    
 @endsection
