@@ -87,19 +87,21 @@ class CourseController extends Controller
                 return $y->where('teacher_id', '=', auth()->user()->teacher[0]->id);
             });
         })->get()->sortByDesc('id')->values();
-
-        if ($request->period != null) {
-            $period_id = $request->period;
-            $request->flash();
+        if ($periods->all() == null) {
+            $periodClassrooms = null;
         } else {
-            $period_id = $periods[0]->id;
+            if ($request->period != null) {
+                $period_id = $request->period;
+                $request->flash();
+            } else {
+                $period_id = $periods[0]->id;
+            }
+            $periodClassrooms = Classroom::where('period_id', (int)$period_id)
+                ->whereHas('teacherClassroom', function ($x) {
+                    return $x->where('teacher_id', auth()->user()->teacher[0]->id);
+                })
+                ->get();
         }
-        $periodClassrooms = Classroom::where('period_id', (int)$period_id)
-            ->whereHas('teacherClassroom', function ($x) {
-                return $x->where('teacher_id', auth()->user()->teacher[0]->id);
-            })
-            ->get();
-
         return view('pages.courses.teacher.my-courses')->with([
             'periods' => $periods,
             'classrooms' => $periodClassrooms,
@@ -167,18 +169,22 @@ class CourseController extends Controller
             });
         })->get()->sortByDesc('id')->values();
 
-        if ($request->period != null) {
-            $period_id = $request->period;
-            $request->flash();
+        if ($periods->all() == null) {
+            $periodClassrooms = null;
         } else {
-            $period_id = $periods[0]->id;
+            if ($request->period != null) {
+                $period_id = $request->period;
+                $request->flash();
+            } else {
+                $period_id = $periods[0]->id;
+            }
+            $periodClassrooms = Classroom::where('period_id', (int)$period_id)
+                ->whereHas('studentClassroom', function ($x) {
+                    return $x->where('student_id', auth()->user()->student[0]->id);
+                })
+                ->get();
         }
-        $periodClassrooms = Classroom::where('period_id', (int)$period_id)
-            ->whereHas('studentClassroom', function ($x) {
-                return $x->where('student_id', auth()->user()->student[0]->id);
-            })
-            ->get();
-
+    
         return view('pages.courses.student.my-courses', [
             'classrooms' => $periodClassrooms,
             'periods' => $periods
