@@ -22,68 +22,43 @@
                 <table id="tabel-question" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone Number</th>
-                            <th>Gender</th>
-                            <th>Religion</th>
+                            <th>Created Date</th>
+                            <th>Question</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td class="text-truncate">asdsd</td>
-                        <td class="text-truncate">asdsd</td>
-                        <td class="text-truncate">asdsd</td>
-                        <td class="text-truncate">asdsd</td>
-                        <td class="text-truncate">asdsd</td>
-                        <td class="text-truncate">asdsd</td>
-                      </tr>
-                        {{-- @foreach ($listStudent as $student)
-                            <tr>
-                                <td class="text-truncate">{{ $student->user->name }}</td>
-                                <td class="text-truncate">{{ $student->user->email }}</td>
-                                <td>{{ $student->profile->phone_number }}</td>
-                                <td>{{ $student->profile->gender }}</td>
-                                <td>{{ $student->profile->religion }}</td>
-                                <td>
-                                    <ul class="list-inline m-0">
-                                        <li class="list-inline-item">
-                                            <a class="btn btn-primary btn-sm rounded-0"
-                                                href="{{ route('student-detail', $student->id) }}" data-placement="top"
-                                                title="Detail"><i class="fa fa-search"></i></a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a class="btn btn-success btn-sm rounded-0"
-                                                href="{{ route('student-edit', $student->id) }}" data-placement="top"
-                                                title="Edit"><i class="fa fa-edit"></i></a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="#" class="btn btn-danger btn-sm rounded-0" data-toggle="modal"
-                                                data-target="#modal-delete-{{ $student->id }}" data-placement="top"
-                                                title="Delete">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            <div class="modal fade" id="modal-delete-{{ $student->id }}">
+                        @foreach ($listQuestion as $question)
+                            <td>{{ $question->created_at->format('d-m-y, g:i A') }}</td>
+                            <td class="text-truncate">{{ $question->question }}</td>
+                            <td>
+                                <li class="list-inline-item">
+                                    <a class="btn btn-success btn-sm rounded-0" href="{{ route('update-question', $question->id) }}" type="button"
+                                        data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="#" class="btn btn-danger btn-sm rounded-0" data-toggle="modal"
+                                        data-target="#modal-delete-{{ $question->id }}" data-placement="top" title="Delete">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </li>
+                            </td>
+                            <div class="modal fade" id="modal-delete-{{ $question->id }}">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                        <form action={{ route('student-delete', $student->id) }} method="POST"
+                                        <form action={{ route('delete-question', $question->id) }} method="POST"
                                             enctype="multipart/form-data" data-remote="true">
                                             @csrf
                                             @method('DELETE')
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Remove Student</h4>
+                                                <h4 class="modal-title">Remove Question</h4>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <p>Are you sure want to remove this student?</p>
+                                                <p>Are you sure want to remove this question?</p>
                                             </div>
                                             <div class="modal-footer justify-content-between">
                                                 <button type="button" class="btn btn-secondary"
@@ -94,7 +69,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @endforeach --}}
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -144,7 +119,7 @@
                 "autoWidth": false,
                 "columnDefs": [{
                     orderable: false,
-                    targets: 5
+                    targets: 2
                 }]
             }).buttons().container().appendTo('#tabel-question_wrapper .col-md-6:eq(0)');
 
