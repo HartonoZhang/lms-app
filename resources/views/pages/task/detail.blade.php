@@ -5,7 +5,7 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('teacher-dashboard') }}">Home</a></li>
     <li class="breadcrumb-item"><a href="{{ route('teacher-course') }}">My Courses</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('teacher-course-detail', $classroom->id) }}">Courses Detail</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('teacher-course-detail-assignment', $classroom->id) }}">Courses Detail</a></li>
     <li class="breadcrumb-item active">Task Detail</li>
 @endsection
 
@@ -98,6 +98,9 @@
                                 readonly />
                             <label for="title">File*</label>
                         </div>
+                        <small id="download" class="form-text text-muted">
+                            <a href="{{ asset('assets/tasks/question') }}/{{ $task->question_file }}" target="_blank">Download</a>
+                        </small>
                     </div>
                 </div>
             </div>

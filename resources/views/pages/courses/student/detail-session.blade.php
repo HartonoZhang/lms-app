@@ -63,7 +63,7 @@
                                             </div>
                                             <div class="tab-pane fade" id="learningMaterial-{{ $item->id }}">
                                                 @if (count($item->materials) === 0)
-                                                    <p>No have materials</p>
+                                                    <p class="text-center">No have materials</p>
                                                 @else
                                                     @foreach ($item->materials as $material)
                                                         @if ($material->is_file)

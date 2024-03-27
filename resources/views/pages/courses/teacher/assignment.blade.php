@@ -11,7 +11,7 @@
 @section('content')
     <div class="container-fluid h-100">
         <div class="d-flex justify-content-end">
-            <a class="btn btn-primary mb-2" href="{{ route('create-session', $classroom->id) }}">Create Assigment</a>
+            <a class="btn btn-primary mb-2" href="{{ route('create-task', $classroom->id) }}">Create Assigment</a>
         </div>
         @include('pages.courses.teacher.course-detail-info', [
             'classroom' => $classroom,
@@ -69,33 +69,11 @@
 @section('css-link')
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/toastr/toastr.min.css">
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
     <style>
         .classroom-task .card:hover {
             transform: scale(1.04);
             transition: 0.2s ease-in-out;
-        }
-
-        #modal-update-photo .input-group {
-            border-radius: var(--border-radius-1);
-        }
-
-        #upload {
-            opacity: 0;
-        }
-
-        .upload-file {
-            position: absolute;
-            top: 50%;
-            left: 1rem;
-            transform: translateY(-50%);
-        }
-
-        .table {
-            table-layout: fixed;
         }
     </style>
 @endsection
@@ -103,43 +81,10 @@
 @section('js-script')
     <!-- Toastr -->
     <script src="{{ asset('assets') }}/plugins/toastr/toastr.min.js"></script>
-    <!-- DataTables  & Plugins -->
-    <script src="{{ asset('assets') }}/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/jszip/jszip.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
     <script type="text/javascript">
-        function readURL(input, id) {
-            if (input.files && input.files[0]) {
-                var fileName = input.files[0].name;
-                var infoArea = document.getElementById(`upload-file-${id}`);
-                infoArea.textContent = 'File name: ' + fileName;
-            }
-        }
-
         $(function() {
-            $("#tabel-assignment").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-            }).buttons().container().appendTo('#tabel-assignment_wrapper .col-md-6:eq(0)');
-
-            @if (Session::has('status'))
-                @if (Session::get('status') === 'success')
-                    toastr.success('{{ Session::get('message') }}')
-                @elseif (Session::get('status') === 'fail')
-                    toastr.error('{{ Session::get('message') }}')
-                @endif
-            @endif
+            
         })
     </script>
 @endsection

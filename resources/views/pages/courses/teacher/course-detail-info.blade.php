@@ -52,7 +52,8 @@
                 class="btn {{ request()->is('teacher/course/' . $classroom->id . '/assignment') ? 'btn-primary' : 'btn-secondary' }} mr-2 mb-2">Assignments</a>
             <a href="{{ route('teacher-course-detail-people', $classroom->id) }}"
                 class="btn {{ request()->is('teacher/course/' . $classroom->id . '/people') ? 'btn-primary' : 'btn-secondary' }} mr-2 mb-2">People</a>
-            <a href="#" class="btn btn-secondary mr-2 mb-2" >Score</a>
+            <a href="{{ route('teacher-course-detail-score', $classroom->id) }}"
+                class="btn {{ request()->is('teacher/course/' . $classroom->id . '/score') ? 'btn-primary' : 'btn-secondary' }} mr-2 mb-2">Score</a>
         </div>
     </div>
 </div>

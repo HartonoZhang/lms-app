@@ -19,9 +19,8 @@ return new class extends Migration
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
             $table->unsignedBigInteger('student_id');
             $table->foreign('student_id')->references('id')->on('student')->onDelete('cascade');
-            $table->string('file_upload')->nullable();
+            $table->string('file_upload');
             $table->string('status');
-            $table->integer('score')->nullable();
             $table->timestamps();
         });
     }

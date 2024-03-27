@@ -132,23 +132,14 @@ class CourseController extends Controller
         ]);
     }
 
-    // public function teacherCourseDetailAttendace($id)
-    // {
-    //     $data = $this->teacherCourseDetail($id);
-    //     return view('pages.courses.teacher.attendance', [
-    //         'classroom' => $data['classroom'],
-    //         'sessions' => $data['sessions'],
-    //         'teacherClassroom' => $data['teacherClassroom']
-    //     ]);
-    // }
-
     public function teacherCourseDetailScore($id)
     {
         $data = $this->teacherCourseDetail($id);
         return view('pages.courses.teacher.score', [
             'classroom' => $data['classroom'],
             'sessions' => $data['sessions'],
-            'teacherClassroom' => $data['teacherClassroom']
+            'teacherClassroom' => $data['teacherClassroom'],
+            'listStudentScore' =>  $data['classroom']->studentClassroom
         ]);
     }
 

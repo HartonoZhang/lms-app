@@ -7,6 +7,7 @@ use App\Models\Student;
 use App\Models\Task;
 use App\Models\TaskCategory;
 use App\Models\TaskUpload;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -21,67 +22,6 @@ class TaskController extends Controller
         Session::flash('status', $status);
         Session::flash('message', $msg);
     }
-
-    // public function getTaskData(Request $request, $id)
-    // {
-    //     $class = Classroom::find($id);
-    //     $tasks = $class->tasks;
-    //     $tasks->load('category');
-    //     foreach ($tasks as $task) {
-    //         $task->dueDate = $task->getDueDate();
-    //         $task->timeRemaining = $task->getTimeRemaining();
-    //         $task->studentSubmitted = $task->uploads->count();
-    //     }
-    //     $data = [
-    //         'tasks' => $tasks,
-    //         'studentCount' => $class->studentClassroom->count(),
-    //     ];
-    //     return response()->json($data);
-    // }
-
-    // public function getTaskDetail(Request $request, $id)
-    // {
-    //     if (!$request->taskId) {
-    //         return response()->json(['data' => null]);
-    //     }
-    //     $taskUploads = Task::find($request->taskId)->uploads;
-    //     $taskUploads->load('student.user');
-    //     $data = [];
-    //     foreach ($taskUploads as $upload) {
-    //         $data[] = [
-    //             'id' => $upload->id,
-    //             'student_name' => $upload->student->user->name,
-    //             'file' => $upload->file_upload ?? false,
-    //             'status' => $upload->status ?? 'Not Submitted',
-    //             'score' => $upload->score ?? '-'
-    //         ];
-    //     }
-    //     $totalData = $taskUploads->count();
-    //     $totalFiltered = $totalData;
-    //     $json = [
-    //         "draw"            => intval($request->draw),
-    //         "recordsTotal"    => intval($totalData),
-    //         "recordsFiltered" => intval($totalFiltered),
-    //         "data"            => $data
-    //     ];
-
-    //     return response()->json($json);
-    // }
-
-    // public function getTaskUploadFile(Request $request, $id)
-    // {
-    //     $taskUpload = TaskUpload::find($request->taskUploadId);
-    //     if (!$taskUpload) {
-    //         abort(404);
-    //     }
-    //     $filePath = "task_uploads/task_{$request->taskUploadId}/" . $taskUpload->file_upload;
-    //     $taskUploadPath = Storage::path($filePath);
-    //     if (Storage::exists($filePath)) {
-    //         return response()->download($taskUploadPath, $taskUpload->file_upload);
-    //     } else {
-    //         abort(404);
-    //     }
-    // }
 
     public function taskUpload(Request $request, $id)
     {
@@ -120,6 +60,47 @@ class TaskController extends Controller
 
             $this->message('Upload task successfully', 'success');
             return back();
+        }
+    }
+
+    public function createTask($classroomId)
+    {
+        $teacher = Teacher::with('user')->where('user_id', '=', Auth::user()->id)->first();
+        $classroom = Classroom::findOrFail($classroomId);
+        $listCategory = TaskCategory::all();
+        return view('pages.task.create', [
+            'teacher' => $teacher,
+            'classroom' => $classroom,
+            'listCategory' => $listCategory
+        ]);
+    }
+
+    public function addTask(Request $request, $classroomId)
+    {
+        $validation = $request->validate([
+            'title' => ['required'],
+            'description' => ['required'],
+            'deadline' => ['required', 'date', 'after_or_equal:now'],
+            'file_upload' => ['required', 'mimes:pdf,zip,ppt,pptx,xlx,xlsx,docx,doc,txt', 'max:2048']
+        ]);
+
+        if ($validation) {
+            $teacher = Teacher::with('user')->where('user_id', '=', Auth::user()->id)->first();
+            $extension = $request->file('file_upload')->getClientOriginalExtension();
+            $file = Auth::user()->id . '-' . now()->timestamp . '.' . $extension;
+            $request->file('file_upload')->move('assets/tasks/question', $file);
+           
+            Task::create([
+                'task_category_id' => $request->category_id,
+                'teacher_id' => $teacher->id,
+                'classroom_id' => $classroomId,
+                'title' => $request->title,
+                'description' => $request->description,
+                'deadline' => $request->deadline,
+                'question_file' => $file
+            ]);
+
+            return redirect()->route('teacher-course-detail-assignment', $classroomId)->with(['status' => 'success', 'message' => 'Successfully create task']);
         }
     }
 
