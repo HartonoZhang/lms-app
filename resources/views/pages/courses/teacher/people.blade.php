@@ -4,7 +4,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('teacher-dashboard') }}">Home</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('teacher-course-courses') }}">My Courses</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('teacher-course') }}">My Courses</a></li>
     <li class="breadcrumb-item active">Courses Detail - People</li>
 @endsection
 

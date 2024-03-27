@@ -20,19 +20,19 @@ class MaterialSeeder extends Seeder
                 'session_id' => 1,
                 'title' => 'Youtube',
                 'value' => 'https://www.youtube.com',
-                'is_file' => false,
+                'is_file' => 0,
             ],
             [
                 'session_id' => 1,
                 'title' => 'Test File',
                 'value' => 'test.txt',
-                'is_file' => true,
+                'is_file' => 0,
             ],
             [
                 'session_id' => 1,
                 'title' => 'Google',
                 'value' => 'https://www.google.com',
-                'is_file' => false,
+                'is_file' => 1,
             ],
         ];
 

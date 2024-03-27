@@ -19,10 +19,8 @@ return new class extends Migration
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
             $table->unsignedBigInteger('student_id');
             $table->foreign('student_id')->references('id')->on('student')->onDelete('cascade');
-            $table->string('file_upload')->nullable();
-            $table->string('upload_date')->nullable();
-            $table->string('status'); // Not Submitted -> In Review -> Reviewed / Revision -> In Review ...
-            $table->integer('score')->nullable();
+            $table->string('file_upload');
+            $table->string('status');
             $table->timestamps();
         });
     }
