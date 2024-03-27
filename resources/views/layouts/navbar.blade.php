@@ -65,13 +65,29 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('teacher-quest') }}"
-                            class="{{ request()->is('teacher/quest') ? 'active' : '' }} nav-link">
+                        <a href="#" class="nav-link">
                             <i class="fas fa-exclamation-circle nav-icon"></i>
                             <p>
                                 My Question
+                                <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('teacher-quest') }}"
+                                    class="{{ request()->is('teacher/quest') ? 'active' : '' }} nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>List Question</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('create-question') }}"
+                                    class="{{ request()->is('teacher/quest/create') ? 'active' : '' }} nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Create Question</p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 @endif
                 @if (Auth::user()->role_id === 3)

@@ -1,11 +1,11 @@
 @extends('layouts.template')
 
-@section('title', 'Create Question')
+@section('title', 'Update Question')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('teacher-dashboard') }}">Home</a></li>
     <li class="breadcrumb-item"><a href="{{ route('teacher-quest') }}">Daily Quest</a></li>
-    <li class="breadcrumb-item active">Create Question</li>
+    <li class="breadcrumb-item active">Update Question</li>
 @endsection
 
 @section('content')
@@ -13,13 +13,14 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    Question
+                    Question Information
                 </h3>
             </div>
             <div class="card-body">
-                <form class="form-horizontal" action={{ route('create-question') }} method="POST"
+                <form class="form-horizontal" action={{ route('update-question', $question->id) }} method="POST"
                     enctype="multipart/form-data" data-remote="true">
                     @csrf
+                    @method('PUT')
                     <div class="form-row">
                         <div class="col-sm-6 mb-3">
                             <div class="form-label-group in-border mb-1">
@@ -38,9 +39,13 @@
                                 <select class="form-control form-control-mb select2" style="width: 100%;" name="course_id">
                                     <option disabled selected>Select a course</option>
                                     @foreach ($listCourse as $course)
-                                        <option value="{{ $course->id }}"
-                                            {{ old('course_id') == $course->id ? 'selected' : '' }}>
-                                            {{ $course->name }} </option>
+                                        @if ($course->id === $question->course_id)
+                                            <option value="{{ $course->id }}" selected>
+                                                {{ $course->name }} </option>
+                                        @else
+                                            <option value="{{ $course->id }}">
+                                                {{ $course->name }} </option>
+                                        @endif
                                     @endforeach
                                 </select>
                                 <label for="course_id">Course*</label>
@@ -51,7 +56,7 @@
                         </div>
                         <div class="col-sm-12 mb-3">
                             <div class="form-label-group in-border mb-1">
-                                <textarea id="question" class="form-control form-control-mb" placeholder="Question" name="question" rows="3">{{ old('question') }}</textarea>
+                                <textarea id="question" class="form-control form-control-mb" placeholder="Question" name="question" rows="3">{{ old('question', $question->question) }}</textarea>
                                 <label for="question">Question*</label>
                             </div>
                             @error('question')
@@ -61,7 +66,7 @@
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="answer1" class="form-control form-control-mb"
-                                    placeholder="Answer 1" name="answer1" value="{{ old('answer1') }}" />
+                                    placeholder="Answer 1" name="answer1" value="{{ old('answer1', $question->answer1) }}" />
                                 <label for="answer1">Answer 1*</label>
                             </div>
                             @error('answer1')
@@ -71,7 +76,7 @@
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="answer2" class="form-control form-control-mb"
-                                    placeholder="Answer 2" name="answer2" value="{{ old('answer2') }}" />
+                                    placeholder="Answer 2" name="answer2" value="{{ old('answer2', $question->answer2) }}" />
                                 <label for="answer2">Answer 2*</label>
                             </div>
                             @error('answer2')
@@ -81,7 +86,7 @@
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="answer3" class="form-control form-control-mb"
-                                    placeholder="Answer 3" name="answer3" value="{{ old('answer3') }}" />
+                                    placeholder="Answer 3" name="answer3" value="{{ old('answer3', $question->answer3) }}" />
                                 <label for="answer3">Answer 3*</label>
                             </div>
                             @error('answer3')
@@ -91,7 +96,7 @@
                         <div class="col-sm-4 mb-3">
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="answer4" class="form-control form-control-mb"
-                                    placeholder="Answer 4" name="answer4" value="{{ old('answer4') }}" />
+                                    placeholder="Answer 4" name="answer4" value="{{ old('answer4', $question->answer4) }}" />
                                 <label for="answer4">Answer 4*</label>
                             </div>
                             @error('answer4')
@@ -104,7 +109,7 @@
                             <div class="form-label-group in-border mb-1">
                                 <input type="text" id="correct_answer" class="form-control form-control-mb"
                                     placeholder="Corret Answer" name="correct_answer"
-                                    value="{{ old('correct_answer') }}" />
+                                    value="{{ old('correct_answer', $question->correct_answer) }}" />
                                 <label for="correct_answer">Corret Answer*</label>
                             </div>
                             <small id="correct_answer_help" class="form-text text-muted">Please copy paste the correct
@@ -115,7 +120,7 @@
                         </div>
                     </div>
                     <a type="button" href="{{ route('teacher-quest') }}" class="btn btn-danger">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>
         </div>
