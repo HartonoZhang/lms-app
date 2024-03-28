@@ -60,11 +60,19 @@ class AttendanceController extends Controller
     }
 
     public function saveAttendance(Request $request, $id, $sessionId){
+        $present = [];
+        if ($request["present-list-{$sessionId}"] ?? false) {
+            $string = $request["present-list-{$sessionId}"];
+            $present = explode(",", $string);
+            $present = array_map('intval', $present);
+        }
+        $allStudentId = Classroom::find($id)->studentClassroom->pluck('student_id')->toArray() ?? [];
+        $notPresent = array_diff($allStudentId, $present);
         $data = [];
-        foreach ($request->present ?? [] as $studentId) {
+        foreach ($present ?? [] as $studentId) {
             $data[] = ['session_id' => $sessionId, 'student_id' => $studentId, 'is_present' => 1];
         }
-        foreach ($request->notPresent ?? [] as $studentId) {
+        foreach ($notPresent ?? [] as $studentId) {
             $data[] = ['session_id' => $sessionId, 'student_id' => $studentId, 'is_present' => 0];
         }
         Attendance::upsert($data, uniqueBy: ['session_id', 'student_id'], update: ['is_present']);
