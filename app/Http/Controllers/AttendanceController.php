@@ -59,7 +59,7 @@ class AttendanceController extends Controller
         ]);
     }
 
-    public function teacherCourseDetailAttendanceSave(Request $request, $id, $sessionId){
+    public function saveAttendance(Request $request, $id, $sessionId){
         $data = [];
         foreach ($request->present ?? [] as $studentId) {
             $data[] = ['session_id' => $sessionId, 'student_id' => $studentId, 'is_present' => 1];
@@ -68,6 +68,6 @@ class AttendanceController extends Controller
             $data[] = ['session_id' => $sessionId, 'student_id' => $studentId, 'is_present' => 0];
         }
         Attendance::upsert($data, uniqueBy: ['session_id', 'student_id'], update: ['is_present']);
-        return back()->with(['status' => 'success', 'message' => 'Attandance saved successfully.']);
+        return back()->with(['status' => 'success', 'message' => 'Attendance saved successfully.']);
     }
 }

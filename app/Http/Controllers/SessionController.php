@@ -30,7 +30,9 @@ class SessionController extends Controller
             'title' => ['required'],
             'description' => ['required'],
             'start_time' => ['required', 'date', 'after_or_equal:now'],
-            'end_time' => ['required', 'date', 'after_or_equal:start_time']
+            'end_time' => ['required', 'date', 'after_or_equal:start_time'],
+            'value' => ['required', '' . $request->is_online ? 'url' : ''],
+            'is_online' => ['required'],
         ]);
 
         if ($validation) {
@@ -39,7 +41,9 @@ class SessionController extends Controller
                 'title' => $request->title,
                 'description' => $request->description,
                 'start_time' => $request->start_time,
-                'end_time' => $request->end_time
+                'end_time' => $request->end_time,
+                'value' => $request->value,
+                'is_online' => $request->is_online
             ]);
 
             return redirect()->route('teacher-course-detail', $id)->with(['status' => 'success', 'message' => 'Successfully add new session']);
@@ -62,7 +66,9 @@ class SessionController extends Controller
             'title' => ['required'],
             'description' => ['required'],
             'start_time' => ['required', 'date', 'after_or_equal:now'],
-            'end_time' => ['required', 'date', 'after_or_equal:start_time']
+            'end_time' => ['required', 'date', 'after_or_equal:start_time'],
+            'value' => ['required', '' . $request->is_online ? 'url' : ''],
+            'is_online' => ['required'],
         ]);
 
         if ($validation) {
@@ -71,7 +77,9 @@ class SessionController extends Controller
                 'title' => $request->title,
                 'description' => $request->description,
                 'start_time' => $request->start_time,
-                'end_time' => $request->end_time
+                'end_time' => $request->end_time,
+                'value' => $request->value,
+                'is_online' => $request->is_online
             ]);
 
             return redirect()->route('teacher-course-detail', $session->classroom_id)->with(['status' => 'success', 'message' => 'Successfully update session']);
