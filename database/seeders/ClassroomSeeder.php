@@ -47,6 +47,16 @@ class ClassroomSeeder extends Seeder
                 'exam' => 35,
                 'project' => 40,
                 'min_score' => 35,
+            ],[
+                'course_id' => 5,
+                'name'=> 'Testing Purposes',
+                'code'=> 'TEST',
+                'student_capacity' => null,
+                'period_id' => '5',
+                'asg' => 25,
+                'exam' => 35,
+                'project' => 40,
+                'min_score' => 55,
             ]
         ];
 

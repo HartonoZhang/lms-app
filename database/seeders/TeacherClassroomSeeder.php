@@ -32,6 +32,36 @@ class TeacherClassroomSeeder extends Seeder
             ],[
                 'classroom_id' => 3,
                 'teacher_id' => 4,
+            ],[
+                'classroom_id' => 4,
+                'teacher_id' => 1,
+            ],[
+                'classroom_id' => 4,
+                'teacher_id' => 2,
+            ],[
+                'classroom_id' => 4,
+                'teacher_id' => 3,
+            ],[
+                'classroom_id' => 4,
+                'teacher_id' => 4,
+            ],[
+                'classroom_id' => 4,
+                'teacher_id' => 5,
+            ],[
+                'classroom_id' => 4,
+                'teacher_id' => 6,
+            ],[
+                'classroom_id' => 4,
+                'teacher_id' => 7,
+            ],[
+                'classroom_id' => 4,
+                'teacher_id' => 8,
+            ],[
+                'classroom_id' => 4,
+                'teacher_id' => 9,
+            ],[
+                'classroom_id' => 4,
+                'teacher_id' => 10,
             ],
         ];
 
