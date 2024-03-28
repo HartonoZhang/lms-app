@@ -244,10 +244,13 @@ class CourseController extends Controller
     public function studentCourseDetailScore($id)
     {
         $data = $this->studentCourseDetaiL($id);
+        $student = Student::where('user_id', '=', Auth::user()->id)->first();
+        $score = StudentClassroom::where([['student_id', '=', $student->id], ['classroom_id', '=', $id]])->first();
         return view('pages.courses.student.score', [
             'classroom' => $data['classroom'],
             'sessions' => $data['sessions'],
-            'teacherClassroom' => $data['teacherClassroom']
+            'teacherClassroom' => $data['teacherClassroom'],
+            'score' => $score
         ]);
     }
 

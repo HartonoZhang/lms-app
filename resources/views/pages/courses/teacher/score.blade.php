@@ -93,7 +93,6 @@
                                         $exam = $studentScore->exam * $classroom->exam;
                                         $result = ($asg + $project + $exam) / 100;
                                     }
-
                                 @endphp
                                 <td>
                                     {{ $result }}

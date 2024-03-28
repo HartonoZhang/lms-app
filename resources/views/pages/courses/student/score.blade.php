@@ -26,24 +26,27 @@
                     <div class="col-md-4 col-sm-6 col-12">
                         <div class="card card-primary card-outline">
                             <div class="d-flex flex-column text-center py-2">
-                                <span style="font-size: 1.2rem;">Assignment (30%)</span>
-                                <span class="font-weight-bold" style="font-size: 1.5rem;">34</span>
+                                <span style="font-size: 1.2rem;">Assignment ({{ $classroom->asg }}%)</span>
+                                <span class="font-weight-bold"
+                                    style="font-size: 1.5rem;">{{ $score->asg === null ? 'N/A' : $score->asg }}</span>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-6 col-12">
                         <div class="card card-warning card-outline">
                             <div class="d-flex flex-column text-center py-2">
-                                <span style="font-size: 1.2rem;">Project (30%)</span>
-                                <span class="font-weight-bold" style="font-size: 1.5rem;">34</span>
+                                <span style="font-size: 1.2rem;">Project ({{ $classroom->project }}%)</span>
+                                <span class="font-weight-bold"
+                                    style="font-size: 1.5rem;">{{ $score->project === null ? 'N/A' : $score->project }}</span>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-6 col-12">
                         <div class="card card-info card-outline">
                             <div class="d-flex flex-column text-center py-2">
-                                <span style="font-size: 1.2rem;">Exam (30%)</span>
-                                <span class="font-weight-bold" style="font-size: 1.5rem;">34</span>
+                                <span style="font-size: 1.2rem;">Exam ({{ $classroom->exam }}%)</span>
+                                <span class="font-weight-bold"
+                                    style="font-size: 1.5rem;">{{ $score->exam === null ? 'N/A' : $score->exam }}</span>
                             </div>
                         </div>
                     </div>
@@ -51,18 +54,33 @@
                         <div class="card card-danger card-outline">
                             <div class="d-flex flex-column text-center py-2">
                                 <span style="font-size: 1.2rem;">Minimun Score</span>
-                                <span class="font-weight-bold" style="font-size: 1.5rem;">34</span>
+                                <span class="font-weight-bold"
+                                    style="font-size: 1.5rem;">{{ $classroom->min_score }}</span>
                             </div>
                         </div>
                     </div>
+                    @php
+                        if ($score->asg === null || $score->project === null || $score->exam === null) {
+                            $result = 'N/A';
+                        } else {
+                            $asg = $score->asg * $classroom->asg;
+                            $project = $score->project * $classroom->project;
+                            $exam = $score->exam * $classroom->exam;
+                            $result = ($asg + $project + $exam) / 100;
+                        }
+                    @endphp
                     <div class="col-md-6">
                         <div class="card card-primary card-outline">
                             <div class="d-flex flex-column text-center py-2">
                                 <span style="font-size: 1.2rem;">Your Total Score</span>
                                 <div class="d-flex mx-auto align-items-center">
-                                    <span class="font-weight-bold" style="font-size: 1.5rem;">34 </span>
-                                    <span class="badge badge-success ml-2">Passed</span>
-                                    <span class="badge badge-danger ml-2">Failed</span>
+                                    <span class="font-weight-bold" style="font-size: 1.5rem;">{{ $result }}</span>
+                                    @if ($result === 'N/A')
+                                    @elseif ($result >= $classroom->min_score)
+                                        <span class="badge badge-success">Passed</span>
+                                    @elseif ($result >= $classroom->min_score)
+                                        <span class="badge badge-danger">Failed</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
