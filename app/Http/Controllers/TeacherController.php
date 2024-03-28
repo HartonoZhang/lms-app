@@ -6,9 +6,12 @@ use App\Models\Classroom;
 use App\Models\Course;
 use App\Models\Material;
 use App\Models\Address;
+use App\Models\Organization;
 use App\Models\Post;
 use App\Models\Profile;
+use App\Models\QuestQuestion;
 use App\Models\Teacher;
+use App\Models\TeacherClassroom;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -28,7 +31,17 @@ class TeacherController extends Controller
 
     public function home()
     {
-        return view('pages.dashboards.teacher');
+        $teacher = Teacher::with('user')->where('user_id', '=', Auth::user()->id)->first();
+        $organization = Organization::first();
+        $teacherClassroom = TeacherClassroom::with('classroom.studentClassroom')->where('teacher_id', '=', $teacher->id)->get();
+        $teacherQuestion = QuestQuestion::where('teacher_id', '=', $teacher->id)->get();
+        $teacherPost = Post::where('user_id', '=', Auth::user()->id)->get();
+        return view('pages.dashboards.teacher', [
+            'organization' => $organization,
+            'teacherClassroom' => $teacherClassroom,
+            'teacherQuestion' => $teacherQuestion,
+            'teacherPost' => $teacherPost,
+        ]);
     }
 
     public function profile($id)
@@ -79,7 +92,7 @@ class TeacherController extends Controller
 
         if ($validation) {
             $user = new User();
-            $user->role_id = 3;
+            $user->role_id = 2;
             $user->name = $request->name;
             $user->email = $request->email;
             $user->image = 'default.png';

@@ -32,6 +32,7 @@ class ClassroomController extends Controller
                 "asg" => $assignment,
                 "project" => $exam,
                 "exam" => $project,
+                'min_score' => $data->min_score
             ]);
         } else {
             $result = Classroom::find($data->id)->update([
@@ -43,6 +44,7 @@ class ClassroomController extends Controller
                 "asg" => $assignment,
                 "project" => $exam,
                 "exam" => $project,
+                'min_score' => $data->min_score
             ]);
         }
         return $result;
@@ -81,6 +83,7 @@ class ClassroomController extends Controller
             "name" => ["required"],
             "course" => ["required"],
             'period' => ['required'],
+            'min_score' => ['required', 'integer', 'min:0', 'max:100'],
             "student_capacity" => ['nullable', 'integer', 'min:1'],
             "studentLists" => [
                 "required",
@@ -140,6 +143,7 @@ class ClassroomController extends Controller
             "name" => ["required"],
             "course" => ["required"],
             'period' => ['required'],
+            'min_score' => ['required', 'integer', 'min:0', 'max:100'],
             'asg' => ['nullable', 'integer', 'min:0', 'max:100'],
             'exam' => ['nullable', 'integer', 'min:0', 'max:100'],
             'project' => ['nullable', 'integer', 'min:0', 'max:100'],
