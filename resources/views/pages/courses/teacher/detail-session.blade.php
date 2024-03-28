@@ -247,8 +247,7 @@
                                                 <form class="form-horizontal" action="{{route('save-attendance', ['id' => $classroom->id, 'sessionId' => $item->id])}}" method="POST"
                                                     enctype="multipart/form-data" data-remote="true">
                                                     @csrf
-                                                    <table id="tabel-attendances"
-                                                        class="table table-bordered table-striped">
+                                                    <table class="tabel-attendances table table-bordered table-striped">
                                                         <thead>
                                                             <tr>
                                                                 <th class="attendance-name">Student Name</th>
@@ -272,6 +271,9 @@
                                                                     </td>
                                                                     <td class="student-attendance">
                                                                         <div class="custom-control custom-checkbox">
+                                                                            @php
+                                                                                $foundAttendance = false;
+                                                                            @endphp
                                                                             @foreach ($item->attendances as $attendance)
                                                                                 @if ($attendance->student_id == $student->id)
                                                                                     <input type="checkbox" name="present[]"
@@ -280,17 +282,20 @@
                                                                                     <input id="hidden-student-checkbox-{{ $student->id }}" type="text"
                                                                                         class="hidden-student-checkbox" name="notPresent[]" value="{{$student->id}}"
                                                                                         @disabled($attendance->is_present) hidden>
-                                                                                    @break
-                                                                                @elseif ($loop->last)
-                                                                                    <input type="checkbox" name="present[]"
-                                                                                        class="student-checkbox custom-control-input" value="{{$student->id}}"
-                                                                                        id="student-checkbox-{{ $student->id }}" />
-                                                                                    <input id="hidden-student-checkbox-{{ $student->id }}" type="text"
-                                                                                        class="hidden-student-checkbox" name="notPresent[]" value="{{$student->id}}"
-                                                                                        hidden>
+                                                                                    @php
+                                                                                        $foundAttendance = true;
+                                                                                    @endphp
                                                                                     @break
                                                                                 @endif
                                                                             @endforeach
+                                                                            @if (!$foundAttendance)
+                                                                                <input type="checkbox" name="present[]"
+                                                                                    class="student-checkbox custom-control-input" value="{{$student->id}}"
+                                                                                    id="student-checkbox-{{ $student->id }}" />
+                                                                                <input id="hidden-student-checkbox-{{ $student->id }}" type="text"
+                                                                                    class="hidden-student-checkbox" name="notPresent[]" value="{{$student->id}}"
+                                                                                    hidden>
+                                                                            @endif
                                                                             <label class="custom-control-label"
                                                                                 for="student-checkbox-{{ $student->id }}"></label>
                                                                         </div>
@@ -510,7 +515,7 @@
             width: 10%;
         }
 
-        .student-attendance{
+        .student-attendance, .student-attendance *{
             cursor: pointer;
         }
     </style>
@@ -543,7 +548,7 @@
         }
 
         $(document).ready(function() {
-            $("#tabel-attendances").DataTable({
+            $(".tabel-attendances").DataTable({
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
@@ -551,7 +556,7 @@
                     orderable: false,
                     targets: 1
                 }],
-            }).buttons().container().appendTo('#tabel-attendances_wrapper .col-md-6:eq(0)');
+            }).buttons().container().appendTo('.tabel-attendances_wrapper .col-md-6:eq(0)');
 
             $('#carouselExampleCaptions').on('slid.bs.carousel', function(e) {
                 var ele = $('#carouselExampleCaptions .carousel-indicators li.active');
