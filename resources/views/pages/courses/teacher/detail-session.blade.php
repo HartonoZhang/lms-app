@@ -247,8 +247,7 @@
                                                 <form class="form-horizontal" action="{{route('save-attendance', ['id' => $classroom->id, 'sessionId' => $item->id])}}" method="POST"
                                                     enctype="multipart/form-data" data-remote="true">
                                                     @csrf
-                                                    <table id="tabel-attendances"
-                                                        class="table table-bordered table-striped">
+                                                    <table class="tabel-attendances table table-bordered table-striped">
                                                         <thead>
                                                             <tr>
                                                                 <th class="attendance-name">Student Name</th>
@@ -549,7 +548,7 @@
         }
 
         $(document).ready(function() {
-            $("#tabel-attendances").DataTable({
+            $(".tabel-attendances").DataTable({
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
@@ -557,7 +556,7 @@
                     orderable: false,
                     targets: 1
                 }],
-            }).buttons().container().appendTo('#tabel-attendances_wrapper .col-md-6:eq(0)');
+            }).buttons().container().appendTo('.tabel-attendances_wrapper .col-md-6:eq(0)');
 
             $('#carouselExampleCaptions').on('slid.bs.carousel', function(e) {
                 var ele = $('#carouselExampleCaptions .carousel-indicators li.active');
