@@ -26,6 +26,7 @@ class ClassroomSeeder extends Seeder
                 'asg' => 30,
                 'exam' => 40,
                 'project' => 30,
+                'min_score' => 50,
             ],[
                 'course_id' => 2,
                 'name'=> 'Exam Room',
@@ -35,6 +36,7 @@ class ClassroomSeeder extends Seeder
                 'asg' => 20,
                 'exam' => 40,
                 'project' => 40,
+                'min_score' => 75,
             ],[
                 'course_id' => 3,
                 'name'=> 'VIP Class',
@@ -44,6 +46,7 @@ class ClassroomSeeder extends Seeder
                 'asg' => 25,
                 'exam' => 35,
                 'project' => 40,
+                'min_score' => 35,
             ]
         ];
 
@@ -56,6 +59,7 @@ class ClassroomSeeder extends Seeder
                 'asg' => $value['asg'],
                 'exam' => $value['exam'],
                 'project' => $value['project'],
+                'min_score' => $value['min_score'],
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'period_id' => $value['period_id'],

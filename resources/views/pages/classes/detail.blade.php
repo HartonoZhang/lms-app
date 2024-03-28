@@ -40,6 +40,13 @@
                     </div>
                     <div class="col-sm-4 mb-3">
                         <div class="form-label-group in-border mb-1">
+                            <input type="text" id="minScore" class="form-control form-control-mb"
+                                placeholder="Minimum score" name="min_score" value="{{$data->min_score}}" disabled/>
+                            <label for="minScore">Minimum score to pass*</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 mb-3">
+                        <div class="form-label-group in-border mb-1">
                             <input type="text" id="course" class="form-control form-control-mb"
                                 placeholder="Course" value="{{$data->course->code == null ? "" : $data->course->code." - "}}{{$data->course->name}}" disabled/>
                             <label for="Course">Course*</label>
