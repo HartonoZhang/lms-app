@@ -247,6 +247,7 @@
                                                 <form class="form-horizontal" action="{{route('save-attendance', ['id' => $classroom->id, 'sessionId' => $item->id])}}" method="POST"
                                                     enctype="multipart/form-data" data-remote="true">
                                                     @csrf
+                                                    <input type="text" hidden id="present-list-{{$item->id}}" name="present-list-{{$item->id}}" value="">
                                                     <table class="tabel-attendances table table-bordered table-striped">
                                                         <thead>
                                                             <tr>
@@ -276,11 +277,9 @@
                                                                             @endphp
                                                                             @foreach ($item->attendances as $attendance)
                                                                                 @if ($attendance->student_id == $student->student_id)
-                                                                                    <input type="checkbox" name="present[]"
+                                                                                    <input type="checkbox" name="present[]" data-sessionId="{{$item->id}}"
                                                                                         class="student-checkbox custom-control-input" value="{{$student->student_id}}"
                                                                                         id="student-checkbox-{{$item->id}}-{{ $student->student_id }}" @checked($attendance->is_present)/>
-                                                                                    <input type="text" class="hidden-student-checkbox" name="notPresent[]"
-                                                                                        value="{{$student->student_id}}" @disabled($attendance->is_present) hidden>
                                                                                     @php
                                                                                         $foundAttendance = true;
                                                                                     @endphp
@@ -288,11 +287,9 @@
                                                                                 @endif
                                                                             @endforeach
                                                                             @if (!$foundAttendance)
-                                                                                <input type="checkbox" name="present[]"
+                                                                                <input type="checkbox" name="present[]" data-sessionId="{{$item->id}}"
                                                                                     class="student-checkbox custom-control-input" value="{{$student->student_id}}"
                                                                                     id="student-checkbox-{{$item->id}}-{{ $student->student_id }}" />
-                                                                                <input type="text" class="hidden-student-checkbox" name="notPresent[]"
-                                                                                    value="{{$student->student_id}}" hidden>
                                                                             @endif
                                                                             <label class="custom-control-label"
                                                                                 for="student-checkbox-{{$item->id}}-{{ $student->student_id }}"></label>
@@ -513,7 +510,7 @@
             width: 10%;
         }
 
-        .student-attendance, .student-attendance *{
+        .student-attendance .custom-control-label{
             cursor: pointer;
         }
     </style>
@@ -537,12 +534,34 @@
     <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
     <script type="text/javascript">
+        var presentCheckboxes = {};
+
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var fileName = input.files[0].name;
                 var infoArea = document.getElementById('upload-file');
                 infoArea.textContent = 'File name: ' + fileName;
             }
+        }
+
+        function changeAttendanceList(input){
+            let sessionId = parseInt($(input).data("sessionid"));
+            let studentId = parseInt($(input).val());
+            let isPresent = $(input).prop('checked');
+            if (isPresent) {
+                if (presentCheckboxes[sessionId] && !presentCheckboxes[sessionId].includes(studentId)) {
+                    presentCheckboxes[sessionId].push(studentId)
+                }
+            } else {
+                if (presentCheckboxes[sessionId] && presentCheckboxes[sessionId].includes(studentId)) {
+                    let index = presentCheckboxes[sessionId].indexOf(studentId);
+                    if (index > -1) {
+                        presentCheckboxes[sessionId].splice(index, 1);
+                    }
+                }
+            }
+            $(`#present-list-${sessionId}`).val(presentCheckboxes[sessionId]);
+            console.log($(`#present-list-${sessionId}`).val())
         }
 
         $(document).ready(function() {
@@ -554,6 +573,22 @@
                     orderable: false,
                     targets: 1
                 }],
+                drawCallback: function(){
+                    // $('.student-attendance').off('click').on('click', function(e) {
+                    //     e.stopPropagation();
+                    //     let element = $(this);
+                    //     console.log('as')
+                    //     element.find('.custom-checkbox .student-checkbox').prop('checked', function(i, checked) {
+                    //         element.find('.custom-checkbox .hidden-student-checkbox').prop('disabled', !checked);
+                    //         element.find('.custom-checkbox .student-checkbox').change();
+                    //         return !checked;
+                    //     });
+                    // });
+
+                    $('.student-checkbox').off('change').on('change', function(e) {
+                        changeAttendanceList(this);
+                    });
+                }
             }).buttons().container().appendTo('.tabel-attendances_wrapper .col-md-6:eq(0)');
 
             $('#carouselExampleCaptions').on('slid.bs.carousel', function(e) {
@@ -590,17 +625,16 @@
                 }
             });
 
-            $('.student-attendance').click(function() {
-                let element = $(this);
-                element.find('.custom-checkbox .student-checkbox').prop('checked', function(i, checked) {
-                    if (checked) {
-                        element.find('.custom-checkbox .hidden-student-checkbox').prop('disabled', false);
-                    } else {
-                        element.find('.custom-checkbox .hidden-student-checkbox').prop('disabled', true);
-                    }
-                    return !checked;
-                });
-            });
+            //init attendance list
+            @foreach ($sessions as $session)
+                presentCheckboxes[{{$session->id}}] = [];
+                @foreach ($session->attendances as $attendance)
+                    @if ($attendance->is_present)
+                        presentCheckboxes[{{$session->id}}].push({{$attendance->student_id}});
+                    @endif
+                @endforeach
+                $(`#present-list-{{$session->id}}`).val(presentCheckboxes[{{$session->id}}]);
+            @endforeach
 
             @if ($errors->any())
                 @if (Session::has('failPostThread'))
