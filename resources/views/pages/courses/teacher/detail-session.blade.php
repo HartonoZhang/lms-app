@@ -272,6 +272,9 @@
                                                                     </td>
                                                                     <td class="student-attendance">
                                                                         <div class="custom-control custom-checkbox">
+                                                                            @php
+                                                                                $foundAttendance = false;
+                                                                            @endphp
                                                                             @foreach ($item->attendances as $attendance)
                                                                                 @if ($attendance->student_id == $student->id)
                                                                                     <input type="checkbox" name="present[]"
@@ -280,17 +283,20 @@
                                                                                     <input id="hidden-student-checkbox-{{ $student->id }}" type="text"
                                                                                         class="hidden-student-checkbox" name="notPresent[]" value="{{$student->id}}"
                                                                                         @disabled($attendance->is_present) hidden>
-                                                                                    @break
-                                                                                @elseif ($loop->last)
-                                                                                    <input type="checkbox" name="present[]"
-                                                                                        class="student-checkbox custom-control-input" value="{{$student->id}}"
-                                                                                        id="student-checkbox-{{ $student->id }}" />
-                                                                                    <input id="hidden-student-checkbox-{{ $student->id }}" type="text"
-                                                                                        class="hidden-student-checkbox" name="notPresent[]" value="{{$student->id}}"
-                                                                                        hidden>
+                                                                                    @php
+                                                                                        $foundAttendance = true;
+                                                                                    @endphp
                                                                                     @break
                                                                                 @endif
                                                                             @endforeach
+                                                                            @if (!$foundAttendance)
+                                                                                <input type="checkbox" name="present[]"
+                                                                                    class="student-checkbox custom-control-input" value="{{$student->id}}"
+                                                                                    id="student-checkbox-{{ $student->id }}" />
+                                                                                <input id="hidden-student-checkbox-{{ $student->id }}" type="text"
+                                                                                    class="hidden-student-checkbox" name="notPresent[]" value="{{$student->id}}"
+                                                                                    hidden>
+                                                                            @endif
                                                                             <label class="custom-control-label"
                                                                                 for="student-checkbox-{{ $student->id }}"></label>
                                                                         </div>
@@ -510,7 +516,7 @@
             width: 10%;
         }
 
-        .student-attendance{
+        .student-attendance, .student-attendance *{
             cursor: pointer;
         }
     </style>
