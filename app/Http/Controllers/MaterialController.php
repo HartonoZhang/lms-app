@@ -157,55 +157,55 @@ class MaterialController extends Controller
         }
     }
 
-    public function updateMaterial($id)
-    {
-        $material = Material::findOrFail($id);
-        return view('pages.materials.edit', [
-            'material' => $material,
-            'classroom' => $material->session->classroom
-        ]);
-    }
+    // public function updateMaterial($id)
+    // {
+    //     $material = Material::findOrFail($id);
+    //     return view('pages.materials.edit', [
+    //         'material' => $material,
+    //         'classroom' => $material->session->classroom
+    //     ]);
+    // }
 
-    public function editMaterial(Request $request, $id)
-    {
-        $material = Material::findOrFail($id);
+    // public function editMaterial(Request $request, $id)
+    // {
+    //     $material = Material::findOrFail($id);
 
-        $validate = Validator::make($request->all(), [
-            'title' => ['required'],
-            'value' => ['required', 'url']
-        ]);
+    //     $validate = Validator::make($request->all(), [
+    //         'title' => ['required'],
+    //         'value' => ['required', 'url']
+    //     ]);
 
-        if ($material->is_file) {
-            $validate = Validator::make($request->all(), [
-                'file_upload' => ['mimes:pdf,zip,ppt,pptx,xlx,xlsx,docx,doc,txt', 'max:2048'],
-                'title' => ['required']
-            ]);
-        }
+    //     if ($material->is_file) {
+    //         $validate = Validator::make($request->all(), [
+    //             'file_upload' => ['mimes:pdf,zip,ppt,pptx,xlx,xlsx,docx,doc,txt', 'max:2048'],
+    //             'title' => ['required']
+    //         ]);
+    //     }
 
-        if ($validate->fails()) {
-            return back()->withInput($request->input())->withErrors($validate);
-        } else {
-            $value = '';
-            if ($material->is_file) {
-                if ($request->file('file_upload')) {
-                    $extension = $request->file('file_upload')->getClientOriginalExtension();
-                    $value = Auth::user()->id . '-' . now()->timestamp . '.' . $extension;
-                    $request->file('file_upload')->move('assets/material', $value);
-                }else {
-                    $value = $material->value;
-                }
-            } else {
-                $value = $request->value;
-            }
+    //     if ($validate->fails()) {
+    //         return back()->withInput($request->input())->withErrors($validate);
+    //     } else {
+    //         $value = '';
+    //         if ($material->is_file) {
+    //             if ($request->file('file_upload')) {
+    //                 $extension = $request->file('file_upload')->getClientOriginalExtension();
+    //                 $value = Auth::user()->id . '-' . now()->timestamp . '.' . $extension;
+    //                 $request->file('file_upload')->move('assets/material', $value);
+    //             }else {
+    //                 $value = $material->value;
+    //             }
+    //         } else {
+    //             $value = $request->value;
+    //         }
 
-            $material->update([
-                'title' => $request->title,
-                'value' => $value
-            ]);
+    //         $material->update([
+    //             'title' => $request->title,
+    //             'value' => $value
+    //         ]);
 
-            return redirect()->route('teacher-course-detail', $material->session->classroom->id)->with(['status' => 'success', 'message' => 'Successfully update material']);
-        }
-    }
+    //         return redirect()->route('teacher-course-detail', $material->session->classroom->id)->with(['status' => 'success', 'message' => 'Successfully update material']);
+    //     }
+    // }
 
     public function deleteMaterial($id)
     {
