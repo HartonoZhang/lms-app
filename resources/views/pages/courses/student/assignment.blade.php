@@ -18,45 +18,105 @@
         <div class="card">
             <div class="card-header">
                 <ul class="nav nav-pills">
-                    <li class="nav-item"><a class="nav-link active" href="#list" data-toggle="pill">Assignment</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="#status" data-toggle="pill">Status Assignment</a>
+                    <li class="nav-item"><a class="nav-link active" href="#status" data-toggle="pill">List Assignment</a>
                     </li>
                 </ul>
             </div>
             <div class="card-body">
                 <div class="tab-content">
-                    <div class="active tab-pane show fade" id="list">
-                        <div class="row">
-                            @if (count($classroom->tasks))
+                    <div class="active tab-pane show fade" id="status">
+                        <table id="tabel-assignment" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Task</th>
+                                    <th>Type</th>
+                                    <th>Deadline</th>
+                                    <th>Upload Date</th>
+                                    <th>Status</th>
+                                    <th>Note</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 @foreach ($classroom->tasks as $task)
-                                    <a href="#" data-toggle="modal"
-                                        data-target="#submit-assigment-{{ $task->id }}" class="col-md-4">
-                                        <div class="classroom-task">
-                                            <div class="card card-primary card-outline">
-                                                <h6 class="card-header text-truncate">{{ $task->title }}</h6>
-                                                <div class="card-body">
-                                                    <p class="card-text" style="font-size: 0.87rem;">
-                                                        {{ $task->description }}
-                                                    </p>
-                                                </div>
-                                                <div class="card-footer">
-                                                    <div class="d-flex align-items-center">
-                                                        <span
-                                                            class="badge badge-primary mr-2">{{ $task->category->name }}</span>
-                                                        <small class="ml-auto">Deadline:
-                                                            {{ $task->deadline->format('d-m-y, g:i A') }} </small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
+                                    <tr>
+                                        <td>{{ $task->title }}</td>
+                                        <td>{{ $task->category->name }}</td>
+                                        <td>{{ $task->deadline->format('g:i A, d-m-y') }}</td>
+                                        <td>
+                                            @php
+                                                $dateUpload = 'Not Submitted';
+                                                foreach ($task->uploads as $upload) {
+                                                    if ($upload->student->user->id === Auth::user()->id) {
+                                                        $dateUpload = $upload->created_at->format('g:i A, d-m-y');
+                                                        break;
+                                                    }
+                                                }
+                                            @endphp
+                                            {{ $dateUpload }}
+                                        </td>
+                                        <td>
+                                            @php
+                                                $status = 'Not Submitted';
+                                                foreach ($task->uploads as $upload) {
+                                                    if ($upload->student->user->id === Auth::user()->id) {
+                                                        $status = $upload->status;
+                                                        break;
+                                                    }
+                                                }
+                                            @endphp
+                                            {{ $status }}
+                                        </td>
+                                        <td>
+                                            @php
+                                                $note = '-';
+                                                foreach ($task->uploads as $upload) {
+                                                    if ($upload->student->user->id === Auth::user()->id) {
+                                                        $note = $upload->note;
+                                                        break;
+                                                    }
+                                                }
+                                            @endphp
+                                            {{ $note ? $note : '-' }}
+                                        </td>
+                                        <td>
+                                            @php
+                                                $file = '';
+                                                foreach ($task->uploads as $upload) {
+                                                    if ($upload->student->user->id === Auth::user()->id) {
+                                                        $file = $upload->file_upload;
+                                                        break;
+                                                    }
+                                                }
+                                            @endphp
+                                            <ul class="list-inline m-0">
+                                                @if ($task->deadline > date('Y-m-d H:i:s'))
+                                                    <li class="list-inline-item">
+                                                        <a href="#" class="btn btn-primary btn-sm rounded-0"
+                                                            data-toggle="modal"
+                                                            data-target="#submit-assigment-{{ $task->id }}"
+                                                            data-placement="top">
+                                                            <i class="fas fa-search"></i>
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                                <li class="list-inline-item">
+                                                    @if ($file)
+                                                        <a href="{{ asset('assets/tasks/answer') }}/{{ $file }}"
+                                                            class="btn btn-info btn-sm rounded-0" target="_blank">
+                                                            <i class="fas fa-download"></i>
+                                                        </a>
+                                                    @endif
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
                                     <div class="modal fade" id="submit-assigment-{{ $task->id }}" tabindex="-1"
                                         role="dialog" aria-labelledby="submit-assigment" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title">Submit Assignment</h5>
+                                                    <h5 class="modal-title">Submit {{ $task->category->name }}</h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
@@ -105,73 +165,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
-                            @else
-                                <p class="text-center">There are no assignment yet</p>
-                            @endif
-
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="status">
-                        <table id="tabel-assignment" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Task</th>
-                                    <th>Type</th>
-                                    <th>Deadline</th>
-                                    <th>Upload Date</th>
-                                    <th>Status</th>
-                                    <th>File Upload</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($classroom->tasks as $task)
-                                    <tr>
-                                        <td>{{ $task->title }}</td>
-                                        <td>{{ $task->category->name }}</td>
-                                        <td>{{ $task->deadline->format('g:i A, d-m-y') }}</td>
-                                        <td>
-                                            @php
-                                                $dateUpload = 'Not Submitted';
-                                                foreach ($task->uploads as $upload) {
-                                                    if ($upload->student->user->id === Auth::user()->id) {
-                                                        $dateUpload = $upload->created_at->format('g:i A, d-m-y');
-                                                        break;
-                                                    }
-                                                }
-                                            @endphp
-                                            {{ $dateUpload }}
-                                        </td>
-                                        <td>
-                                            @php
-                                                $status = 'Not Submitted';
-                                                foreach ($task->uploads as $upload) {
-                                                    if ($upload->student->user->id === Auth::user()->id) {
-                                                        $status = $upload->status;
-                                                        break;
-                                                    }
-                                                }
-                                            @endphp
-                                            {{ $status }}
-                                        </td>
-                                        <td>
-                                            @php
-                                                $file = 'No data';
-                                                foreach ($task->uploads as $upload) {
-                                                    if ($upload->student->user->id === Auth::user()->id) {
-                                                        $file = $upload->file_upload;
-                                                        break;
-                                                    }
-                                                }
-                                            @endphp
-                                            @if ($file === 'No data')
-                                                {{ $file }}
-                                            @else
-                                                <a href="{{ asset('assets/tasks/answer') }}/{{ $file }}"
-                                                    target="_blank">Download</a>
-                                            @endif
-                                        </td>
-                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>

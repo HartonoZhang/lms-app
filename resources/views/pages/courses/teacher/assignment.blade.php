@@ -84,7 +84,13 @@
 
     <script type="text/javascript">
         $(function() {
-            
+            @if (Session::has('status'))
+                @if (Session::get('status') === 'success')
+                    toastr.success('{{ Session::get('message') }}')
+                @elseif (Session::get('status') === 'fail')
+                    toastr.error('{{ Session::get('message') }}')
+                @endif
+            @endif
         })
     </script>
 @endsection

@@ -163,24 +163,26 @@ class TaskController extends Controller
         }
     }
 
-    public function doneUpload($taskId, $studentId)
+    public function doneUpload(Request $request, $taskId, $studentId)
     {
         $upload = TaskUpload::where([['task_id', '=', $taskId], ['student_id', '=', $studentId]])->first();
         if ($upload) {
             $upload->update([
-                'status' => 'Done'
+                'status' => 'Done',
+                'note' => $request->note
             ]);
         }
         $this->message('Change status done', 'success');
         return back();
     }
 
-    public function revisionUpload($taskId, $studentId)
+    public function revisionUpload(Request $request, $taskId, $studentId)
     {
         $upload = TaskUpload::where([['task_id', '=', $taskId], ['student_id', '=', $studentId]])->first();
         if ($upload) {
             $upload->update([
-                'status' => 'Revision'
+                'status' => 'Revision',
+                'note' => $request->note
             ]);
         }
         $this->message('Change status revision', 'success');

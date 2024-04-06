@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('task_uploads', function (Blueprint $table) {
+        Schema::create('quest_student_answer', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('task_id');
-            $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
+            $table->unsignedBigInteger('quest_question_id');
+            $table->foreign('quest_question_id')->references('id')->on('quest_question')->onDelete('cascade');
             $table->unsignedBigInteger('student_id');
             $table->foreign('student_id')->references('id')->on('student')->onDelete('cascade');
-            $table->string('file_upload');
-            $table->string('note')->nullable();
+            $table->string('answer');
             $table->string('status');
             $table->timestamps();
         });
@@ -33,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('task_uploads');
+        Schema::dropIfExists('quest_student_answer');
     }
 };
