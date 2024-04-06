@@ -5,7 +5,8 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/{{ strtolower(Auth::user()->role->name) }}">Home</a></li>
     <li class="breadcrumb-item"><a href="/{{ strtolower(Auth::user()->role->name) }}/course">My Courses</a></li>
-    <li class="breadcrumb-item active"><a href="/{{ strtolower(Auth::user()->role->name) }}/course/{{$session->classroom_id}}">Courses Detail</a></li>
+    <li class="breadcrumb-item active"><a
+            href="/{{ strtolower(Auth::user()->role->name) }}/course/{{ $session->classroom_id }}">Courses Detail</a></li>
     <li class="breadcrumb-item active">Thread Detail</li>
 @endsection
 
@@ -51,8 +52,13 @@
                     <form class="mb-4" action={{ route('thread-comment-create', $thread->id) }} method="POST"
                         enctype="multipart/form-data" data-remote="true">
                         @csrf
-                        <input class="form-control form-control-md" type="text" name="comment"
-                            placeholder="Type a comment">
+                        <div class="input-group">
+                            <input class="form-control form-control-md" type="text" name="comment"
+                                placeholder="Type a comment">
+                            <div class="input-group-prepend">
+                                <button type="submit" class="btn btn-primary rounded-right">Send</button>
+                            </div>
+                        </div>
                     </form>
                 @endif
                 @if (count($comments) == 0)
@@ -109,8 +115,8 @@
                         </div>
                         <div class="form-group" data-input="description">
                             <label for="threadDescription">Description</label>
-                            <textarea type="text" class="form-control" name="description" id="threadDescription" placeholder="Thread Description"
-                                rows="3">{{ old('description', $thread->description) }}</textarea>
+                            <textarea type="text" class="form-control" name="description" id="threadDescription"
+                                placeholder="Thread Description" rows="3">{{ old('description', $thread->description) }}</textarea>
                             @error('description')
                                 <p class="text-danger mb-1">{{ $message }}</p>
                             @enderror
