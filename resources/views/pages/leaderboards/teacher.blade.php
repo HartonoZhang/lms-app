@@ -16,112 +16,103 @@
             <div class="row">
                 <div class="col-md-4 col-sm-6 col-12">
                     <div class="card card-widget widget-user">
-                        <!-- Add the bg color to the header using any of the bg-* classes -->
                         <div class="widget-user-header first-place">
-                            <h3 class="widget-user-username">{{$second ? $second->user->name : "No Data"}}</h3>
+                            <h3 class="widget-user-username">{{ $second ? $second->user->name : 'No Data' }}</h3>
                             <h5 class="widget-user-desc">#2</h5>
                         </div>
-                        <div class="widget-user-image">
-                            <img class="img-circle elevation-2"
-                                src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}" alt="User Avatar">
+                        <div class="widget-user-image box-profile">
+                            <img class="profile-user-img img-circle elevation-2"
+                                src="{{ asset('assets') }}/images/profile/{{ $second->user->image }}" alt="User Avatar">
+                            <img class="user-badge my-0"
+                                src="{{ asset('assets') }}/images/badges/{{ $second->profile->badge_name }}.png"
+                                alt="User profile picture">
                         </div>
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col-sm-6 border-right">
                                     <div class="description-block">
-                                        <h5 class="description-header">{{$second ? $second->profile->level : "No Data"}}</h5>
+                                        <h5 class="description-header">{{ $second ? $second->profile->level : 'No Data' }}
+                                        </h5>
                                         <span class="description-text">Level</span>
                                     </div>
-                                    <!-- /.description-block -->
                                 </div>
-                                <!-- /.col -->
                                 <div class="col-sm-6">
                                     <div class="description-block">
-                                        <h5 class="description-header">{{$second ? $second->profile->current_exp : "No Data"}}</h5>
+                                        <h5 class="description-header">
+                                            {{ $second ? $second->profile->current_exp : 'No Data' }}</h5>
                                         <span class="description-text">Current Exp</span>
                                     </div>
-                                    <!-- /.description-block -->
                                 </div>
-                                <!-- /.col -->
                             </div>
-                            <!-- /.row -->
                         </div>
                     </div>
-                    <!-- /.info-box -->
                 </div>
                 <!-- /.col -->
                 <div class="col-md-4 col-sm-6 col-12">
                     <div class="card card-widget widget-user">
-                        <!-- Add the bg color to the header using any of the bg-* classes -->
                         <div class="widget-user-header second-place">
-                            <h3 class="widget-user-username">{{$first->user->name}}</h3>
+                            <h3 class="widget-user-username">{{ $first->user->name }}</h3>
                             <h5 class="widget-user-desc">#1</h5>
                         </div>
-                        <div class="widget-user-image">
-                            <img class="img-circle elevation-2"
-                                src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}" alt="User Avatar">
+                        <div class="widget-user-image box-profile">
+                            <img class="profile-user-img img-circle elevation-2"
+                                src="{{ asset('assets') }}/images/profile/{{ $first->user->image }}" alt="User Avatar">
+                            <img class="user-badge my-0"
+                                src="{{ asset('assets') }}/images/badges/{{ $first->profile->badge_name }}.png"
+                                alt="User profile picture">
                         </div>
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col-sm-6 border-right">
                                     <div class="description-block">
-                                        <h5 class="description-header">{{$first->profile->level}}</h5>
+                                        <h5 class="description-header">{{ $first->profile->level }}</h5>
                                         <span class="description-text">Level</span>
                                     </div>
-                                    <!-- /.description-block -->
                                 </div>
-                                <!-- /.col -->
                                 <div class="col-sm-6">
                                     <div class="description-block">
-                                        <h5 class="description-header">{{$first->profile->current_exp}}</h5>
+                                        <h5 class="description-header">{{ $first->profile->current_exp }}</h5>
                                         <span class="description-text">Current Exp</span>
                                     </div>
-                                    <!-- /.description-block -->
                                 </div>
-                                <!-- /.col -->
                             </div>
-                            <!-- /.row -->
                         </div>
                     </div>
-                    <!-- /.info-box -->
                 </div>
-                <!-- /.col -->
                 <div class="col-md-4 col-sm-6 col-12">
                     <div class="card card-widget widget-user">
-                        <!-- Add the bg color to the header using any of the bg-* classes -->
-                        <div class="widget-user-header second-place">
-                            <h3 class="widget-user-username">{{$third ? $third->user->name : "No Data"}}</h3>
+                        <div class="widget-user-header third-place">
+                            <h3 class="widget-user-username">{{ $third ? $third->user->name : 'No Data' }}</h3>
                             <h5 class="widget-user-desc">#3</h5>
                         </div>
-                        <div class="widget-user-image">
-                            <img class="img-circle elevation-2"
-                                src="{{ asset('assets') }}/images/profile/{{ Auth::user()->image }}" alt="User Avatar">
+                        <div class="widget-user-image box-profile">
+                            <img class="profile-user-img img-circle elevation-2"
+                                src="{{ asset('assets') }}/images/profile/{{ $third->user->image }}" alt="User Avatar">
+                            <img class="user-badge my-0"
+                                src="{{ asset('assets') }}/images/badges/{{ $third->profile->badge_name }}.png"
+                                alt="User profile picture">
                         </div>
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col-sm-6 border-right">
                                     <div class="description-block">
-                                        <h5 class="description-header">{{$third ? $third->profile->level : "No Data"}}</h5>
+                                        <h5 class="description-header">{{ $third ? $third->profile->level : 'No Data' }}
+                                        </h5>
                                         <span class="description-text">Level</span>
                                     </div>
-                                    <!-- /.description-block -->
                                 </div>
-                                <!-- /.col -->
                                 <div class="col-sm-6">
                                     <div class="description-block">
-                                        <h5 class="description-header">{{$third ? $third->profile->current_exp : "No Data"}}</h5>
+                                        <h5 class="description-header">
+                                            {{ $third ? $third->profile->current_exp : 'No Data' }}</h5>
                                         <span class="description-text">Current Exp</span>
                                     </div>
-                                    <!-- /.description-block -->
                                 </div>
-                                <!-- /.col -->
                             </div>
-                            <!-- /.row -->
                         </div>
                     </div>
-                    <!-- /.info-box -->
                 </div>
-            </div>  
+            </div>
             @php
                 $isTopTen = false;
                 $currentUserId = Auth::user()->id;
@@ -132,29 +123,42 @@
                     <thead>
                         <tr>
                             <th>Rank</th>
-                            <th>Student</th>
-                            <th>Email</th>
+                            <th>Teacher</th>
                             <th>Level</th>
                             <th>Current Exp</th>
                         </tr>
                     </thead>
                     <tbody>
-                    
-                    @for ($i = 3; $i < $leaderboardCount; $i++)
-                    @php
-                        if($isCurrentRole && $datas[$i]->user->id === $currentUserId) $isTopTen = true;
-                    @endphp
-                    <tr style="{{$isCurrentRole && $datas[$i]->user->id === $currentUserId ? "background-color: var(--color-primary-light);" : ""}}">
-                        <td>#{{$i}}</td>
-                        <td>{{$datas[$i]->user->name}}</td>
-                        <td>{{$datas[$i]->user->email}}</td>
-                        <td>{{$datas[$i]->profile->level}}</td>
-                        <td>{{$datas[$i]->profile->current_exp}}</td>
-                    </tr>
-                    @endfor
+
+                        @for ($i = 3; $i < $leaderboardCount; $i++)
+                            @php
+                                if ($isCurrentRole && $datas[$i]->user->id === $currentUserId) {
+                                    $isTopTen = true;
+                                }
+                            @endphp
+                            <tr
+                                style="{{ $isCurrentRole && $datas[$i]->user->id === $currentUserId ? 'background-color: var(--color-primary-xlight);' : '' }}">
+                                <td>#{{ $i }}</td>
+                                <td>
+                                    <div class="user-block">
+                                        <img class="img-circle img-bordered-sm"
+                                            src="{{ asset('assets') }}/images/profile/{{ $datas[$i]->user->image }}"
+                                            alt="user image">
+                                        <span class="username text-truncate">
+                                            {{ $datas[$i]->user->name }}
+                                        </span>
+                                        <span class="description text-truncate">
+                                            {{ $datas[$i]->user->email }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>{{ $datas[$i]->profile->level }}</td>
+                                <td>{{ $datas[$i]->profile->current_exp }}</td>
+                            </tr>
+                        @endfor
                         @if ($isCurrentRole && $isTopTen == false)
                             @php
-                                $thisTeacher = $datas->where('user_id',$currentUserId)->all();
+                                $thisTeacher = $datas->where('user_id', $currentUserId)->all();
                                 $thisRank = array_keys($thisTeacher)[0];
                                 $thisTeacher = $thisTeacher[$thisRank];
                             @endphp
@@ -163,14 +167,24 @@
                                 <td>.....</td>
                                 <td>.....</td>
                                 <td>.....</td>
-                                <td>.....</td>
                             </tr>
-                            <tr style="background-color: var(--color-primary-light);">
-                                <td>#{{$thisRank}}</td>
-                                <td>{{$thisTeacher->user->name}}</td>
-                                <td>{{$thisTeacher->user->email}}</td>
-                                <td>{{$thisTeacher->profile->level}}</td>
-                                <td>{{$thisTeacher->profile->current_exp}}</td>
+                            <tr style="background-color: var(--color-primary-xlight);">
+                                <td>#{{ $thisRank }}</td>
+                                <td>
+                                    <div class="user-block">
+                                        <img class="img-circle img-bordered-sm"
+                                            src="{{ asset('assets') }}/images/profile/{{ $thisTeacher->user->image }}"
+                                            alt="user image">
+                                        <span class="username text-truncate">
+                                            {{ $thisTeacher->user->name }}
+                                        </span>
+                                        <span class="description text-truncate">
+                                            {{ $thisTeacher->user->email }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>{{ $thisTeacher->profile->level }}</td>
+                                <td>{{ $thisTeacher->profile->current_exp }}</td>
                             </tr>
                         @endif
                     </tbody>
@@ -185,10 +199,10 @@
                 </h3>
             </div>
             <div class="card-body">
-                <p class="card-text">Can't show teacher leaderboard because there is no teacher data available !!</p>   
-                
+                <p class="card-text">Can't show teacher leaderboard because there is no teacher data available !!</p>
+
             </div>
-        </div>
+        </div>
     @endif
 @endsection
 
@@ -205,16 +219,37 @@
             border-spacing: 0px 10px;
         }
 
+        .user-badge {
+            width: 60px !important;
+            height: 60px !important;
+            position: absolute;
+            margin-left: auto;
+            margin-right: auto;
+            left: 40px;
+            right: 0;
+            top: 60px;
+            text-align: center;
+            border: none !important;
+        }
+
         tbody tr {
             background: white;
             box-shadow: var(--box-shadow) !important;
+            vertical-align: middle !important;
         }
 
         tbody td {
             padding: 25px 12px !important;
+            vertical-align: middle !important;
         }
 
         .widget-user-username {
+            color: white;
+        }
+
+        .first-place,
+        .second-place,
+        .third-place {
             color: white;
         }
 
@@ -223,11 +258,11 @@
         }
 
         .second-place {
-            background-color: var(--color-primary-light);
+            background-color: var(--color-warning);
         }
 
         .third-place {
-            background-color: var(--color-primary-xlight);
+            background-color: var(--color-danger);
         }
     </style>
 @endsection
