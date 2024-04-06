@@ -215,6 +215,8 @@ Route::middleware('guest')->group(function () {
     Route::get('/{role}/signin', [AuthController::class, 'signin'])->name('login')->defaults('role', 'student');
     Route::post('/signin/{role}', [AuthController::class, 'authentication']);
 
-    Route::get('/signup', [AuthController::class, 'signup']);
-    Route::post('/signup', [AuthController::class, 'store']);
+    Route::get('/signup', [AuthController::class, 'signup'])->name('registration');
+    Route::get('/signup/organization', [AuthController::class, 'createOrganization'])->name('registration-organization');
+    Route::post('/signup', [AuthController::class, 'storeUser'])->name('create-admin');
+    Route::post('/signup/organization', [AuthController::class, 'storeOrganization'])->name('create-organization');
 });
