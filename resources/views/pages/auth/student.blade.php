@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+@extends('layouts.auth', ['organization' => $organization])
 
 @section('sub-title')
     Sign into your <span class="badge badge-secondary">Student</span> account

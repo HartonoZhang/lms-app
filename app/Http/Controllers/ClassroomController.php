@@ -67,10 +67,7 @@ class ClassroomController extends Controller
         foreach ($data->students as $student) {
             $result = StudentClassroom::create([
                 "classroom_id" => $data->classroom_id,
-                "student_id" => (int)$student,
-                "asg" => 0,
-                "project" => 0,
-                "exam" => 0,
+                "student_id" => (int)$student
             ]);
         }
     }

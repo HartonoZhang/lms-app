@@ -5,7 +5,8 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('teacher-dashboard') }}">Home</a></li>
     <li class="breadcrumb-item"><a href="{{ route('teacher-course') }}">My Courses</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('teacher-course-detail-assignment', $classroom->id) }}">Courses Detail</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('teacher-course-detail-assignment', $classroom->id) }}">Courses Detail</a>
+    </li>
     <li class="breadcrumb-item active">Task Detail</li>
 @endsection
 
@@ -99,7 +100,8 @@
                             <label for="title">File*</label>
                         </div>
                         <small id="download" class="form-text text-muted">
-                            <a href="{{ asset('assets/tasks/question') }}/{{ $task->question_file }}" target="_blank">Download</a>
+                            <a href="{{ asset('assets/tasks/question') }}/{{ $task->question_file }}"
+                                target="_blank">Download</a>
                         </small>
                     </div>
                 </div>
@@ -135,29 +137,83 @@
                                 <td>
                                     <ul class="list-inline m-0">
                                         <li class="list-inline-item">
+                                            <a href="#" class="btn btn-danger btn-sm rounded-0" data-toggle="modal"
+                                                data-target="#revision-{{ $task->id }}" data-placement="top">
+                                                Revision
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="#" class="btn btn-success btn-sm rounded-0"
+                                                data-toggle="modal" data-target="#done-{{ $task->id }}"
+                                                data-placement="top">
+                                                Done
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <div class="modal fade" id="revision-{{ $task->id }}" tabindex="-1" role="dialog"
+                                aria-labelledby="revision" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Revision</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
                                             <form
                                                 action="{{ route('revision-upload', ['task' => $task->id, 'student' => $upload->student->id]) }}"
                                                 method="POST" enctype="multipart/form-data" data-remote="true">
                                                 @csrf
                                                 @method('PUT')
-                                                <button type="submit"
-                                                    class="btn btn-danger btn-sm rounded">Revision</button>
+                                                <div class="form-label-group in-border">
+                                                    <input type="text" id="note"
+                                                        class="form-control form-control-mb" placeholder="Input note"
+                                                        name="note" value="{{ old('note') }}" />
+                                                    <label for="note">Note (Opsional)</label>
+                                                </div>
+                                                <div class="d-flex justify-content-end mt-2">
+                                                    <button type="submit" class="btn btn-primary rounded">Send</button>
+                                                </div>
                                             </form>
-                                        </li>
-                                        <li class="list-inline-item">
-
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="done-{{ $task->id }}" tabindex="-1" role="dialog"
+                                aria-labelledby="done" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Done</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
                                             <form
                                                 action="{{ route('done-upload', ['task' => $task->id, 'student' => $upload->student->id]) }}"
                                                 method="POST" enctype="multipart/form-data" data-remote="true">
                                                 @csrf
                                                 @method('PUT')
-                                                <button type="submit"
-                                                    class="btn btn-success btn-sm rounded">Done</button>
+                                                <div class="form-label-group in-border">
+                                                    <input type="text" id="note"
+                                                        class="form-control form-control-mb" placeholder="Input note"
+                                                        name="note" value="{{ old('note') }}" />
+                                                    <label for="note">Note (Opsional)</label>
+                                                </div>
+                                                <div class="d-flex justify-content-end mt-2">
+                                                    <button type="submit" class="btn btn-primary rounded">Send</button>
+                                                </div>
                                             </form>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         @endforeach
                     </tbody>
                 </table>

@@ -23,7 +23,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-4 col-sm-6 col-12">
+                    <div class="col-md-3 col-sm-6 col-12">
                         <div class="card card-primary card-outline">
                             <div class="d-flex flex-column text-center py-2">
                                 <span style="font-size: 1.2rem;">Assignment</span>
@@ -31,7 +31,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-6 col-12">
+                    <div class="col-md-3 col-sm-6 col-12">
                         <div class="card card-warning card-outline">
                             <div class="d-flex flex-column text-center py-2">
                                 <span style="font-size: 1.2rem;">Project</span>
@@ -39,11 +39,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-6 col-12">
+                    <div class="col-md-3 col-sm-6 col-12">
                         <div class="card card-info card-outline">
                             <div class="d-flex flex-column text-center py-2">
                                 <span style="font-size: 1.2rem;">Exam</span>
                                 <span class="font-weight-bold" style="font-size: 1.5rem;">{{ $classroom->exam }}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-12">
+                        <div class="card card-warning card-outline">
+                            <div class="d-flex flex-column text-center py-2">
+                                <span style="font-size: 1.2rem;">Minimun Score</span>
+                                <span class="font-weight-bold" style="font-size: 1.5rem;">{{ $classroom->min_score }}</span>
                             </div>
                         </div>
                     </div>
@@ -72,19 +80,31 @@
                                             {{ $studentScore->student->user->email }}</span>
                                     </div>
                                 </td>
-                                <td>
-                                    @php
+                                @php
+                                    if (
+                                        $studentScore->asg === null ||
+                                        $studentScore->project === null ||
+                                        $studentScore->exam === null
+                                    ) {
+                                        $result = 'N/A';
+                                    } else {
                                         $asg = $studentScore->asg * $classroom->asg;
                                         $project = $studentScore->project * $classroom->project;
                                         $exam = $studentScore->exam * $classroom->exam;
-
                                         $result = ($asg + $project + $exam) / 100;
-                                    @endphp
+                                    }
+                                @endphp
+                                <td>
                                     {{ $result }}
                                 </td>
                                 <td>
-                                    <span class="badge badge-success">Passed</span>
-                                    <span class="badge badge-danger">Failed</span>
+                                    @if ($result === 'N/A')
+                                        {{ $result }}
+                                    @elseif ($result >= $classroom->min_score)
+                                        <span class="badge badge-success">Passed</span>
+                                    @else
+                                        <span class="badge badge-danger">Failed</span>
+                                    @endif
                                 </td>
                                 <td>
                                     <a class="btn btn-primary btn-sm rounded"

@@ -17,18 +17,16 @@
                         src="{{ asset('assets') }}/images/profile/{{ $post->user->image }}" alt="user image">
                     <span class="username">
                         <div class="d-flex align-items-center">
-                        @if ($post->user->role_id === 2)
-                            <a href="/teacher/profile/{{ $post->user->id }}">{{ $post->user->name }}</a>
-                            <span class="badge text-white ml-1"
-                                    style="background-color: #ffbb55">Teacher</span>
-                        @elseif ($post->user->role_id === 3)
-                            <a href="/student/profile/{{ $post->user->id }}">{{ $post->user->name }}</a>
-                            <span class="badge text-white ml-1"
-                                    style="background-color: #7380ec">Student</span>
-                        @else
+                            @if ($post->user->role_id === 2)
+                                <a href="/teacher/profile/{{ $post->user->id }}">{{ $post->user->name }}</a>
+                                <span class="badge text-white ml-1" style="background-color: #ffbb55">Teacher</span>
+                            @elseif ($post->user->role_id === 3)
+                                <a href="/student/profile/{{ $post->user->id }}">{{ $post->user->name }}</a>
+                                <span class="badge text-white ml-1" style="background-color: #7380ec">Student</span>
+                            @else
                                 {{ $post->user->name }} <span class="badge text-white ml-1"
                                     style="background-color: #f3797e">Admin</span>
-                        @endif
+                            @endif
                         </div>
                         @if (Auth::user()->id === $post->user->id)
                             <a href="#" class="float-right btn-tool" data-toggle="modal" data-target="#modal-delete"
@@ -103,8 +101,13 @@
                     <form class="mb-4" action={{ route('post-comment-create', $post->id) }} method="POST"
                         enctype="multipart/form-data" data-remote="true">
                         @csrf
-                        <input class="form-control form-control-md" type="text" name="comment"
-                            placeholder="Type a comment">
+                        <div class="input-group">
+                            <input class="form-control form-control-md" type="text" name="comment"
+                                placeholder="Type a comment">
+                            <div class="input-group-prepend">
+                                <button type="submit" class="btn btn-primary rounded-right">Send</button>
+                            </div>
+                        </div>
                     </form>
                 @endif
                 @if (count($comments) == 0)
