@@ -124,6 +124,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Title</th>
+                                                                <th>Type</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
@@ -131,24 +132,22 @@
                                                             @foreach ($item->materials as $material)
                                                                 <tr>
                                                                     <td class="text-truncate">
-                                                                        @if ($material->is_file)
-                                                                            <a href="{{ asset('assets/material') }}/{{ $material->value }}"
-                                                                                target="_blank">
-                                                                                {{ $material->title }}</a>
-                                                                        @else
-                                                                            <a href="{{ $material->value }}"
-                                                                                target="_blank">
-                                                                                {{ $material->title }}
-                                                                            </a>
-                                                                        @endif
+                                                                        {{ $material->title }}
+                                                                    </td>
+                                                                    <td>
+                                                                        <p>{{$material->is_file ? 'File' : 'Link'}}</p>
                                                                     </td>
                                                                     <td>
                                                                         <ul class="list-inline m-0">
                                                                             <li class="list-inline-item">
-                                                                                <a href="{{ route('edit-material', $material->id) }}"
-                                                                                    class="btn btn-success btn-sm rounded-0"
-                                                                                    title="Edit"><i
-                                                                                        class="fa fa-edit"></i></a>
+                                                                                @php
+                                                                                    $file_href = $material->is_file ? asset('assets/material').'/'.$material->value : $material->value; 
+                                                                                @endphp
+                                                                                <a href={{$file_href}}
+                                                                                    class="btn btn-primary btn-sm rounded-0"
+                                                                                    data-placement="top" title="Detail">
+                                                                                    <i class="fa fa-search"></i>
+                                                                                </a>
                                                                             </li>
                                                                             <li class="list-inline-item">
                                                                                 <a href="#"
