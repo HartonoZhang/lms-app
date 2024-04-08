@@ -48,6 +48,41 @@ class QuestController extends Controller
         ]);
     }
 
+    public function checkBadge($student, $level)
+    {
+        $badge = $student->badge_name;
+        if ($level >= 1 && $level <= 50) {
+            $badge = 'bronze';
+        }else if($level >= 51 && $level <= 100) {
+            $badge = 'silver';
+        }else if($level >= 101 && $level <= 150) {
+            $badge = 'gold';
+        }else if($level >= 151 && $level <= 200) {
+            $badge = 'purple';
+        }else if($level >= 200) {
+            $badge = 'emerald';
+        }
+        return $badge;
+    }
+
+    public function updateExpAndLevel($student)
+    {
+        $currentExp = $student->current_exp + 10;
+        $currentLevel = $student->level;
+
+        if($currentExp % 100 === 0) {
+            $currentLevel += 1;
+        }
+
+        $badge = $this->checkBadge($student, $currentLevel);
+
+        $student->update([
+            'current_exp' => $currentExp,
+            'level' => $currentLevel,
+            'badge_name' => $badge,
+        ]);
+    }
+
     public function validateQuestAnswer(Request $request, $id)
     {
         $validate = Validator::make($request->all(), [
@@ -59,7 +94,7 @@ class QuestController extends Controller
             return back();
         } else {
             $question = QuestQuestion::findOrFail($id);
-            $student = Student::where('user_id', '=', Auth::user()->id)->first();
+            $student = Student::with('profile')->where('user_id', '=', Auth::user()->id)->first();
             $status = '';
             if ($question->correct_answer === $request->option) {
                 $status = 'Correct';
@@ -72,6 +107,9 @@ class QuestController extends Controller
                 'answer' => $request->option,
                 'status' => $status
             ]);
+            if($status === 'Correct') {
+                $this->updateExpAndLevel($student->profile);
+            }
             return redirect()->route('quest-answer-result', $id);
         }
     }

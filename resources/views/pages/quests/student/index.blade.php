@@ -93,19 +93,20 @@
                                 </td>
                                 <td>
                                     <ul class="list-inline m-0">
-                                        <li class="list-inline-item">
-                                            <a href="{{ route('quest-answer-result', $question->id) }}"
-                                                class="btn btn-primary btn-sm rounded-0" data-placement="top"
-                                                title="Detail">
-                                                <i class="fa fa-search"></i>
-                                            </a>
-                                        </li>
                                         @if (!$done)
                                             <li class="list-inline-item">
                                                 <a href="{{ route('student-do-quest', $question->id) }}"
                                                     class="btn btn-info btn-sm rounded-0" data-placement="top"
                                                     title="Detail">
                                                     <i class="fas fa-question-circle"></i>
+                                                </a>
+                                            </li>
+                                        @else
+                                            <li class="list-inline-item">
+                                                <a href="{{ route('quest-answer-result', $question->id) }}"
+                                                    class="btn btn-primary btn-sm rounded-0" data-placement="top"
+                                                    title="Detail">
+                                                    <i class="fa fa-search"></i>
                                                 </a>
                                             </li>
                                         @endif
