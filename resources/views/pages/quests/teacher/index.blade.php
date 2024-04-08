@@ -29,46 +29,50 @@
                     </thead>
                     <tbody>
                         @foreach ($listQuestion as $question)
-                            <td>{{ $question->created_at->format('d-m-y, g:i A') }}</td>
-                            <td class="text-truncate">{{ $question->question }}</td>
-                            <td>
-                                <li class="list-inline-item">
-                                    <a class="btn btn-success btn-sm rounded-0" href="{{ route('update-question', $question->id) }}" type="button"
-                                        data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="#" class="btn btn-danger btn-sm rounded-0" data-toggle="modal"
-                                        data-target="#modal-delete-{{ $question->id }}" data-placement="top" title="Delete">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                </li>
-                            </td>
-                            <div class="modal fade" id="modal-delete-{{ $question->id }}">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <form action={{ route('delete-question', $question->id) }} method="POST"
-                                            enctype="multipart/form-data" data-remote="true">
-                                            @csrf
-                                            @method('DELETE')
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Remove Question</h4>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Are you sure want to remove this question?</p>
-                                            </div>
-                                            <div class="modal-footer justify-content-between">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Cancel</button>
-                                                <button type="submit" class="btn btn-primary">Confirm</button>
-                                            </div>
-                                        </form>
+                            <tr>
+                                <td>{{ $question->created_at->format('d-m-y, g:i A') }}</td>
+                                <td class="text-truncate">{{ $question->question }}</td>
+                                <td>
+                                    <li class="list-inline-item">
+                                        <a class="btn btn-success btn-sm rounded-0"
+                                            href="{{ route('update-question', $question->id) }}" type="button"
+                                            data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="#" class="btn btn-danger btn-sm rounded-0" data-toggle="modal"
+                                            data-target="#modal-delete-{{ $question->id }}" data-placement="top"
+                                            title="Delete">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </li>
+                                </td>
+                                <div class="modal fade" id="modal-delete-{{ $question->id }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form action={{ route('delete-question', $question->id) }} method="POST"
+                                                enctype="multipart/form-data" data-remote="true">
+                                                @csrf
+                                                @method('DELETE')
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Remove Question</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure want to remove this question?</p>
+                                                </div>
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary">Confirm</button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>

@@ -18,4 +18,8 @@ class QuestQuestion extends Model
     public function course(){
         return $this->belongsTo(Course::class);
     }
+
+    public function questStudentAnswer(){
+        return $this->hasMany(QuestStudentAnswer::class);
+    }
 }

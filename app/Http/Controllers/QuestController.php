@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\QuestQuestion;
+use App\Models\QuestStudentAnswer;
+use App\Models\Student;
 use App\Models\Teacher;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class QuestController extends Controller
 {
@@ -20,7 +23,68 @@ class QuestController extends Controller
 
     public function studentView()
     {
-        return view('pages.quests.student.index');
+        $answerData = QuestQuestion::with(['questStudentAnswer.student', 'course'])->whereHas('questStudentAnswer.student', function ($q) {
+            $q->where('user_id', Auth::user()->id);
+        })->get();
+        $studentData = Student::where('user_id', '=', Auth::user()->id)->first();
+        $listQuestion = QuestQuestion::with(['questStudentAnswer.student', 'course'])->get();
+        return view('pages.quests.student.index', [
+            'listQuestion' => $listQuestion,
+            'studentData' => $studentData,
+            'answerData' => $answerData,
+        ]);
+    }
+
+    public function doQuest($id)
+    {
+        $student = Student::where('user_id', '=', Auth::user()->id)->first();
+        $question = QuestQuestion::findOrFail($id);
+        $questionAnswer = QuestStudentAnswer::with('questQuestion')->where([['student_id', '=', $student->id], ['quest_question_id', '=', $id]])->first();
+        if($questionAnswer){
+            return back();
+        }
+        return view('pages.quests.student.do-quest', [
+            'question' => $question
+        ]);
+    }
+
+    public function validateQuestAnswer(Request $request, $id)
+    {
+        $validate = Validator::make($request->all(), [
+            'option' => ['required']
+        ]);
+
+        if ($validate->fails()) {
+            $this->message('Please select the answer', 'fail');
+            return back();
+        } else {
+            $question = QuestQuestion::findOrFail($id);
+            $student = Student::where('user_id', '=', Auth::user()->id)->first();
+            $status = '';
+            if ($question->correct_answer === $request->option) {
+                $status = 'Correct';
+            } else {
+                $status = 'Wrong';
+            }
+            QuestStudentAnswer::create([
+                'quest_question_id' => $id,
+                'student_id' => $student->id,
+                'answer' => $request->option,
+                'status' => $status
+            ]);
+            return redirect()->route('quest-answer-result', $id);
+        }
+    }
+
+    public function questResult($id)
+    {
+        $student = Student::where('user_id', '=', Auth::user()->id)->first();
+        $questionAnswer = QuestStudentAnswer::with('questQuestion')->where([['student_id', '=', $student->id], ['quest_question_id', '=', $id]])->first();
+        return view('pages.quests.student.result', [
+            'student' => $student,
+            'questionAnswer' => $questionAnswer,
+            'question' => $questionAnswer->questQuestion
+        ]);
     }
 
     public function teacherView()
