@@ -6,6 +6,7 @@
     --color-primary-xlight: #aab2f9;
     --color-danger: #ff7782;
     --color-success: #41f1b6;
+    --color-success-dark: #07b67c;
     --color-warning: #ffbb55;
     --color-white: #fff;
     --color-info-dark: #7d8da1;
@@ -101,12 +102,14 @@ tbody td,
 }
 
 .bg-danger,
-.btn-danger {
+.btn-danger,
+.alert-danger {
     background-color: var(--color-danger) !important;
 }
 
 .bg-success,
-.btn-success {
+.btn-success,
+.alert-success-dark {
     background-color: var(--color-success) !important;
 }
 

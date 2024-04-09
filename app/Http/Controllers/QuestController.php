@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\QuestQuestion;
+use App\Models\QuestStudentAnswer;
+use App\Models\Student;
 use App\Models\Teacher;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class QuestController extends Controller
 {
@@ -20,7 +23,106 @@ class QuestController extends Controller
 
     public function studentView()
     {
-        return view('pages.quests.student.index');
+        $answerData = QuestQuestion::with(['questStudentAnswer.student', 'course'])->whereHas('questStudentAnswer.student', function ($q) {
+            $q->where('user_id', Auth::user()->id);
+        })->get();
+        $studentData = Student::where('user_id', '=', Auth::user()->id)->first();
+        $listQuestion = QuestQuestion::with(['questStudentAnswer.student', 'course'])->get();
+        return view('pages.quests.student.index', [
+            'listQuestion' => $listQuestion,
+            'studentData' => $studentData,
+            'answerData' => $answerData,
+        ]);
+    }
+
+    public function doQuest($id)
+    {
+        $student = Student::where('user_id', '=', Auth::user()->id)->first();
+        $question = QuestQuestion::findOrFail($id);
+        $questionAnswer = QuestStudentAnswer::with('questQuestion')->where([['student_id', '=', $student->id], ['quest_question_id', '=', $id]])->first();
+        if($questionAnswer){
+            return back();
+        }
+        return view('pages.quests.student.do-quest', [
+            'question' => $question
+        ]);
+    }
+
+    public function checkBadge($student, $level)
+    {
+        $badge = $student->badge_name;
+        if ($level >= 1 && $level <= 50) {
+            $badge = 'bronze';
+        }else if($level >= 51 && $level <= 100) {
+            $badge = 'silver';
+        }else if($level >= 101 && $level <= 150) {
+            $badge = 'gold';
+        }else if($level >= 151 && $level <= 200) {
+            $badge = 'purple';
+        }else if($level >= 200) {
+            $badge = 'emerald';
+        }
+        return $badge;
+    }
+
+    public function updateExpAndLevel($student)
+    {
+        $currentExp = $student->current_exp + 10;
+        $currentLevel = $student->level;
+
+        if($currentExp % 100 === 0) {
+            $currentLevel += 1;
+        }
+
+        $badge = $this->checkBadge($student, $currentLevel);
+
+        $student->update([
+            'current_exp' => $currentExp,
+            'level' => $currentLevel,
+            'badge_name' => $badge,
+        ]);
+    }
+
+    public function validateQuestAnswer(Request $request, $id)
+    {
+        $validate = Validator::make($request->all(), [
+            'option' => ['required']
+        ]);
+
+        if ($validate->fails()) {
+            $this->message('Please select the answer', 'fail');
+            return back();
+        } else {
+            $question = QuestQuestion::findOrFail($id);
+            $student = Student::with('profile')->where('user_id', '=', Auth::user()->id)->first();
+            $status = '';
+            if ($question->correct_answer === $request->option) {
+                $status = 'Correct';
+            } else {
+                $status = 'Wrong';
+            }
+            QuestStudentAnswer::create([
+                'quest_question_id' => $id,
+                'student_id' => $student->id,
+                'answer' => $request->option,
+                'status' => $status
+            ]);
+            if($status === 'Correct') {
+                $this->updateExpAndLevel($student->profile);
+            }
+            return redirect()->route('quest-answer-result', $id);
+        }
+    }
+
+    public function questResult($id)
+    {
+        $student = Student::where('user_id', '=', Auth::user()->id)->first();
+        $questionAnswer = QuestStudentAnswer::with('questQuestion')->where([['student_id', '=', $student->id], ['quest_question_id', '=', $id]])->first();
+        return view('pages.quests.student.result', [
+            'student' => $student,
+            'questionAnswer' => $questionAnswer,
+            'question' => $questionAnswer->questQuestion
+        ]);
     }
 
     public function teacherView()

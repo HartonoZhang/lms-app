@@ -188,7 +188,12 @@ Route::middleware('auth')->group(function () {
 
             Route::post('/task-upload/{id}', [TaskController::class, 'taskUpload'])->name('task-upload');
 
-            Route::get('/quest', [QuestController::class, 'studentView'])->name('student-quest');
+            Route::prefix('quest')->group(function () {
+                Route::get('/', [QuestController::class, 'studentView'])->name('student-quest');
+                Route::get('/{id}', [QuestController::class, 'doQuest'])->name('student-do-quest');
+                Route::get('/{id}/result', [QuestController::class, 'questResult'])->name('quest-answer-result');
+                Route::post('/{id}/result', [QuestController::class, 'validateQuestAnswer'])->name('validate-quest-answer');
+            });
         });
     });
 

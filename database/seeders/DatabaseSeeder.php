@@ -16,22 +16,22 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserRoleSeeder::class,
-            // UserSeeder::class,
-            // ProfileSeeder::class,
-            // AdminSeeder::class,
-            // StudentSeeder::class,
-            // TeacherSeeder::class,
-            // CourseSeeder::class,
-            // PeriodSeeder::class,
-            // ClassroomSeeder::class,
-            // TeacherClassroomSeeder::class,
-            // StudentClassroomSeeder::class,
+            UserSeeder::class,
+            ProfileSeeder::class,
+            AdminSeeder::class,
+            StudentSeeder::class,
+            TeacherSeeder::class,
+            CourseSeeder::class,
+            PeriodSeeder::class,
+            ClassroomSeeder::class,
+            TeacherClassroomSeeder::class,
+            StudentClassroomSeeder::class,
             OrganizationCategorySeeder::class,
-            // OrganizationSeeder::class,
-            // SessionSeeder::class,
+            OrganizationSeeder::class,
+            SessionSeeder::class,
             TaskCategorySeeder::class,
-            // TaskSeeder::class,
-            // TaskUploadSeeder::class
+            TaskSeeder::class,
+            TaskUploadSeeder::class
         ]);
     }
 }
