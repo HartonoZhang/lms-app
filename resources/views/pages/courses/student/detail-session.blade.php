@@ -57,13 +57,36 @@
                                                 <h3>{{ $item->title }}</h3>
                                                 <p class="pb-2 border-bottom" style="font-size: 1.25rem;">
                                                     {{ $item->description }}</p>
-                                                <p>Start Time : {{ $item->start_time->format('g:i A, d-m-y') }}</p>
-                                                <p>End Time : {{ $item->end_time->format('g:i A, d-m-y') }}</p>
-                                                <a href="#" class="btn btn-primary">Join Now</a>
+                                                <div class="row mb-2">
+                                                    <div class="col-md-4">
+                                                        <p class="mb-1 font-weight-bold">Start Time : </p>
+                                                        {{ $item->start_time->format('g:i A, d-m-Y') }}
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <p class="mb-1 font-weight-bold">End Time : </p>
+                                                        {{ $item->end_time->format('g:i A, d-m-Y') }}
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <p class="mb-1 font-weight-bold">Delivery Mode:</p>
+                                                        {{ $item->is_online ? 'Virtual Online' : 'Offline Class' }}
+                                                    </div>
+                                                </div>
+                                                <p class="pt-2 mb-1 border-top font-weight-bold">Zoom/Class</p>
+                                                @if ($item->is_online)
+                                                    <a href="{{ $item->value }}" target="_blank"
+                                                        class="btn btn-primary">Join Now</a>
+                                                @else
+                                                    {{ $item->value }}
+                                                @endif
                                             </div>
                                             <div class="tab-pane fade" id="learningMaterial-{{ $item->id }}">
                                                 @if (count($item->materials) === 0)
-                                                    <p class="text-center">No have materials</p>
+                                                    <div
+                                                        class="d-flex justify-content-center align-items-center flex-column">
+                                                        <img src="{{ asset('assets') }}/images/icons/no-data.png"
+                                                            alt="no-data" height="125" width="125">
+                                                        <p> There are no material yet!</p>
+                                                    </div>
                                                 @else
                                                     @foreach ($item->materials as $material)
                                                         @if ($material->is_file)
@@ -130,7 +153,12 @@
                                                         </a>
                                                     @endforeach
                                                 @else
-                                                    <div class="text-center">There are no forum yet</div>
+                                                    <div
+                                                        class="d-flex justify-content-center align-items-center flex-column">
+                                                        <img src="{{ asset('assets') }}/images/icons/no-data.png"
+                                                            alt="no-data" height="125" width="125">
+                                                        <p> There are no forum yet!</p>
+                                                    </div>
                                                 @endif
                                             </div>
                                         </div>
@@ -140,23 +168,28 @@
                         </div>
                     @endforeach
                 </div>
-                <button class="carousel-control-prev d-lg-flex d-none" type="button" data-target="#carouselExampleCaptions"
-                    data-slide="prev">
+                <button class="carousel-control-prev d-lg-flex d-none" type="button"
+                    data-target="#carouselExampleCaptions" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="sr-only">Previous</span>
                 </button>
-                <button class="carousel-control-next d-lg-flex d-none" type="button" data-target="#carouselExampleCaptions"
-                    data-slide="next">
+                <button class="carousel-control-next d-lg-flex d-none" type="button"
+                    data-target="#carouselExampleCaptions" data-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </button>
             </div>
         @else
             <div class="card card-primary card-outline">
-                <div class="card-header mx-auto">
-                    <h3 class="card-title">There no sessions yet</h3>
+                <div class="card-header">
+                    <div class="d-flex justify-content-center align-items-center flex-column">
+                        <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data">
+                        <p> There are no session yet!</p>
+                    </div>
                 </div>
             </div>
+
+
         @endif
     </div>
 

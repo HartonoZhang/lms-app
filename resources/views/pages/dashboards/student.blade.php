@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="row">
-            <section class="col-md-8 connectedSortable">
+            <section class="col-md-8">
                 <div class="card card-info card-outline">
                     <div class="card-header">
                         <div class="row align-items-center">
@@ -97,15 +97,58 @@
                                 </div>
                             </div>
                         @else
-                            <div class="d-flex justify-content-center align-items-center" style="height: 250px"> 
-                              <p>No data yet</p>
+                            <div class="d-flex justify-content-center align-items-center flex-column" style="height: 270px">
+                                <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data">
+                                <p>No classroom/progress yet</p>
                             </div>
                         @endif
                     </div>
                 </div>
             </section>
-            <section class="col-md-4 connectedSortable">
+            <section class="col-md-4">
+                <div class="card mb-0 card-info card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Upcomming Class</h3>
+                    </div>
+                    @if ($firstSchedule)
+                        <div class="card-body">
+                            <p class="mb-0 text-truncate font-weight-bold" style="font-size: 1.2rem">
+                                {{ $firstSchedule->title }}</p>
+                            <p class="pb-2 border-bottom text-truncate">{{ $firstSchedule->description }}</p>
+                            <div class="row mb-2" style="font-size: 0.90rem">
+                                <div class="col-md-6 mb-2">
+                                    <p class="mb-1 font-weight-bold">Start Time: </p>
+                                    {{ $firstSchedule->start_time->format('g:i A, d-m-Y') }}
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <p class="mb-1 font-weight-bold">End Time: </p>
+                                    {{ $firstSchedule->end_time->format('g:i A, d-m-Y') }}
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <p class="mb-1 font-weight-bold">Delivery Mode:</p>
+                                    {{ $firstSchedule->is_online ? 'Virtual Online' : 'Offline Class' }}
+                                </div>
+                            </div>
+                            <div class="pt-2 border-top" style="font-size: 0.90rem">
+                                <p class="mb-1 font-weight-bold">Zoom/Class</p>
+                                @if ($firstSchedule->is_online)
+                                    <a href="{{ $firstSchedule->value }}" target="_blank" class="btn btn-primary">Join
+                                        Now</a>
+                                @else
+                                    {{ $firstSchedule->value }}
+                                @endif
+                            </div>
 
+                        </div>
+                    @else
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center align-items-center flex-column" style="height: 270px">
+                                <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data">
+                                <p>No upcomming class yet</p>
+                            </div>
+                        </div>
+                    @endif
+                </div>
             </section>
         </div>
     </div>
@@ -115,9 +158,6 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet"
-        href="{{ asset('assets') }}/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 
     <style>
         .select2-container--bootstrap4.select2-container--focus .select2-selection {
@@ -155,8 +195,6 @@
     <script src="{{ asset('assets') }}/plugins/select2/js/select2.full.min.js"></script>
     <!-- ChartJS -->
     <script src="{{ asset('assets') }}/plugins/chart.js/Chart.min.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="{{ asset('assets') }}/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 
     <script>
         function periodChange() {
@@ -168,15 +206,6 @@
         }
 
         $(function() {
-            $('.connectedSortable').sortable({
-                placeholder: 'sort-highlight',
-                connectWith: '.connectedSortable',
-                handle: '.card-header, .nav-tabs',
-                forcePlaceholderSize: true,
-                zIndex: 999999
-            })
-            $('.connectedSortable .card-header').css('cursor', 'move')
-
             $('select').select2({
                 theme: 'bootstrap4',
             });

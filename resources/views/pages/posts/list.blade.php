@@ -58,7 +58,10 @@
                     @endforeach
                     {{ $posts->links() }}
                 @else
-                    There are no post yet!
+                    <div class="d-flex justify-content-center align-items-center flex-column">
+                        <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data">
+                        <p> There are no post yet!</p>
+                    </div>
                 @endif
             </div>
         </div>

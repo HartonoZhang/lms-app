@@ -10,6 +10,7 @@ use App\Models\Profile;
 use App\Models\Student;
 use App\Models\StudentClassroom;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -44,6 +45,27 @@ class StudentController extends Controller
         return $periodClassrooms;
     }
 
+    public function getFistSchedule($listClassroom)
+    {
+        $result = [];
+        if(!$listClassroom){
+            return 0;
+        }
+        $current = Carbon::now()->toDateTimeString();
+        foreach ($listClassroom as $classroom) {
+            foreach ($classroom->sessions as $session) {
+                if($session->start_time > $current){
+                    array_push($result, $session);
+                }
+            }
+        }
+        if(count($result) === 0){
+            return 0;
+        }
+        $sortedDate = collect($result)->sortBy('start_time')->all();
+        return $sortedDate[0];
+    }
+
     public function home(Request $request)
     {
         $student = Student::with('profile', 'user')->where('user_id', '=', Auth::user()->id)->first();
@@ -55,14 +77,15 @@ class StudentController extends Controller
                 return $y->where('student_id', '=', auth()->user()->student[0]->id);
             });
         })->get()->sortByDesc('id')->values();
-
         $periodClassrooms = $this->getPeriodClassroom($request, $periods);
+        $firstSchedule = $this->getFistSchedule($periodClassrooms);
 
         return view('pages.dashboards.student', [
             'myClass' => $myClass,
             'myPost' => $myPost,
             'periodClassrooms' => $periodClassrooms,
-            'periods' => $periods
+            'periods' => $periods,
+            'firstSchedule' => $firstSchedule
         ]);
     }
 
