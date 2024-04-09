@@ -65,18 +65,18 @@ class QuestController extends Controller
         return $badge;
     }
 
-    public function updateExpAndLevel($student)
+    public function updateExpAndLevel($profile)
     {
-        $currentExp = $student->current_exp + 10;
-        $currentLevel = $student->level;
+        $currentExp = $profile->current_exp + 10;
+        $currentLevel = $profile->level;
 
         if($currentExp % 100 === 0) {
             $currentLevel += 1;
         }
 
-        $badge = $this->checkBadge($student, $currentLevel);
+        $badge = $this->checkBadge($profile, $currentLevel);
 
-        $student->update([
+        $profile->update([
             'current_exp' => $currentExp,
             'level' => $currentLevel,
             'badge_name' => $badge,
@@ -175,6 +175,8 @@ class QuestController extends Controller
                 'answer4' => $request->answer4,
                 'correct_answer' => $request->correct_answer
             ]);
+            $teacher = Teacher::with('profile')->where('user_id', '=', Auth::user()->id)->first();
+            $this->updateExpAndLevel($teacher->profile);
 
             return redirect()->route('teacher-quest')->with(['status' => 'success', 'message' => 'Successfully add new question']);
         }

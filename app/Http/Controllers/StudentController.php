@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\Classroom;
+use App\Models\Period;
 use App\Models\Post;
 use App\Models\Profile;
 use App\Models\Student;
+use App\Models\StudentClassroom;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +24,46 @@ class StudentController extends Controller
         Session::flash('message', $msg);
     }
 
-    public function home()
+    public function getPeriodClassroom($request, $periods)
     {
-        return view('pages.dashboards.student');
+        if ($periods->all() == null) {
+            $periodClassrooms = null;
+        } else {
+            if ($request->period != null) {
+                $period_id = $request->period;
+                $request->flash();
+            } else {
+                $period_id = $periods[0]->id;
+            }
+            $periodClassrooms = Classroom::with('sessions', 'period')->where('period_id', (int)$period_id)
+                ->whereHas('studentClassroom', function ($x) {
+                    return $x->where('student_id', auth()->user()->student[0]->id);
+                })
+                ->get();
+        }
+        return $periodClassrooms;
+    }
+
+    public function home(Request $request)
+    {
+        $student = Student::with('profile', 'user')->where('user_id', '=', Auth::user()->id)->first();
+        $myClass = StudentClassroom::where('student_id', '=', $student->id)->get();
+        $myPost = Post::where('user_id', '=', Auth::user()->id)->get();
+
+        $periods = Period::whereHas('classroom', function ($x) {
+            return $x->whereHas('studentClassroom', function ($y) {
+                return $y->where('student_id', '=', auth()->user()->student[0]->id);
+            });
+        })->get()->sortByDesc('id')->values();
+
+        $periodClassrooms = $this->getPeriodClassroom($request, $periods);
+
+        return view('pages.dashboards.student', [
+            'myClass' => $myClass,
+            'myPost' => $myPost,
+            'periodClassrooms' => $periodClassrooms,
+            'periods' => $periods
+        ]);
     }
 
     public function profile($id)
@@ -40,22 +80,22 @@ class StudentController extends Controller
 
     public function leaderboards()
     {
-        $datas = Student::with(['user','profile'])
-                    ->get()
-                    //sort by level descending
-                    ->sortByDesc(function($student){
-                        return $student->profile->level;
-                    })
-                    ->values();
-        $first = array_key_exists(0,$datas->all())? $datas[0] : null;
-        $second = array_key_exists(1,$datas->all())? $datas[1] : null;
-        $third = array_key_exists(2,$datas->all()) ? $datas[2] : null;
+        $datas = Student::with(['user', 'profile'])
+            ->get()
+            //sort by level descending
+            ->sortByDesc(function ($student) {
+                return $student->profile->level;
+            })
+            ->values();
+        $first = array_key_exists(0, $datas->all()) ? $datas[0] : null;
+        $second = array_key_exists(1, $datas->all()) ? $datas[1] : null;
+        $third = array_key_exists(2, $datas->all()) ? $datas[2] : null;
         $isCurrentRole = auth()->user()->role_id == 3 ? true : false;
         return view('pages.leaderboards.student')->with([
-            'first'=> $first,
-            'second'=> $second,
-            'third'=> $third,
-            'datas'=> $datas,
+            'first' => $first,
+            'second' => $second,
+            'third' => $third,
+            'datas' => $datas,
             'isCurrentRole' => $isCurrentRole
         ]);
     }
@@ -151,7 +191,7 @@ class StudentController extends Controller
         ]);
 
         if ($validation) {
-            $profile = Profile::with(['student', 'address'])->whereHas('student', function($q) {
+            $profile = Profile::with(['student', 'address'])->whereHas('student', function ($q) {
                 $q->where('user_id', Auth::user()->id);
             })->first();
             $user = User::findOrFail(Auth::user()->id);
@@ -172,8 +212,8 @@ class StudentController extends Controller
                 'zip' => $request->zip,
                 'country' => $request->country
             ]);
-            
-            if($profile->address === null) {
+
+            if ($profile->address === null) {
                 $address->save();
                 $profile->address()->associate($address);
                 $profile->save();
