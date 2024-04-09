@@ -9,6 +9,7 @@ use App\Models\Post;
 use App\Models\Profile;
 use App\Models\Student;
 use App\Models\StudentClassroom;
+use App\Models\TaskUpload;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -36,13 +37,21 @@ class StudentController extends Controller
             } else {
                 $period_id = $periods[0]->id;
             }
-            $periodClassrooms = Classroom::with('sessions', 'period')->where('period_id', (int)$period_id)
+            $periodClassrooms = Classroom::with('sessions', 'period', 'tasks')->where('period_id', (int)$period_id)
                 ->whereHas('studentClassroom', function ($x) {
                     return $x->where('student_id', auth()->user()->student[0]->id);
                 })
                 ->get();
         }
         return $periodClassrooms;
+    }
+
+    public function myListClassroom() {
+        $classroom = Classroom::with('sessions', 'period', 'tasks')
+        ->whereHas('studentClassroom', function ($x) {
+            return $x->where('student_id', auth()->user()->student[0]->id);
+        })->get();
+        return $classroom;
     }
 
     public function getFistSchedule($listClassroom)
@@ -66,6 +75,17 @@ class StudentController extends Controller
         return $sortedDate[0];
     }
 
+    public function getTotalTask($listClassroom)
+    {
+        $total = 0;
+        foreach ($listClassroom as $classroom) {
+            foreach ($classroom->tasks as $task) {
+                $total += 1;
+            }
+        }
+        return $total;
+    }
+
     public function home(Request $request)
     {
         $student = Student::with('profile', 'user')->where('user_id', '=', Auth::user()->id)->first();
@@ -78,14 +98,20 @@ class StudentController extends Controller
             });
         })->get()->sortByDesc('id')->values();
         $periodClassrooms = $this->getPeriodClassroom($request, $periods);
-        $firstSchedule = $this->getFistSchedule($periodClassrooms);
+
+        $myListClassroom = $this->myListClassroom();
+        $firstSchedule = $this->getFistSchedule($myListClassroom);
+        $totalTask = $this->getTotalTask($myListClassroom);
+        $taskSubmitted = TaskUpload::where('student_id', '=', $student->id)->get();
 
         return view('pages.dashboards.student', [
             'myClass' => $myClass,
             'myPost' => $myPost,
             'periodClassrooms' => $periodClassrooms,
             'periods' => $periods,
-            'firstSchedule' => $firstSchedule
+            'firstSchedule' => $firstSchedule,
+            'totalTask' => $totalTask,
+            'taskSubmitted' => $taskSubmitted
         ]);
     }
 

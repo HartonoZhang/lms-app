@@ -32,8 +32,8 @@
                 <div class="info-box">
                     <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text">Uploads</span>
-                        <span class="info-box-number">13,648</span>
+                        <span class="info-box-text">My Task</span>
+                        <span class="info-box-number">{{ count($taskSubmitted) }} / {{ $totalTask }} </span>
                     </div>
                 </div>
             </div>
