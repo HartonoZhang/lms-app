@@ -74,7 +74,7 @@
                             <div class="d-flex flex-column text-center py-2">
                                 <span style="font-size: 1.2rem;">Your Total Score</span>
                                 <div class="d-flex mx-auto align-items-center">
-                                    <span class="font-weight-bold" style="font-size: 1.5rem;">{{ $result }}</span>
+                                    <span class="font-weight-bold mr-2" style="font-size: 1.5rem;">{{ $result }}</span>
                                     @if ($result === 'N/A')
                                     @elseif ($result >= $classroom->min_score)
                                         <span class="badge badge-success">Passed</span>

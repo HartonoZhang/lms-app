@@ -138,17 +138,17 @@
                                                     <form action="{{ route('task-upload', $task->id) }}" method="POST"
                                                         enctype="multipart/form-data" data-remote="true">
                                                         @csrf
-                                                        <div class="form-group" data-input="title">
+                                                        <div class="form-group">
                                                             <div class="input-group border">
-                                                                <input id="upload" type="file"
-                                                                    class="form-control border"
+                                                                <input id="upload-{{ $task->id }}" type="file"
+                                                                    class="form-control border upload-input"
                                                                     name="file_upload_{{ $task->id }}"
                                                                     onchange="readURL(this, {{ $task->id }})">
                                                                 <label id="upload-file-{{ $task->id }}" for="upload"
                                                                     class="font-weight-light text-muted upload-file">Choose
                                                                     file</label>
                                                                 <div class="input-group-append">
-                                                                    <label for="upload" class="btn btn-primary m-0 px-4">
+                                                                    <label for="upload-{{ $task->id }}" class="btn btn-primary m-0 px-4">
                                                                         <i class="fas fa-upload mr-2"></i>
                                                                         <small
                                                                             class="text-uppercase font-weight-bold">Choose
@@ -194,7 +194,7 @@
             border-radius: var(--border-radius-1);
         }
 
-        #upload {
+        .upload-input {
             opacity: 0;
         }
 
