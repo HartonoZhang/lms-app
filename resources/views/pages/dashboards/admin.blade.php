@@ -19,9 +19,7 @@
                         <span class="info-box-text">Student</span>
                         <span class="info-box-number">{{ count($listStudent) }}</span>
                     </div>
-                    <!-- /.info-box-content -->
                 </div>
-                <!-- /.info-box -->
             </div>
             <!-- /.col -->
             <div class="col-md-3 col-sm-6 col-12">

@@ -102,7 +102,7 @@
             -webkit-transition: none !important;
         }
 
-        .card:hover {
+        .card-primary:hover {
             transform: scale(1.04);
             transition: 0.2s ease-in-out;
         }

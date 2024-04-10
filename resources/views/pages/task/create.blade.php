@@ -88,12 +88,12 @@
                             @enderror
                         </div>
                         <div class="col-sm-6 mb-3">
-                            <div class="form-label-group in-border mb-1">
-                                <label id="upload-file">File name:</label>
+                            <div class="form-group mb-1">
                                 <div class="input-group border">
                                     <input id="upload" type="file" class="form-control border"
                                         onchange="readURL(this)" name="file_upload">
-                                    <label for="upload_edit" class="font-weight-light text-muted upload-file">File*</label>
+                                    <label for="upload" class="font-weight-light text-muted" id="upload-file">File
+                                        name:</label>
                                     <div class="input-group-append">
                                         <label for="upload" class="btn btn-primary m-0 px-4 text-white">
                                             <i class="fas fa-upload mr-2"></i>
@@ -138,7 +138,7 @@
                 opacity: 0;
             }
 
-            .upload-file {
+            #upload-file {
                 position: absolute;
                 top: 50%;
                 left: 1rem;

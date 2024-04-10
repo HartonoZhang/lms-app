@@ -63,7 +63,8 @@
                                                 <div class="d-flex justify-content-end">
                                                     <a href="{{ route('update-session', $item->id) }}"
                                                         class="btn btn-primary mr-2">Update</a>
-                                                    <a data-toggle="modal" data-target="#modal-delete-session-{{ $item->id }}"
+                                                    <a data-toggle="modal"
+                                                        data-target="#modal-delete-session-{{ $item->id }}"
                                                         data-placement="top" title="Delete"
                                                         class="btn btn-danger">Delete</a>
                                                     </a>
@@ -102,13 +103,26 @@
                                                 <h3>{{ $item->title }}</h3>
                                                 <p class="pb-2 border-bottom" style="font-size: 1.25rem;">
                                                     {{ $item->description }}</p>
-                                                <p>Start Time : {{ $item->start_time->format('g:i A, d-m-y') }}</p>
-                                                <p>End Time : {{ $item->end_time->format('g:i A, d-m-y') }}</p>
+                                                <div class="row mb-2">
+                                                    <div class="col-md-4">
+                                                        <p class="mb-1 font-weight-bold">Start Time : </p>
+                                                        {{ $item->start_time->format('g:i A, d-m-Y') }}
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <p class="mb-1 font-weight-bold">End Time : </p>
+                                                        {{ $item->end_time->format('g:i A, d-m-Y') }}
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <p class="mb-1 font-weight-bold">Delivery Mode:</p>
+                                                        {{ $item->is_online ? 'Virtual Online' : 'Offline Class' }}
+                                                    </div>
+                                                </div>
+                                                <p class="pt-2 mb-1 border-top font-weight-bold">Zoom/Class</p>
                                                 @if ($item->is_online)
-                                                    <p>Online Link: <a href="{{$item->value}}">{{$item->value}}</a></p>
-                                                    <a href="{{$item->value}}" class="btn btn-primary">Join Now</a>
+                                                    <a href="{{ $item->value }}" target="_blank"
+                                                        class="btn btn-primary">Join Now</a>
                                                 @else
-                                                    <p>Offline Location: {{$item->value}}</p>
+                                                    {{ $item->value }}
                                                 @endif
                                             </div>
                                             <div class="tab-pane fade" id="learningMaterial-{{ $item->id }}">
@@ -118,9 +132,15 @@
                                                         class="btn btn-primary mb-2">Add Material</button>
                                                 </div>
                                                 @if (count($item->materials) === 0)
-                                                    <p class="text-center">No have materials</p>
+                                                    <div
+                                                        class="d-flex justify-content-center align-items-center flex-column">
+                                                        <img src="{{ asset('assets') }}/images/icons/no-data.png"
+                                                            alt="no-data" height="125" width="125">
+                                                        <p> There are no material yet!</p>
+                                                    </div>
                                                 @else
-                                                    <table id="tabel-materials" class="table table-bordered table-striped">
+                                                    <table id="tabel-materials"
+                                                        class="table table-bordered table-striped">
                                                         <thead>
                                                             <tr>
                                                                 <th>Title</th>
@@ -135,15 +155,19 @@
                                                                         {{ $material->title }}
                                                                     </td>
                                                                     <td>
-                                                                        <p>{{$material->is_file ? 'File' : 'Link'}}</p>
+                                                                        <p>{{ $material->is_file ? 'File' : 'Link' }}</p>
                                                                     </td>
                                                                     <td>
                                                                         <ul class="list-inline m-0">
                                                                             <li class="list-inline-item">
                                                                                 @php
-                                                                                    $file_href = $material->is_file ? asset('assets/material').'/'.$material->value : $material->value; 
+                                                                                    $file_href = $material->is_file
+                                                                                        ? asset('assets/material') .
+                                                                                            '/' .
+                                                                                            $material->value
+                                                                                        : $material->value;
                                                                                 @endphp
-                                                                                <a href={{$file_href}}
+                                                                                <a href={{ $file_href }}
                                                                                     class="btn btn-primary btn-sm rounded-0"
                                                                                     target="blank"
                                                                                     data-placement="top" title="Detail">
@@ -240,14 +264,21 @@
                                                         </a>
                                                     @endforeach
                                                 @else
-                                                    <p class="text-center">There are no forum yet</p>
+                                                    <div
+                                                        class="d-flex justify-content-center align-items-center flex-column">
+                                                        <img src="{{ asset('assets') }}/images/icons/no-data.png"
+                                                            alt="no-data" height="125" width="125">
+                                                        <p> There are no forum yet!</p>
+                                                    </div>
                                                 @endif
                                             </div>
                                             <div class="tab-pane fade" id="attendance-{{ $item->id }}">
-                                                <form class="form-horizontal" action="{{route('save-attendance', ['id' => $classroom->id, 'sessionId' => $item->id])}}" method="POST"
-                                                    enctype="multipart/form-data" data-remote="true">
+                                                <form class="form-horizontal"
+                                                    action="{{ route('save-attendance', ['id' => $classroom->id, 'sessionId' => $item->id]) }}"
+                                                    method="POST" enctype="multipart/form-data" data-remote="true">
                                                     @csrf
-                                                    <input type="text" hidden id="present-list-{{$item->id}}" name="present-list-{{$item->id}}" value="">
+                                                    <input type="text" hidden id="present-list-{{ $item->id }}"
+                                                        name="present-list-{{ $item->id }}" value="">
                                                     <table class="tabel-attendances table table-bordered table-striped">
                                                         <thead>
                                                             <tr>
@@ -277,382 +308,391 @@
                                                                             @endphp
                                                                             @foreach ($item->attendances as $attendance)
                                                                                 @if ($attendance->student_id == $student->student_id)
-                                                                                    <input type="checkbox" name="present[]" data-sessionId="{{$item->id}}"
-                                                                                        class="student-checkbox custom-control-input" value="{{$student->student_id}}"
-                                                                                        id="student-checkbox-{{$item->id}}-{{ $student->student_id }}" @checked($attendance->is_present)/>
+                                                                                    <input type="checkbox"
+                                                                                        name="present[]"
+                                                                                        data-sessionId="{{ $item->id }}"
+                                                                                        class="student-checkbox custom-control-input"
+                                                                                        value="{{ $student->student_id }}"
+                                                                                        id="student-checkbox-{{ $item->id }}-{{ $student->student_id }}"
+                                                                                        @checked($attendance->is_present) />
                                                                                     @php
                                                                                         $foundAttendance = true;
                                                                                     @endphp
-                                                                                    @break
-                                                                                @endif
-                                                                            @endforeach
-                                                                            @if (!$foundAttendance)
-                                                                                <input type="checkbox" name="present[]" data-sessionId="{{$item->id}}"
-                                                                                    class="student-checkbox custom-control-input" value="{{$student->student_id}}"
-                                                                                    id="student-checkbox-{{$item->id}}-{{ $student->student_id }}" />
+                                                                                @break
                                                                             @endif
-                                                                            <label class="custom-control-label"
-                                                                                for="student-checkbox-{{$item->id}}-{{ $student->student_id }}"></label>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                    <div class="d-flex justify-content-end mt-4">
-                                                        <button type="submit" class="btn btn-primary">Save</button>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                                                        @endforeach
+                                                                        @if (!$foundAttendance)
+                                                                            <input type="checkbox" name="present[]"
+                                                                                data-sessionId="{{ $item->id }}"
+                                                                                class="student-checkbox custom-control-input"
+                                                                                value="{{ $student->student_id }}"
+                                                                                id="student-checkbox-{{ $item->id }}-{{ $student->student_id }}" />
+                                                                        @endif
+                                                                        <label class="custom-control-label"
+                                                                            for="student-checkbox-{{ $item->id }}-{{ $student->student_id }}"></label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                                <div class="d-flex justify-content-end mt-4">
+                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                </div>
-                <button class="carousel-control-prev d-lg-flex d-none" type="button"
-                    data-target="#carouselExampleCaptions" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </button>
-                <button class="carousel-control-next d-lg-flex d-none" type="button"
-                    data-target="#carouselExampleCaptions" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </button>
+                    </div>
+                @endforeach
             </div>
-        @else
-            <div class="card card-primary card-outline">
-                <div class="card-header mx-auto">
-                    <h3 class="card-title">There no sessions yet</h3>
-                </div>
-            </div>
-        @endif
-    </div>
-
-    <div class="modal fade" id="add-thread-modal" tabindex="-1" role="dialog" aria-labelledby="add-thread-modal"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Thread</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{{ route('thread-post') }}">
-                        @csrf
-                        <input type="text" class="form-control" name="sessionId" id="threadSessionIdInput"
-                            value="{{ old('sessionId') }}" hidden>
-                        <div class="form-group" data-input="title">
-                            <label for="threadTitle">Title</label>
-                            <input type="text" class="form-control" name="title" id="threadTitle"
-                                placeholder="Thread Title" value="{{ old('title') }}">
-                            @error('title')
-                                <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="form-group" data-input="description">
-                            <label for="threadDescription">Description</label>
-                            <textarea type="text" class="form-control" name="description" id="threadDescription"
-                                placeholder="Thread Description" rows="3">{{ old('description') }}</textarea>
-                            @error('description')
-                                <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <button type="submit" class="btn btn-primary">Post Thread</button>
-                    </form>
+            <button class="carousel-control-prev d-lg-flex d-none" type="button"
+                data-target="#carouselExampleCaptions" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </button>
+            <button class="carousel-control-next d-lg-flex d-none" type="button"
+                data-target="#carouselExampleCaptions" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </button>
+        </div>
+    @else
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <div class="d-flex justify-content-center align-items-center flex-column">
+                    <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data">
+                    <p> There are no session yet!</p>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
+</div>
 
-    <div class="modal fade" id="add-material-modal" tabindex="-1" role="dialog" aria-labelledby="add-thread-modal"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Material</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{{ route('create-material') }}" enctype="multipart/form-data"
-                        data-remote="true">
-                        @csrf
-                        <input type="text" class="form-control" name="material_sessionId" id="materialSessionIdInput"
-                            value="{{ old('material_sessionId') }}" hidden>
-                        <div class="form-group">
-                            <label for="materialTitle">Title</label>
-                            <input type="text" class="form-control" name="material_title" id="materialTitle"
-                                placeholder="Title" value="{{ old('material_title') }}">
-                            @error('material_title')
-                                <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="form-group" id="link_input">
-                            <label for="materialValue">Link URl</label>
-                            <input type="text" class="form-control" name="material_value" id="materialValue"
-                                placeholder="Value" value="{{ old('material_value') }}">
-                            @error('material_value')
-                                <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="form-group" id="file_input">
-                            <label>File</label>
-                            <div class="input-group border">
-                                <input id="upload" type="file" class="form-control border" name="file_upload"
-                                    onchange="readURL(this)">
-                                <label id="upload-file" for="upload"
-                                    class="font-weight-light text-muted upload-file">Choose
-                                    file</label>
-                                <div class="input-group-append">
-                                    <label for="upload" class="btn btn-primary m-0 px-4">
-                                        <i class="fas fa-upload mr-2"></i>
-                                        <small class="text-uppercase font-weight-bold">Choose
-                                            file</small></label>
-                                </div>
+<div class="modal fade" id="add-thread-modal" tabindex="-1" role="dialog" aria-labelledby="add-thread-modal"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Thread</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ route('thread-post') }}">
+                    @csrf
+                    <input type="text" class="form-control" name="sessionId" id="threadSessionIdInput"
+                        value="{{ old('sessionId') }}" hidden>
+                    <div class="form-group" data-input="title">
+                        <label for="threadTitle">Title</label>
+                        <input type="text" class="form-control" name="title" id="threadTitle"
+                            placeholder="Thread Title" value="{{ old('title') }}">
+                        @error('title')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="form-group" data-input="description">
+                        <label for="threadDescription">Description</label>
+                        <textarea type="text" class="form-control" name="description" id="threadDescription"
+                            placeholder="Thread Description" rows="3">{{ old('description') }}</textarea>
+                        @error('description')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post Thread</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="add-material-modal" tabindex="-1" role="dialog" aria-labelledby="add-thread-modal"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Material</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ route('create-material') }}" enctype="multipart/form-data"
+                    data-remote="true">
+                    @csrf
+                    <input type="text" class="form-control" name="material_sessionId" id="materialSessionIdInput"
+                        value="{{ old('material_sessionId') }}" hidden>
+                    <div class="form-group">
+                        <label for="materialTitle">Title</label>
+                        <input type="text" class="form-control" name="material_title" id="materialTitle"
+                            placeholder="Title" value="{{ old('material_title') }}">
+                        @error('material_title')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="form-group" id="link_input">
+                        <label for="materialValue">Link URl</label>
+                        <input type="text" class="form-control" name="material_value" id="materialValue"
+                            placeholder="Value" value="{{ old('material_value') }}">
+                        @error('material_value')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="form-group" id="file_input">
+                        <label>File</label>
+                        <div class="input-group border">
+                            <input id="upload" type="file" class="form-control border" name="file_upload"
+                                onchange="readURL(this)">
+                            <label id="upload-file" for="upload"
+                                class="font-weight-light text-muted upload-file">Choose
+                                file</label>
+                            <div class="input-group-append">
+                                <label for="upload" class="btn btn-primary m-0 px-4">
+                                    <i class="fas fa-upload mr-2"></i>
+                                    <small class="text-uppercase font-weight-bold">Choose
+                                        file</small></label>
                             </div>
-                            @error('file_upload')
-                                <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
                         </div>
-                        <div class="icheck-primary mt-2">
-                            <input type="checkbox" id="checkboxFile" name="is_file"
-                                {{ old('is_file') ? 'checked' : '' }}>
-                            <label for="checkboxFile">
-                                Is File?
-                            </label>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary">Create Material</button>
-                        </div>
-                    </form>
-                </div>
+                        @error('file_upload')
+                            <p class="text-danger mb-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="icheck-primary mt-2">
+                        <input type="checkbox" id="checkboxFile" name="is_file"
+                            {{ old('is_file') ? 'checked' : '' }}>
+                        <label for="checkboxFile">
+                            Is File?
+                        </label>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">Create Material</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 @section('css-link')
-    <!-- Toastr -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/toastr/toastr.min.css">
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-    <!-- iCheck for checkboxes and radio inputs -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+<!-- Toastr -->
+<link rel="stylesheet" href="{{ asset('assets') }}/plugins/toastr/toastr.min.css">
+<link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="{{ asset('assets') }}/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet" href="{{ asset('assets') }}/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 
-    <style>
-        .carousel-inner {
-            padding-bottom: 40px;
-        }
+<style>
+    .carousel-inner {
+        padding-bottom: 40px;
+    }
 
-        .icheck-primary label {
-            font-weight: 400 !important;
-        }
+    .icheck-primary label {
+        font-weight: 400 !important;
+    }
 
-        .carousel-indicators {
-            position: relative;
-        }
+    .carousel-indicators {
+        position: relative;
+    }
 
-        .carousel-control-prev,
-        .carousel-control-next {
-            height: 40px;
-            width: 40px;
-            outline: var(--color-primary);
-            border-radius: 50%;
-            top: 55%;
-            border: 1px solid var(--color-primary);
-            background-color: var(--color-primary);
-            transform: translate(0, -50%);
-        }
+    .carousel-control-prev,
+    .carousel-control-next {
+        height: 40px;
+        width: 40px;
+        outline: var(--color-primary);
+        border-radius: 50%;
+        top: 55%;
+        border: 1px solid var(--color-primary);
+        background-color: var(--color-primary);
+        transform: translate(0, -50%);
+    }
 
-        .carousel .carousel-indicators li,
-        .carousel .carousel-indicators li.active {
-            background-color: var(--color-primary);
-        }
+    .carousel .carousel-indicators li,
+    .carousel .carousel-indicators li.active {
+        background-color: var(--color-primary);
+    }
 
-        #upload_edit,
-        #upload {
-            opacity: 0;
-        }
+    #upload_edit,
+    #upload {
+        opacity: 0;
+    }
 
-        .upload-file-edit,
-        .upload-file {
-            position: absolute;
-            top: 50%;
-            left: 1rem;
-            transform: translateY(-50%);
-        }
+    .upload-file-edit,
+    .upload-file {
+        position: absolute;
+        top: 50%;
+        left: 1rem;
+        transform: translateY(-50%);
+    }
 
-        .table {
-            table-layout: fixed;
-        }
+    .table {
+        table-layout: fixed;
+    }
 
-        .carousel-indicators li {
-            border-radius: 50%;
-            width: 27px;
-            height: 27px;
-            text-indent: -1px;
-            color: white;
-            text-align: center;
-        }
+    .carousel-indicators li {
+        border-radius: 50%;
+        width: 27px;
+        height: 27px;
+        text-indent: -1px;
+        color: white;
+        text-align: center;
+    }
 
-        .attendance-name{
-            width: 90%;
-        }
+    .attendance-name {
+        width: 90%;
+    }
 
-        .attendance-input{
-            width: 10%;
-        }
+    .attendance-input {
+        width: 10%;
+    }
 
-        .student-attendance .custom-control-label{
-            cursor: pointer;
-        }
-    </style>
+    .student-attendance .custom-control-label {
+        cursor: pointer;
+    }
+</style>
 @endsection
 
 @section('js-script')
-    <!-- Toastr -->
-    <script src="{{ asset('assets') }}/plugins/toastr/toastr.min.js"></script>
-    <!-- DataTables  & Plugins -->
-    <script src="{{ asset('assets') }}/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/jszip/jszip.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- Toastr -->
+<script src="{{ asset('assets') }}/plugins/toastr/toastr.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="{{ asset('assets') }}/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="{{ asset('assets') }}/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="{{ asset('assets') }}/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="{{ asset('assets') }}/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="{{ asset('assets') }}/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="{{ asset('assets') }}/plugins/jszip/jszip.min.js"></script>
+<script src="{{ asset('assets') }}/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="{{ asset('assets') }}/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="{{ asset('assets') }}/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
-    <script type="text/javascript">
-        var presentCheckboxes = {};
+<script type="text/javascript">
+    var presentCheckboxes = {};
 
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var fileName = input.files[0].name;
-                var infoArea = document.getElementById('upload-file');
-                infoArea.textContent = 'File name: ' + fileName;
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var fileName = input.files[0].name;
+            var infoArea = document.getElementById('upload-file');
+            infoArea.textContent = 'File name: ' + fileName;
+        }
+    }
+
+    function changeAttendanceList(input) {
+        let sessionId = parseInt($(input).data("sessionid"));
+        let studentId = parseInt($(input).val());
+        let isPresent = $(input).prop('checked');
+        if (isPresent) {
+            if (presentCheckboxes[sessionId] && !presentCheckboxes[sessionId].includes(studentId)) {
+                presentCheckboxes[sessionId].push(studentId)
+            }
+        } else {
+            if (presentCheckboxes[sessionId] && presentCheckboxes[sessionId].includes(studentId)) {
+                let index = presentCheckboxes[sessionId].indexOf(studentId);
+                if (index > -1) {
+                    presentCheckboxes[sessionId].splice(index, 1);
+                }
             }
         }
+        $(`#present-list-${sessionId}`).val(presentCheckboxes[sessionId]);
+        console.log($(`#present-list-${sessionId}`).val())
+    }
 
-        function changeAttendanceList(input){
-            let sessionId = parseInt($(input).data("sessionid"));
-            let studentId = parseInt($(input).val());
-            let isPresent = $(input).prop('checked');
-            if (isPresent) {
-                if (presentCheckboxes[sessionId] && !presentCheckboxes[sessionId].includes(studentId)) {
-                    presentCheckboxes[sessionId].push(studentId)
-                }
-            } else {
-                if (presentCheckboxes[sessionId] && presentCheckboxes[sessionId].includes(studentId)) {
-                    let index = presentCheckboxes[sessionId].indexOf(studentId);
-                    if (index > -1) {
-                        presentCheckboxes[sessionId].splice(index, 1);
-                    }
-                }
+    $(document).ready(function() {
+        $(".tabel-attendances").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "columnDefs": [{
+                orderable: false,
+                targets: 1
+            }],
+            drawCallback: function() {
+                // $('.student-attendance').off('click').on('click', function(e) {
+                //     e.stopPropagation();
+                //     let element = $(this);
+                //     console.log('as')
+                //     element.find('.custom-checkbox .student-checkbox').prop('checked', function(i, checked) {
+                //         element.find('.custom-checkbox .hidden-student-checkbox').prop('disabled', !checked);
+                //         element.find('.custom-checkbox .student-checkbox').change();
+                //         return !checked;
+                //     });
+                // });
+
+                $('.student-checkbox').off('change').on('change', function(e) {
+                    changeAttendanceList(this);
+                });
             }
-            $(`#present-list-${sessionId}`).val(presentCheckboxes[sessionId]);
-            console.log($(`#present-list-${sessionId}`).val())
+        }).buttons().container().appendTo('.tabel-attendances_wrapper .col-md-6:eq(0)');
+
+        $('#carouselExampleCaptions').on('slid.bs.carousel', function(e) {
+            var ele = $('#carouselExampleCaptions .carousel-indicators li.active');
+            var $sessions = $('#sessionText');
+            $sessions.text(`Session ${ele.data('slideTo') + 1}`);
+        })
+
+        $('*[data-target="#add-thread-modal"]').click(function() {
+            var sessionId = $(this).attr('data-sessionId');
+            $("#threadSessionIdInput").val(sessionId);
+        });
+
+        $('*[data-target="#add-material-modal"]').click(function() {
+            var sessionId = $(this).attr('data-sessionId');
+            $("#materialSessionIdInput").val(sessionId);
+        });
+
+        if ($('#checkboxFile').is(':checked') == true) {
+            $('#link_input').hide();
+            $('#file_input').show();
+        } else {
+            $('#link_input').show();
+            $('#file_input').hide();
         }
 
-        $(document).ready(function() {
-            $(".tabel-attendances").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-                "columnDefs": [{
-                    orderable: false,
-                    targets: 1
-                }],
-                drawCallback: function(){
-                    // $('.student-attendance').off('click').on('click', function(e) {
-                    //     e.stopPropagation();
-                    //     let element = $(this);
-                    //     console.log('as')
-                    //     element.find('.custom-checkbox .student-checkbox').prop('checked', function(i, checked) {
-                    //         element.find('.custom-checkbox .hidden-student-checkbox').prop('disabled', !checked);
-                    //         element.find('.custom-checkbox .student-checkbox').change();
-                    //         return !checked;
-                    //     });
-                    // });
-
-                    $('.student-checkbox').off('change').on('change', function(e) {
-                        changeAttendanceList(this);
-                    });
-                }
-            }).buttons().container().appendTo('.tabel-attendances_wrapper .col-md-6:eq(0)');
-
-            $('#carouselExampleCaptions').on('slid.bs.carousel', function(e) {
-                var ele = $('#carouselExampleCaptions .carousel-indicators li.active');
-                var $sessions = $('#sessionText');
-                $sessions.text(`Session ${ele.data('slideTo') + 1}`);
-            })
-
-            $('*[data-target="#add-thread-modal"]').click(function() {
-                var sessionId = $(this).attr('data-sessionId');
-                $("#threadSessionIdInput").val(sessionId);
-            });
-
-            $('*[data-target="#add-material-modal"]').click(function() {
-                var sessionId = $(this).attr('data-sessionId');
-                $("#materialSessionIdInput").val(sessionId);
-            });
-
-            if ($('#checkboxFile').is(':checked') == true) {
+        $('#checkboxFile').click(function() {
+            if ($(this).prop('checked')) {
                 $('#link_input').hide();
                 $('#file_input').show();
             } else {
                 $('#link_input').show();
                 $('#file_input').hide();
             }
+        });
 
-            $('#checkboxFile').click(function() {
-                if ($(this).prop('checked')) {
-                    $('#link_input').hide();
-                    $('#file_input').show();
-                } else {
-                    $('#link_input').show();
-                    $('#file_input').hide();
-                }
-            });
-
-            //init attendance list
-            @foreach ($sessions as $session)
-                presentCheckboxes[{{$session->id}}] = [];
-                @foreach ($session->attendances as $attendance)
-                    @if ($attendance->is_present)
-                        presentCheckboxes[{{$session->id}}].push({{$attendance->student_id}});
-                    @endif
-                @endforeach
-                $(`#present-list-{{$session->id}}`).val(presentCheckboxes[{{$session->id}}]);
+        //init attendance list
+        @foreach ($sessions as $session)
+            presentCheckboxes[{{ $session->id }}] = [];
+            @foreach ($session->attendances as $attendance)
+                @if ($attendance->is_present)
+                    presentCheckboxes[{{ $session->id }}].push({{ $attendance->student_id }});
+                @endif
             @endforeach
+            $(`#present-list-{{ $session->id }}`).val(presentCheckboxes[{{ $session->id }}]);
+        @endforeach
 
-            @if ($errors->any())
-                @if (Session::has('failPostThread'))
-                    $('#add-thread-modal').modal('show');
-                @endif
-
-                @if (Session::has('failCreateMaterial'))
-                    $('#add-material-modal').modal('show');
-                @endif
+        @if ($errors->any())
+            @if (Session::has('failPostThread'))
+                $('#add-thread-modal').modal('show');
             @endif
 
-            @if (Session::has('status'))
-                @if (Session::get('status') === 'success')
-                    toastr.success('{{ Session::get('message') }}')
-                @elseif (Session::get('status') === 'fail')
-                    toastr.error('{{ Session::get('message') }}')
-                @endif
+            @if (Session::has('failCreateMaterial'))
+                $('#add-material-modal').modal('show');
             @endif
-        })
-    </script>
+        @endif
+
+        @if (Session::has('status'))
+            @if (Session::get('status') === 'success')
+                toastr.success('{{ Session::get('message') }}')
+            @elseif (Session::get('status') === 'fail')
+                toastr.error('{{ Session::get('message') }}')
+            @endif
+        @endif
+    })
+</script>
 @endsection
