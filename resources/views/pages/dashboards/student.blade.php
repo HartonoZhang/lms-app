@@ -1,6 +1,8 @@
 @extends('layouts.template')
 
-@section('title', 'Welcome to The Dashboard, Student!')
+@section('title')
+    Welcome to The {{ $organization->name }}, {{ Auth::user()->name }}!
+@endsection
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('student-dashboard') }}">Home</a></li>
@@ -39,10 +41,10 @@
             </div>
             <div class="col-md-3 col-sm-6 col-12">
                 <div class="info-box">
-                    <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
+                    <span class="info-box-icon bg-danger"><i class="fas fa-exclamation-circle"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text">Likes</span>
-                        <span class="info-box-number">93,139</span>
+                        <span class="info-box-text">Answer Quest</span>
+                        <span class="info-box-number">{{ count($questAnswered) }} / {{ count($totalQuest) }}</span>
                     </div>
                 </div>
             </div>
@@ -97,7 +99,7 @@
                                 </div>
                             </div>
                         @else
-                            <div class="d-flex justify-content-center align-items-center flex-column" style="height: 270px">
+                            <div class="d-flex justify-content-center align-items-center flex-column" style="height: 250px">
                                 <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data">
                                 <p>No classroom/progress yet</p>
                             </div>

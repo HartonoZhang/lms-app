@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\Classroom;
+use App\Models\Organization;
 use App\Models\Period;
 use App\Models\Post;
 use App\Models\Profile;
+use App\Models\QuestQuestion;
+use App\Models\QuestStudentAnswer;
 use App\Models\Student;
 use App\Models\StudentClassroom;
 use App\Models\TaskUpload;
@@ -91,6 +94,7 @@ class StudentController extends Controller
         $student = Student::with('profile', 'user')->where('user_id', '=', Auth::user()->id)->first();
         $myClass = StudentClassroom::where('student_id', '=', $student->id)->get();
         $myPost = Post::where('user_id', '=', Auth::user()->id)->get();
+        $organization = Organization::first();
 
         $periods = Period::whereHas('classroom', function ($x) {
             return $x->whereHas('studentClassroom', function ($y) {
@@ -105,7 +109,12 @@ class StudentController extends Controller
         $taskSubmitted = TaskUpload::where('student_id', '=', $student->id)->get();
         $listPost = Post::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
 
+        
+        $questAnswered = QuestStudentAnswer::where('student_id', '=', $student->id)->get();
+        $totalQuest = QuestQuestion::all();
+
         return view('pages.dashboards.student', [
+            'organization' => $organization,
             'myClass' => $myClass,
             'myPost' => $myPost,
             'periodClassrooms' => $periodClassrooms,
@@ -113,7 +122,9 @@ class StudentController extends Controller
             'firstSchedule' => $firstSchedule,
             'totalTask' => $totalTask,
             'taskSubmitted' => $taskSubmitted,
-            'listPost' => $listPost
+            'listPost' => $listPost,
+            'totalQuest' => $totalQuest,
+            'questAnswered' => $questAnswered,
         ]);
     }
 
