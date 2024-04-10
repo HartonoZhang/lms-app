@@ -151,6 +151,56 @@
                 </div>
             </section>
         </div>
+        <div class="row">
+            <section class="col-md-4">
+                <div class="card card-secondary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Recently Post</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="products-list product-list-in-card pl-2 pr-2">
+                            @if (count($listPost))
+                                @foreach ($listPost as $item)
+                                    <li class="item">
+                                        <a href="{{ route('post-detail', $item->id) }}">
+                                            <div class="product-img">
+                                                <img src="{{ asset('assets') }}/images/profile/{{ $item->user->image }}"
+                                                    alt="Product Image" class="img-size-50">
+                                            </div>
+                                            <div class="product-info">
+                                                <span class="product-title">{{ $item->title }}
+                                                </span>
+                                                <span class="product-description">
+                                                    {{ $item->description }}
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            @else
+                                <li class="d-flex justify-content-center align-items-center flex-column py-4">
+                                    <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data"
+                                        width="150" height="150">
+                                    There are no post yet!
+                                </li>
+                            @endif
+                        </ul>
+                    </div>
+                    @if (count($listPost))
+                        <div class="card-footer text-center">
+                            <a href="{{ route('post-list') }}" class="uppercase">View All Post</a>
+                        </div>
+                    @endif
+                </div>
+            </section>
+            <section class="col-md-8">
+                <div class="card card-secondary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Man</h3>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
 @endsection
 
@@ -259,18 +309,21 @@
                         ticks: {
                             min: 0,
                             max: 100,
-                            stepSize: 20
-                        }
-                    }],
-                    yAxes: [{
-                        display: true,
-                        stacked: true,
-                        ticks: {
-                            min: 0,
-                            max: 100,
-                            stepSize: 20
+                            stepSize: 20,
+                            callback: function(value, index) {
+                                return value + '%'
+                            }
                         }
                     }]
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                            var value = tooltipItem.xLabel.toString();
+                            return `${label}: ${value}%`;
+                        }
+                    }
                 }
             }
 

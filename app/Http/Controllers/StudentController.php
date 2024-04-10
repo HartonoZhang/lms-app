@@ -103,6 +103,7 @@ class StudentController extends Controller
         $firstSchedule = $this->getFistSchedule($myListClassroom);
         $totalTask = $this->getTotalTask($myListClassroom);
         $taskSubmitted = TaskUpload::where('student_id', '=', $student->id)->get();
+        $listPost = Post::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
 
         return view('pages.dashboards.student', [
             'myClass' => $myClass,
@@ -111,7 +112,8 @@ class StudentController extends Controller
             'periods' => $periods,
             'firstSchedule' => $firstSchedule,
             'totalTask' => $totalTask,
-            'taskSubmitted' => $taskSubmitted
+            'taskSubmitted' => $taskSubmitted,
+            'listPost' => $listPost
         ]);
     }
 

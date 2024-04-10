@@ -40,6 +40,7 @@ class AdminController extends Controller
         $totalPostToday = Post::whereDate('created_at', Carbon::today())->get();
         $totalReport = PostReport::all();
         $totalReportToday = PostReport::whereDate('created_at', Carbon::today())->get();
+        $newClassThisMonth = Classroom::whereMonth('created_at', Carbon::now()->month)->get();
         $newCourseThisMonth = Course::whereMonth('created_at', Carbon::now()->month)->get();
         $newStudentThisMonth = Student::whereMonth('created_at', Carbon::now()->month)->get();
         $newTeacherThisMonth = Teacher::whereMonth('created_at', Carbon::now()->month)->get();
@@ -85,6 +86,7 @@ class AdminController extends Controller
             'totalPostToday' => $totalPostToday,
             'totalReport' => $totalReport,
             'totalReportToday' => $totalReportToday,
+            'newClassThisMonth' => $newClassThisMonth,
             'newCourseThisMonth' => $newCourseThisMonth,
             'newStudentThisMonth' => $newStudentThisMonth,
             'newTeacherThisMonth' => $newTeacherThisMonth,
