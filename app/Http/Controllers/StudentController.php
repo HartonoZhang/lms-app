@@ -89,6 +89,18 @@ class StudentController extends Controller
         return $total;
     }
 
+    public function getLastedTask($listClassroom)
+    {
+        $result = [];
+        foreach ($listClassroom as $classroom) {
+            foreach ($classroom->tasks as $task) {
+                array_push($result, $task);
+            }
+        }
+        $sortedDate = collect($result)->sortByDesc('created_at')->take(5);
+        return $sortedDate;
+    }
+
     public function home(Request $request)
     {
         $student = Student::with('profile', 'user')->where('user_id', '=', Auth::user()->id)->first();
@@ -109,11 +121,14 @@ class StudentController extends Controller
         $taskSubmitted = TaskUpload::where('student_id', '=', $student->id)->get();
         $listPost = Post::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
 
-        
+        $lastedTask = $this->getLastedTask($myListClassroom);
+        $lastedQuestion = QuestQuestion::with('course', 'teacher')->orderBy('created_at', 'DESC')->take(4)->get();
+
         $questAnswered = QuestStudentAnswer::where('student_id', '=', $student->id)->get();
         $totalQuest = QuestQuestion::all();
 
         return view('pages.dashboards.student', [
+            'student' => $student,
             'organization' => $organization,
             'myClass' => $myClass,
             'myPost' => $myPost,
@@ -125,6 +140,8 @@ class StudentController extends Controller
             'listPost' => $listPost,
             'totalQuest' => $totalQuest,
             'questAnswered' => $questAnswered,
+            'lastedTask' => $lastedTask,
+            'lastedQuestion' => $lastedQuestion
         ]);
     }
 

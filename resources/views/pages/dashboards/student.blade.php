@@ -169,7 +169,7 @@
                                                 <img src="{{ asset('assets') }}/images/profile/{{ $item->user->image }}"
                                                     alt="Product Image" class="img-size-50">
                                             </div>
-                                            <div class="product-info">
+                                            <div class="product-info text-truncate" style="font-size: 0.9rem;">
                                                 <span class="product-title">{{ $item->title }}
                                                 </span>
                                                 <span class="product-description">
@@ -195,10 +195,127 @@
                     @endif
                 </div>
             </section>
-            <section class="col-md-8">
+            <section class="col-md-4">
                 <div class="card card-secondary card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">Man</h3>
+                        <h3 class="card-title">Latest Question</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="products-list product-list-in-card pl-2 pr-2">
+                            @if (count($lastedQuestion))
+                                @foreach ($lastedQuestion as $question)
+                                    @php
+                                        $check = false;
+                                        foreach ($question->questStudentAnswer as $upload) {
+                                            if ($upload->student_id === $student->id) {
+                                                $check = true;
+                                                break;
+                                            }
+                                        }
+                                    @endphp
+                                    @if ($check)
+                                        <li class="item">
+                                            <a href="{{ route('quest-answer-result', $question->id) }}">
+                                                <div class="product-info text-truncate ml-2" style="font-size: 0.9rem;">
+                                                    <span class="product-title">Course: {{ $question->course->name }}
+                                                    </span>
+                                                    <span class="badge badge-success float-right">
+                                                        Done
+                                                    </span>
+                                                    <span class="product-description">
+                                                        {{ $question->question }}
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    @else
+                                        <li class="item">
+                                            <a href="{{ route('student-do-quest', $question->id) }}">
+                                                <div class="product-info text-truncate ml-2" style="font-size: 0.9rem;">
+                                                    <span class="product-title">Course: {{ $question->course->name }}
+                                                    </span>
+                                                    <span class="badge badge-info float-right">
+                                                        Not Yet
+                                                    </span>
+                                                    <span class="product-description">
+                                                        {{ $question->question }}
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            @else
+                                <li class="d-flex justify-content-center align-items-center flex-column py-4">
+                                    <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data"
+                                        width="150" height="150">
+                                    There are no question yet!
+                                </li>
+                            @endif
+                        </ul>
+                    </div>
+                    @if (count($lastedQuestion))
+                        <div class="card-footer text-center">
+                            <a href="{{ route('student-quest') }}" class="uppercase">View All Question</a>
+                        </div>
+                    @endif
+                </div>
+            </section>
+            <section class="col-md-4">
+                <div class="card card-secondary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">Five Latest Task</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="products-list product-list-in-card pl-2 pr-2">
+                            @if (count($lastedTask))
+                                @foreach ($lastedTask as $task)
+                                    <li class="item">
+                                        <a href="{{ route('student-course-detail-assignment', $task->classroom->id) }}">
+                                            <div class="product-info text-truncate ml-2" style="font-size: 0.9rem;">
+                                                <span class="product-title">{{ $task->title }} -
+                                                    {{ $task->classroom->course->name }}
+                                                </span>
+
+                                                @if ($task->uploads)
+                                                    @php
+                                                        $check = false;
+                                                        foreach ($task->uploads as $upload) {
+                                                            if ($upload->student_id === $student->id) {
+                                                                $check = true;
+                                                                break;
+                                                            }
+                                                        }
+                                                    @endphp
+                                                    @if ($check)
+                                                        <span class="badge badge-success float-right">
+                                                            Submitted
+                                                        </span>
+                                                    @else
+                                                        <span class="badge badge-info float-right">
+                                                            Not Submitted
+                                                        </span>
+                                                    @endif
+                                                @else
+                                                    <span class="badge badge-info float-right">
+                                                        Not Submitted
+                                                    </span>
+                                                @endif
+                                                <span class="product-description">
+                                                    {{ $task->description }}
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            @else
+                                <li class="d-flex justify-content-center align-items-center flex-column py-4">
+                                    <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data"
+                                        width="150" height="150">
+                                    There are no task yet!
+                                </li>
+                            @endif
+                        </ul>
                     </div>
                 </div>
             </section>
