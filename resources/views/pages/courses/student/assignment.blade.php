@@ -96,7 +96,7 @@
                                                             data-toggle="modal"
                                                             data-target="#submit-assigment-{{ $task->id }}"
                                                             data-placement="top">
-                                                            <i class="fas fa-search"></i>
+                                                            <i class="fas fa-upload"></i>
                                                         </a>
                                                     </li>
                                                 @endif
