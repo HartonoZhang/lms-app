@@ -23,6 +23,7 @@
                     <thead>
                         <tr>
                             <th>Created Date</th>
+                            <th>Course</th>
                             <th>Question</th>
                             <th>Action</th>
                         </tr>
@@ -31,6 +32,7 @@
                         @foreach ($listQuestion as $question)
                             <tr>
                                 <td>{{ $question->created_at->format('d-m-y, g:i A') }}</td>
+                                <td>{{$question->course->code == null ? "" : $question->course->code." - "}}{{$question->course->name}}</td>
                                 <td class="text-truncate">{{ $question->question }}</td>
                                 <td>
                                     <li class="list-inline-item">

@@ -169,6 +169,7 @@
                                                                                 @endphp
                                                                                 <a href={{ $file_href }}
                                                                                     class="btn btn-primary btn-sm rounded-0"
+                                                                                    target="blank"
                                                                                     data-placement="top" title="Detail">
                                                                                     <i class="fa fa-search"></i>
                                                                                 </a>
