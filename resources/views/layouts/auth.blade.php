@@ -49,9 +49,9 @@
                 <div class="col col-xl-10">
                     <div class="card" style="border-radius: 1rem;">
                         <div class="row g-0">
-                            <div class="col-md-6 col-lg-5 d-none d-md-block">
-                                <img src="{{ asset('assets') }}/img/login.png" alt="login form" class="img-fluid"
-                                    style="border-radius: 1rem 0 0 1rem;" />
+                            <div class="col-md-6 col-lg-5 d-none d-md-block" style="align-content: center">
+                                <img src="{{ asset('assets') }}/images/login/{{ $role }}.png" alt="login-role"
+                                    class="img-fluid" />
                             </div>
                             <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                 <div class="card-body p-4 p-lg-5 text-black">
@@ -59,7 +59,8 @@
                                         enctype="multipart/form-data">
                                         @csrf
                                         <div class="d-flex align-items-center mb-3 pb-1">
-                                            <img src="{{ asset('assets') }}/images/organization/{{ $organization->logo }}" alt="Logo" width="40" height="40">
+                                            <img src="{{ asset('assets') }}/images/organization/{{ $organization->logo }}"
+                                                alt="Logo" width="40" height="40">
                                             <span class="h3 fw-bold mb-0">{{ $organization->web_name }}</span>
                                         </div>
                                         <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">
