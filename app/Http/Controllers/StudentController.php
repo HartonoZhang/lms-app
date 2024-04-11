@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\Classroom;
+use App\Models\Organization;
 use App\Models\Period;
 use App\Models\Post;
 use App\Models\Profile;
+use App\Models\QuestQuestion;
+use App\Models\QuestStudentAnswer;
 use App\Models\Student;
 use App\Models\StudentClassroom;
 use App\Models\TaskUpload;
@@ -86,11 +89,24 @@ class StudentController extends Controller
         return $total;
     }
 
+    public function getLastedTask($listClassroom)
+    {
+        $result = [];
+        foreach ($listClassroom as $classroom) {
+            foreach ($classroom->tasks as $task) {
+                array_push($result, $task);
+            }
+        }
+        $sortedDate = collect($result)->sortByDesc('created_at')->take(5);
+        return $sortedDate;
+    }
+
     public function home(Request $request)
     {
         $student = Student::with('profile', 'user')->where('user_id', '=', Auth::user()->id)->first();
         $myClass = StudentClassroom::where('student_id', '=', $student->id)->get();
         $myPost = Post::where('user_id', '=', Auth::user()->id)->get();
+        $organization = Organization::first();
 
         $periods = Period::whereHas('classroom', function ($x) {
             return $x->whereHas('studentClassroom', function ($y) {
@@ -103,15 +119,29 @@ class StudentController extends Controller
         $firstSchedule = $this->getFistSchedule($myListClassroom);
         $totalTask = $this->getTotalTask($myListClassroom);
         $taskSubmitted = TaskUpload::where('student_id', '=', $student->id)->get();
+        $listPost = Post::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
+
+        $lastedTask = $this->getLastedTask($myListClassroom);
+        $lastedQuestion = QuestQuestion::with('course', 'teacher')->orderBy('created_at', 'DESC')->take(4)->get();
+
+        $questAnswered = QuestStudentAnswer::where('student_id', '=', $student->id)->get();
+        $totalQuest = QuestQuestion::all();
 
         return view('pages.dashboards.student', [
+            'student' => $student,
+            'organization' => $organization,
             'myClass' => $myClass,
             'myPost' => $myPost,
             'periodClassrooms' => $periodClassrooms,
             'periods' => $periods,
             'firstSchedule' => $firstSchedule,
             'totalTask' => $totalTask,
-            'taskSubmitted' => $taskSubmitted
+            'taskSubmitted' => $taskSubmitted,
+            'listPost' => $listPost,
+            'totalQuest' => $totalQuest,
+            'questAnswered' => $questAnswered,
+            'lastedTask' => $lastedTask,
+            'lastedQuestion' => $lastedQuestion
         ]);
     }
 

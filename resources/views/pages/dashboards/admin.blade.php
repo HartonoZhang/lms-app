@@ -63,26 +63,33 @@
             <!-- /.col -->
         </div>
         <div class="row">
-            <section class="col-md-8 connectedSortable">
+            <section class="col-md-8">
                 <div class="card card-info card-outline" style="height: 368px">
                     <div class="card-header">
                         <h3 class="card-title">Student Statistics</h3>
                     </div>
                     <div class="card-body">
-                        <div class="chart">
-                            <canvas id="studentData"
-                                style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                        </div>
+                        @if (count($studentChartByYear))
+                            <div class="chart">
+                                <canvas id="studentData"
+                                    style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        @else
+                            <div class="d-flex justify-content-center align-items-center flex-column" style="height: 250px">
+                                <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data">
+                                <p>No student data yet!</p>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </section>
-            <section class="col-md-4 connectedSortable">
+            <section class="col-md-4">
                 <div class="info-box mb-3 bg-warning">
                     <span class="info-box-icon"><i class="fas fa-chalkboard"></i></span>
 
                     <div class="info-box-content">
-                        <span class="info-box-text">Class Today</span>
-                        <span class="info-box-number">5,200</span>
+                        <span class="info-box-text">New Class This Month</span>
+                        <span class="info-box-number">{{ count($newClassThisMonth) }}</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -145,20 +152,28 @@
             </div>
         </div>
         <div class="row">
-            <section class="col-md-8 connectedSortable">
+            <section class="col-md-8">
                 <div class="card card-success card-outline">
                     <div class="card-header">
                         <h3 class="card-title">Teacher Statistics</h3>
                     </div>
                     <div class="card-body">
-                        <div class="chart">
-                            <canvas id="teacherData"
-                                style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                        </div>
+                        @if (count($teacherChartByYear))
+                            <div class="chart">
+                                <canvas id="teacherData"
+                                    style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        @else
+                            <div class="d-flex justify-content-center align-items-center flex-column"
+                                style="height: 250px">
+                                <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data">
+                                <p>No teacher data yet!</p>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </section>
-            <section class="col-md-4 connectedSortable">
+            <section class="col-md-4">
                 <div class="card card-secondary card-outline">
                     <div class="card-header">
                         <h3 class="card-title">Recently Post</h3>
@@ -183,15 +198,19 @@
                                     </li>
                                 @endforeach
                             @else
-                                <li class="item text-center">
+                                <li class="d-flex justify-content-center align-items-center flex-column py-4">
+                                    <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data"
+                                        width="150" height="150">
                                     There are no post yet!
                                 </li>
                             @endif
                         </ul>
                     </div>
-                    <div class="card-footer text-center">
-                        <a href="{{ route('post-list') }}" class="uppercase">View All Post</a>
-                    </div>
+                    @if (count($listPost))
+                        <div class="card-footer text-center">
+                            <a href="{{ route('post-list') }}" class="uppercase">View All Post</a>
+                        </div>
+                    @endif
                 </div>
             </section>
         </div>
@@ -199,27 +218,14 @@
 @endsection
 
 @section('css-link')
-    <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet"
-        href="{{ asset('assets') }}/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 @endsection
 
 @section('js-script')
     <!-- ChartJS -->
     <script src="{{ asset('assets') }}/plugins/chart.js/Chart.min.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="{{ asset('assets') }}/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 
     <script>
         $(function() {
-            $('.connectedSortable').sortable({
-                placeholder: 'sort-highlight',
-                connectWith: '.connectedSortable',
-                handle: '.card-header, .nav-tabs',
-                forcePlaceholderSize: true,
-                zIndex: 999999
-            })
-            $('.connectedSortable .card-header').css('cursor', 'move')
 
             var studentsGraph = @json($studentChartByYear);
             var graduatedStudentGraph = @json($graduatedStudentByYear);
@@ -322,7 +328,7 @@
                 maintainAspectRatio: false,
                 datasetFill: false,
                 scales: {
-                    yAxes: [{
+                    xAxes: [{
                         ticks: {
                             beginAtZero: true
                         }
