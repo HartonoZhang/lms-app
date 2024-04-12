@@ -52,7 +52,7 @@ class TeacherController extends Controller
 
     public function myListClassroom()
     {
-        $classroom = Classroom::with('sessions', 'period', 'tasks')
+        $classroom = Classroom::with('sessions', 'period', 'tasks.uploads')
             ->whereHas('teacherClassroom', function ($x) {
                 return $x->where('teacher_id', auth()->user()->teacher[0]->id);
             })->get();
@@ -80,6 +80,25 @@ class TeacherController extends Controller
         return $sortedDate[0];
     }
 
+    public function getListTask($listClassroom)
+    {
+        $result = [];
+        if (!$listClassroom) {
+            return 0;
+        }
+        foreach ($listClassroom as $classroom) {
+            foreach ($classroom->tasks as $task) {
+                array_push($result, $task);
+            }
+        }
+        if (count($result) === 0) {
+            return 0;
+        }
+        $sortedDate = collect($result)->sortBy('created_at')->take(5);
+        return $sortedDate;
+    }
+
+
     public function home(Request $request)
     {
         $teacher = Teacher::with('user')->where('user_id', '=', Auth::user()->id)->first();
@@ -94,9 +113,11 @@ class TeacherController extends Controller
             });
         })->get()->sortByDesc('id')->values();
         $periodClassrooms = $this->getPeriodClassroom($request, $periods);
+        $listPost = Post::with('user')->orderBy('created_at', 'DESC')->take(4)->get();
 
         $myListClassroom = $this->myListClassroom();
         $firstSchedule = $this->getFistSchedule($myListClassroom);
+        $listTask = $this->getListTask($myListClassroom);
 
         return view('pages.dashboards.teacher', [
             'organization' => $organization,
@@ -106,6 +127,8 @@ class TeacherController extends Controller
             'periodClassrooms' => $periodClassrooms,
             'periods' => $periods,
             'firstSchedule' => $firstSchedule,
+            'listPost' => $listPost,
+            'listTask' => $listTask,
         ]);
     }
 
