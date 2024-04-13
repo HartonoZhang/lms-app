@@ -89,6 +89,17 @@ class QuestController extends Controller
         ]);
     }
 
+    public function decreaseExp($profile)
+    {
+        $expSetting = ExpSetting::first();
+        $currentExp = $profile->current_exp - $expSetting->create_question;
+        $badge = $this->checkBadge($profile, $currentExp);
+        $profile->update([
+            'current_exp' => $currentExp,
+            'badge_name' => $badge,
+        ]);
+    }
+
     public function validateQuestAnswer(Request $request, $id)
     {
         $validate = Validator::make($request->all(), [
@@ -241,6 +252,10 @@ class QuestController extends Controller
         $quest = QuestQuestion::findOrFail($id);
         $this->message('Successfully remove student "' . $quest->question . '"', 'success');
         $quest->delete();
+
+        $teacher = Teacher::with('profile')->where('user_id', '=', Auth::user()->id)->first();
+        $this->decreaseExp($teacher->profile);
+        
         return back();
     }
 }

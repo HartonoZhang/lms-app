@@ -110,7 +110,7 @@
             <section class="col-md-4">
                 <div class="card mb-0 card-info card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">Upcomming Class</h3>
+                        <h3 class="card-title">Upcoming Class</h3>
                     </div>
                     @if ($firstSchedule)
                         <div class="card-body">
@@ -146,7 +146,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-center align-items-center flex-column" style="height: 270px">
                                 <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data">
-                                <p>No upcomming class yet</p>
+                                <p>No upcoming class yet</p>
                             </div>
                         </div>
                     @endif

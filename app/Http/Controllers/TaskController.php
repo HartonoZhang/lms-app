@@ -70,6 +70,17 @@ class TaskController extends Controller
         ]);
     }
 
+    public function decreaseExp($profile)
+    {
+        $expSetting = ExpSetting::first();
+        $currentExp = $profile->current_exp - $expSetting->create_task;
+        $badge = $this->checkBadge($profile, $currentExp);
+        $profile->update([
+            'current_exp' => $currentExp,
+            'badge_name' => $badge,
+        ]);
+    }
+
     public function taskUpload(Request $request, $id)
     {
         $validate = Validator::make($request->all(), [
@@ -246,6 +257,10 @@ class TaskController extends Controller
     {
         $task = Task::findOrFail($taskId);
         $task->delete();
+
+        $teacher = Teacher::with('profile')->where('user_id', '=', Auth::user()->id)->first();
+        $this->decreaseExp($teacher->profile);
+
         return redirect()->route('teacher-course-detail-assignment', $classroomId)->with(['status' => 'success', 'message' => 'Successfully remove task']);
     }
 }

@@ -144,7 +144,7 @@
                                 <td class="col-6">.....</td>
                                 <td class="col-4">.....</td>
                             </tr>
-                            <tr lass="d-flex align-items-center" style="background-color: var(--color-primary-xlight);">
+                            <tr class="d-flex align-items-center" style="background-color: var(--color-primary-xlight);">
                                 <td class="col-2">#{{ $thisRank }}</td>
                                 <td class="col-6">
                                     <div class="user-block">
