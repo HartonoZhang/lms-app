@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('gender');
             $table->string('phone_number');
             $table->string('religion');
-            $table->integer('level');
             $table->integer('current_exp');
             $table->string('badge_name');
             $table->timestamps();

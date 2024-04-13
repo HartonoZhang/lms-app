@@ -31,7 +31,8 @@ class DatabaseSeeder extends Seeder
             SessionSeeder::class,
             TaskCategorySeeder::class,
             TaskSeeder::class,
-            TaskUploadSeeder::class
+            TaskUploadSeeder::class,
+            ExpSettinngSeeder::class,
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classroom;
+use App\Models\ExpSetting;
 use App\Models\Student;
 use App\Models\Task;
 use App\Models\TaskCategory;
@@ -21,6 +22,52 @@ class TaskController extends Controller
     {
         Session::flash('status', $status);
         Session::flash('message', $msg);
+    }
+
+    public function checkBadge($user, $exp)
+    {
+        $expSetting = ExpSetting::first();
+        $badge = $user->badge_name;
+        if ($exp <= $expSetting->exp_bronze) {
+            return $badge = 'bronze';
+        }
+        if ($exp <= $expSetting->exp_silver) {
+            return $badge = 'silver';
+        }
+        if ($exp <= $expSetting->exp_gold) {
+            return $badge = 'gold';
+        }
+        if ($exp <= $expSetting->exp_purple) {
+            return $badge = 'purple';
+        }
+        if ($exp <= $expSetting->exp_emerlad) {
+            return $badge = 'emerald';
+        }
+        return $badge;
+    }
+
+    public function updateExp($profile, $role, $taskCategoryId)
+    {
+        $expSetting = ExpSetting::first();
+        $currentExp = $profile->current_exp;
+        if ($role == 'student') {
+            if ($taskCategoryId == 1) {
+                $currentExp += $expSetting->do_asg;
+            } else if ($taskCategoryId == 2) {
+                $currentExp += $expSetting->do_exam;
+            } else {
+                $currentExp += $expSetting->do_project;
+            }
+        } else {
+            $currentExp += $expSetting->create_task;
+        }
+
+        $badge = $this->checkBadge($profile, $currentExp);
+
+        $profile->update([
+            'current_exp' => $currentExp,
+            'badge_name' => $badge,
+        ]);
     }
 
     public function taskUpload(Request $request, $id)
@@ -85,11 +132,11 @@ class TaskController extends Controller
         ]);
 
         if ($validation) {
-            $teacher = Teacher::with('user')->where('user_id', '=', Auth::user()->id)->first();
+            $teacher = Teacher::with('user', 'profile')->where('user_id', '=', Auth::user()->id)->first();
             $extension = $request->file('file_upload')->getClientOriginalExtension();
             $file = Auth::user()->id . '-' . now()->timestamp . '.' . $extension;
             $request->file('file_upload')->move('assets/tasks/question', $file);
-           
+
             Task::create([
                 'task_category_id' => $request->category_id,
                 'teacher_id' => $teacher->id,
@@ -99,6 +146,8 @@ class TaskController extends Controller
                 'deadline' => $request->deadline,
                 'question_file' => $file
             ]);
+
+            $this->updateExp($teacher->profile, 'teacher',  $request->category_id);
 
             return redirect()->route('teacher-course-detail-assignment', $classroomId)->with(['status' => 'success', 'message' => 'Successfully create task']);
         }
@@ -172,6 +221,10 @@ class TaskController extends Controller
                 'note' => $request->note
             ]);
         }
+        $task = Task::findOrFail($taskId);
+        $student = Student::with('profile')->findOrFail($studentId);
+        $this->updateExp($student->profile, 'student',  $task->task_category_id);
+
         $this->message('Change status done', 'success');
         return back();
     }

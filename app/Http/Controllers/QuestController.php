@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\ExpSetting;
 use App\Models\QuestQuestion;
 use App\Models\QuestStudentAnswer;
 use App\Models\Student;
@@ -40,7 +41,7 @@ class QuestController extends Controller
         $student = Student::where('user_id', '=', Auth::user()->id)->first();
         $question = QuestQuestion::findOrFail($id);
         $questionAnswer = QuestStudentAnswer::with('questQuestion')->where([['student_id', '=', $student->id], ['quest_question_id', '=', $id]])->first();
-        if($questionAnswer){
+        if ($questionAnswer) {
             return back();
         }
         return view('pages.quests.student.do-quest', [
@@ -48,37 +49,42 @@ class QuestController extends Controller
         ]);
     }
 
-    public function checkBadge($student, $level)
+    public function checkBadge($user, $exp)
     {
-        $badge = $student->badge_name;
-        if ($level >= 1 && $level <= 50) {
-            $badge = 'bronze';
-        }else if($level >= 51 && $level <= 100) {
-            $badge = 'silver';
-        }else if($level >= 101 && $level <= 150) {
-            $badge = 'gold';
-        }else if($level >= 151 && $level <= 200) {
-            $badge = 'purple';
-        }else if($level >= 200) {
-            $badge = 'emerald';
+        $expSetting = ExpSetting::first();
+        $badge = $user->badge_name;
+        if ($exp <= $expSetting->exp_bronze) {
+            return $badge = 'bronze';
+        }
+        if ($exp <= $expSetting->exp_silver) {
+            return $badge = 'silver';
+        }
+        if ($exp <= $expSetting->exp_gold) {
+            return $badge = 'gold';
+        }
+        if ($exp <= $expSetting->exp_purple) {
+            return $badge = 'purple';
+        }
+        if ($exp <= $expSetting->exp_emerlad) {
+            return $badge = 'emerald';
         }
         return $badge;
     }
 
-    public function updateExpAndLevel($profile)
+    public function updateExp($profile, $role)
     {
-        $currentExp = $profile->current_exp + 10;
-        $currentLevel = $profile->level;
-
-        if($currentExp % 100 === 0) {
-            $currentLevel += 1;
+        $expSetting = ExpSetting::first();
+        $currentExp = $profile->current_exp;
+        if ($role == 'student') {
+            $currentExp += $expSetting->do_quest;
+        } else {
+            $currentExp += $expSetting->create_question;
         }
 
-        $badge = $this->checkBadge($profile, $currentLevel);
+        $badge = $this->checkBadge($profile, $currentExp);
 
         $profile->update([
             'current_exp' => $currentExp,
-            'level' => $currentLevel,
             'badge_name' => $badge,
         ]);
     }
@@ -107,8 +113,8 @@ class QuestController extends Controller
                 'answer' => $request->option,
                 'status' => $status
             ]);
-            if($status === 'Correct') {
-                $this->updateExpAndLevel($student->profile);
+            if ($status === 'Correct') {
+                $this->updateExp($student->profile, 'student');
             }
             return redirect()->route('quest-answer-result', $id);
         }
@@ -176,7 +182,7 @@ class QuestController extends Controller
                 'correct_answer' => $request->correct_answer
             ]);
             $teacher = Teacher::with('profile')->where('user_id', '=', Auth::user()->id)->first();
-            $this->updateExpAndLevel($teacher->profile);
+            $this->updateExp($teacher->profile, 'teacher');
 
             return redirect()->route('teacher-quest')->with(['status' => 'success', 'message' => 'Successfully add new question']);
         }
