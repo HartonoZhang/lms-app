@@ -55,7 +55,10 @@
                                 @endforeach
                             </div>
                         @else
-                            <p class="text-center">There are no assignment yet</p>
+                            <div class="d-flex justify-content-center align-items-center flex-column">
+                                <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data">
+                                <p>There are no assignment yet!</p>
+                            </div>
                         @endif
                     </div>
                 </div>

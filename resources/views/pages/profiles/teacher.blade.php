@@ -27,9 +27,6 @@
 
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <b>Level</b> <a class="float-right">{{ $teacher->profile->level }}</a>
-                            </li>
-                            <li class="list-group-item">
                                 <b>EXP</b> <a class="float-right">{{ $teacher->profile->current_exp }}</a>
                             </li>
                         </ul>

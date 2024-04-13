@@ -27,16 +27,9 @@
                                 src="{{ asset('assets') }}/images/badges/{{ $second->profile->badge_name }}.png"
                                 alt="User profile picture">
                         </div>
-                        <div class="card-footer">
+                        <div class="card-footer mt-2">
                             <div class="row">
-                                <div class="col-sm-6 border-right">
-                                    <div class="description-block">
-                                        <h5 class="description-header">{{ $second ? $second->profile->level : 'No Data' }}
-                                        </h5>
-                                        <span class="description-text">Level</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
+                                <div class="col">
                                     <div class="description-block">
                                         <h5 class="description-header">
                                             {{ $second ? $second->profile->current_exp : 'No Data' }}</h5>
@@ -60,15 +53,9 @@
                                 src="{{ asset('assets') }}/images/badges/{{ $first->profile->badge_name }}.png"
                                 alt="User profile picture">
                         </div>
-                        <div class="card-footer">
+                        <div class="card-footer mt-2">
                             <div class="row">
-                                <div class="col-sm-6 border-right">
-                                    <div class="description-block">
-                                        <h5 class="description-header">{{ $first->profile->level }}</h5>
-                                        <span class="description-text">Level</span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
+                                <div class="col">
                                     <div class="description-block">
                                         <h5 class="description-header">{{ $first->profile->current_exp }}</h5>
                                         <span class="description-text">Current Exp</span>
@@ -91,17 +78,9 @@
                                 src="{{ asset('assets') }}/images/badges/{{ $third->profile->badge_name }}.png"
                                 alt="User profile picture">
                         </div>
-                        <div class="card-footer">
+                        <div class="card-footer mt-2">
                             <div class="row">
-                                <div class="col-sm-6 border-right">
-                                    <div class="description-block">
-                                        <h5 class="description-header">{{ $third ? $third->profile->level : 'No Data' }}
-                                        </h5>
-                                        <span class="description-text">Level</span>
-                                    </div>
-                                </div>
-                                <!-- /.col -->
-                                <div class="col-sm-6">
+                                <div class="col">
                                     <div class="description-block">
                                         <h5 class="description-header">
                                             {{ $third ? $third->profile->current_exp : 'No Data' }}</h5>
@@ -121,11 +100,10 @@
             @if ($leaderboardCount > 3)
                 <table class="table table-borderless">
                     <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Student</th>
-                            <th>Level</th>
-                            <th>Current Exp</th>
+                        <tr class="d-flex align-items-center">
+                            <th class="col-2">Rank</th>
+                            <th class="col-6">Student</th>
+                            <th class="col-4">Current Exp</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -135,10 +113,10 @@
                                     $isTopTen = true;
                                 }
                             @endphp
-                            <tr
+                            <tr class="d-flex align-items-center"
                                 style="{{ $isCurrentRole && $datas[$i]->user->id === $currentUserId ? 'background-color: var(--color-primary-xlight);' : '' }}">
-                                <td>#{{ $i }}</td>
-                                <td>
+                                <td class="col-2">#{{ $i }}</td>
+                                <td class="col-6">
                                     <div class="user-block">
                                         <img class="img-circle img-bordered-sm"
                                             src="{{ asset('assets') }}/images/profile/{{ $datas[$i]->user->image }}"
@@ -151,8 +129,7 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td>{{ $datas[$i]->profile->level }}</td>
-                                <td>{{ $datas[$i]->profile->current_exp }}</td>
+                                <td class="col-4">{{ $datas[$i]->profile->current_exp }}</td>
                             </tr>
                         @endfor
                         @if ($isCurrentRole && $isTopTen == false)
@@ -161,15 +138,14 @@
                                 $thisRank = array_keys($thisStudent)[0];
                                 $thisStudent = $thisStudent[$thisRank];
                             @endphp
-                            <tr>
-                                <td>.....</td>
-                                <td>.....</td>
-                                <td>.....</td>
-                                <td>.....</td>
+                            <tr class="d-flex align-items-center">
+                                <td class="col-2">.....</td>
+                                <td class="col-6">.....</td>
+                                <td class="col-4">.....</td>
                             </tr>
-                            <tr style="background-color: var(--color-primary-xlight);">
-                                <td>#{{ $thisRank }}</td>
-                                <td>
+                            <tr class="d-flex align-items-center" style="background-color: var(--color-primary-xlight);">
+                                <td class="col-2">#{{ $thisRank }}</td>
+                                <td class="col-6">
                                     <div class="user-block">
                                         <img class="img-circle img-bordered-sm"
                                             src="{{ asset('assets') }}/images/profile/{{ $thisStudent->user->image }}"
@@ -182,8 +158,7 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td>{{ $thisStudent->profile->level }}</td>
-                                <td>{{ $thisStudent->profile->current_exp }}</td>
+                                <td class="col-4">{{ $thisStudent->profile->current_exp }}</td>
                             </tr>
                         @endif
                     </tbody>

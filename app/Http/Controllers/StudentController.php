@@ -161,9 +161,9 @@ class StudentController extends Controller
     {
         $datas = Student::with(['user', 'profile'])
             ->get()
-            //sort by level descending
+            //sort by exp descending
             ->sortByDesc(function ($student) {
-                return $student->profile->level;
+                return $student->profile->current_exp;
             })
             ->values();
         $first = array_key_exists(0, $datas->all()) ? $datas[0] : null;
@@ -205,7 +205,6 @@ class StudentController extends Controller
             $profile->gender = $request->gender;
             $profile->phone_number = $request->phone_number;
             $profile->religion = $request->religion;
-            $profile->level = 1;
             $profile->current_exp = 0;
             $profile->badge_name = 'bronze';
             $profile->save();

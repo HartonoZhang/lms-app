@@ -16,7 +16,6 @@ class Profile extends Model
         'gender',
         'phone_number',
         'religion',
-        'level',
         'current_exp',
         'badge_name'
     ];

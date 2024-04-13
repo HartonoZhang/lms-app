@@ -120,7 +120,7 @@
             <section class="col-md-4">
                 <div class="card mb-0 card-info card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">Upcomming Class</h3>
+                        <h3 class="card-title">Upcoming Class</h3>
                     </div>
                     @if ($firstSchedule)
                         <div class="card-body">
@@ -156,7 +156,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-center align-items-center flex-column" style="height: 270px">
                                 <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data">
-                                <p>No upcomming class yet</p>
+                                <p>No upcoming class yet</p>
                             </div>
                         </div>
                     @endif
@@ -212,7 +212,7 @@
                     </div>
                     <div class="card-body p-0">
                         <ul class="products-list product-list-in-card pl-2 pr-2">
-                            @if (count($listTask))
+                            @if ($listTask)
                                 @foreach ($listTask as $task)
                                     <li class="item">
                                         <a href="{{ route('task-detail', ['classroom' => $task->classroom->id, 'task' => $task->id]) }}">

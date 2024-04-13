@@ -7,6 +7,7 @@ use App\Models\Classroom;
 use App\Models\Period;
 use App\Models\Student;
 use App\Models\Course;
+use App\Models\ExpSetting;
 use App\Models\Organization;
 use App\Models\Post;
 use App\Models\PostReport;
@@ -111,8 +112,10 @@ class AdminController extends Controller
     public function setting()
     {
         $organization = Organization::first();
+        $expSetting = ExpSetting::first();
         return view('pages.setting.index', [
-            'organization' => $organization
+            'organization' => $organization,
+            'expSetting' => $expSetting
         ]);
     }
 
