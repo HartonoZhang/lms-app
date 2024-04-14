@@ -20,7 +20,7 @@ class ExpSettinngSeeder extends Seeder
             'exp_silver' => 0,
             'exp_gold' => 0,
             'exp_purple' => 0,
-            'exp_emerlad' => 0,
+            'exp_emerald' => 0,
             'do_quest' => 0,
             'do_asg' => 0,
             'do_exam' => 0,

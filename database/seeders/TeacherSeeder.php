@@ -57,6 +57,14 @@ class TeacherSeeder extends Seeder
                 "user_id" => 21,
                 "profile_id" => 20,
                 "latest_education" => "Doctor",
+            ],[
+                "user_id" => 22,
+                "profile_id" => 21,
+                "latest_education" => "Doctor",
+            ],[
+                "user_id" => 23,
+                "profile_id" => 22,
+                "latest_education" => "Doctor",
             ],
         ];
 

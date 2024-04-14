@@ -40,7 +40,7 @@ class TaskController extends Controller
         if ($exp <= $expSetting->exp_purple) {
             return $badge = 'purple';
         }
-        if ($exp <= $expSetting->exp_emerlad) {
+        if ($exp <= $expSetting->exp_emerald) {
             return $badge = 'emerald';
         }
         return $badge;

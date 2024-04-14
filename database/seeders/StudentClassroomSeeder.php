@@ -233,18 +233,6 @@ class StudentClassroomSeeder extends Seeder
                 'asg' => null,
                 'project' => null,
                 'exam' => null,
-            ],[
-                'classroom_id' => 4,
-                'student_id' => 21,
-                'asg' => null,
-                'project' => null,
-                'exam' => null,
-            ],[
-                'classroom_id' => 4,
-                'student_id' => 22,
-                'asg' => null,
-                'project' => null,
-                'exam' => null,
             ],
         ];
 
