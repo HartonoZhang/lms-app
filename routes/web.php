@@ -5,6 +5,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ExpSettingController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PeriodController;
@@ -50,6 +51,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [AdminController::class, 'setting'])->name('setting');
 
             Route::put('/edit', [OrganizationController::class, 'update'])->name('organization-edit');
+            Route::put('/exp-edit', [ExpSettingController::class, 'update'])->name('exp-setting-edit');
         });
 
         Route::prefix('student')->group(function () {

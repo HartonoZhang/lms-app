@@ -24,7 +24,6 @@
                         alt="User profile picture">
                 </div>
                 <h3 class="profile-username text-center mt-4">{{ $student->user->name }} </h3>
-                <p class="text-muted text-center">Level: {{ $student->profile->level }}</p>
                 <form class="form-horizontal" action="#" method="POST" enctype="multipart/form-data"
                     data-remote="true">
                     @csrf
