@@ -58,14 +58,6 @@ class StudentSeeder extends Seeder
                 "profile_id" => 14,
                 "graduation_date" => null
             ],[
-                "user_id" => 22,
-                "profile_id" => 21,
-                "graduation_date" => null
-            ],[
-                "user_id" => 23,
-                "profile_id" => 22,
-                "graduation_date" => null
-            ],[
                 "user_id" => 24,
                 "profile_id" => 23,
                 "graduation_date" => null

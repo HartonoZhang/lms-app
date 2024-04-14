@@ -94,8 +94,12 @@
             </div>
             @php
                 $isTopTen = false;
+                $bigThree = false;
                 $currentUserId = Auth::user()->id;
-                $leaderboardCount = $datas->count() >= 11 ? 11 : $datas->count();
+                $leaderboardCount = $datas->count() >= 10 ? 10 : $datas->count();
+                if($first->user->id === $currentUserId || $second->user->id === $currentUserId || $third->user->id === $currentUserId){
+                    $bigThree = true;
+                }
             @endphp
             @if ($leaderboardCount > 3)
                 <table class="table table-borderless">
@@ -115,7 +119,7 @@
                             @endphp
                             <tr class="d-flex align-items-center"
                                 style="{{ $isCurrentRole && $datas[$i]->user->id === $currentUserId ? 'background-color: var(--color-primary-xlight);' : '' }}">
-                                <td class="col-2">#{{ $i }}</td>
+                                <td class="col-2">#{{ $i + 1 }}</td>
                                 <td class="col-6">
                                     <div class="user-block">
                                         <img class="img-circle img-bordered-sm"
@@ -132,10 +136,10 @@
                                 <td class="col-4">{{ $datas[$i]->profile->current_exp }}</td>
                             </tr>
                         @endfor
-                        @if ($isCurrentRole && $isTopTen == false)
+                        @if ($isCurrentRole && !$isTopTen && !$bigThree)
                             @php
-                                $thisStudent = $datas->where('user_id', $currentUserId)->all();
-                                $thisRank = array_keys($thisStudent)[0];
+                                $thisStudent = $datas->where('user_id', $currentUserId);
+                                $thisRank = $thisStudent->keys()[0];
                                 $thisStudent = $thisStudent[$thisRank];
                             @endphp
                             <tr class="d-flex align-items-center">
@@ -144,7 +148,7 @@
                                 <td class="col-4">.....</td>
                             </tr>
                             <tr class="d-flex align-items-center" style="background-color: var(--color-primary-xlight);">
-                                <td class="col-2">#{{ $thisRank }}</td>
+                                <td class="col-2">#{{ $thisRank + 1 }}</td>
                                 <td class="col-6">
                                     <div class="user-block">
                                         <img class="img-circle img-bordered-sm"
