@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('exp_silver');
             $table->integer('exp_gold');
             $table->integer('exp_purple');
-            $table->integer('exp_emerlad');
+            $table->integer('exp_emerald');
             $table->integer('do_quest');
             $table->integer('do_asg');
             $table->integer('do_exam');

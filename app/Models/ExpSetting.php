@@ -15,7 +15,7 @@ class ExpSetting extends Model
         'exp_silver',
         'exp_gold',
         'exp_purple',
-        'exp_emerlad',
+        'exp_emerald',
         'do_quest',
         'do_asg',
         'do_exam',

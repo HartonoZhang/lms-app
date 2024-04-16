@@ -15,7 +15,6 @@
 @section('content')
     <div class="container-fluid h-100">
         <div class="card">
-            {{ $task }}
             <div class="card-header">
                 <h3 class="card-title">
                     Task Information

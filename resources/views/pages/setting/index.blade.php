@@ -164,10 +164,10 @@
                                             @enderror
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label for="exp_emerlad">Max Exp for Emerlad Badge*</label>
-                                            <input type="text" id="exp_emerlad" class="form-control"
-                                                value="{{ old('exp_emerlad', $expSetting->exp_emerlad) }}" name="exp_emerlad">
-                                            @error('exp_emerlad')
+                                            <label for="exp_emerald">Max Exp for Emerald Badge*</label>
+                                            <input type="text" id="exp_emerald" class="form-control"
+                                                value="{{ old('exp_emerald', $expSetting->exp_emerald) }}" name="exp_emerald">
+                                            @error('exp_emerald')
                                                 <p class="text-danger my-0">{{ $message }}</p>
                                             @enderror
                                         </div>
