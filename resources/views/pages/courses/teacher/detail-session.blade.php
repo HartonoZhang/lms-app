@@ -290,14 +290,16 @@
                                                                 <tr>
                                                                     <td>
                                                                         <div class="user-block">
-                                                                            <img class="img-circle img-bordered-sm"
-                                                                                src="{{ url('/assets/images/profile/') }}/{{ $student->student->user->image }}"
-                                                                                alt="user image">
-                                                                            <span class="username text-truncate">
-                                                                                {{ $student->student->user->name }}
-                                                                            </span>
-                                                                            <span class="description text-truncate">
-                                                                                {{ $student->student->user->email }}</span>
+                                                                            <a href="{{ route('student-profile', $student->student->user->id) }}">
+                                                                                <img class="img-circle img-bordered-sm"
+                                                                                    src="{{ url('/assets/images/profile/') }}/{{ $student->student->user->image }}"
+                                                                                    alt="user image">
+                                                                                <span class="username text-truncate">
+                                                                                    {{ $student->student->user->name }}
+                                                                                </span>
+                                                                                <span class="description text-truncate">
+                                                                                    {{ $student->student->user->email }}</span>
+                                                                            </a>
                                                                         </div>
                                                                     </td>
                                                                     <td class="student-attendance">

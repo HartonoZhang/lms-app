@@ -276,33 +276,37 @@
                                                 <span class="product-title">{{ $task->title }} -
                                                     {{ $task->classroom->course->name }}
                                                 </span>
-
-                                                @if ($task->uploads)
-                                                    @php
-                                                        $check = false;
-                                                        foreach ($task->uploads as $upload) {
-                                                            if ($upload->student_id === $student->id) {
-                                                                $check = true;
-                                                                break;
+                                                <span class="product-description">
+                                                    {{ $task->description }}
+                                                </span>
+                                                <span class="product-description">
+                                                    <span class="badge badge-warning">
+                                                        {{ $task->time_remaining }}
+                                                    </span>
+                                                    @if ($task->uploads)
+                                                        @php
+                                                            $check = false;
+                                                            foreach ($task->uploads as $upload) {
+                                                                if ($upload->student_id === $student->id) {
+                                                                    $check = true;
+                                                                    break;
+                                                                }
                                                             }
-                                                        }
-                                                    @endphp
-                                                    @if ($check)
-                                                        <span class="badge badge-success float-right">
-                                                            Submitted
-                                                        </span>
+                                                        @endphp
+                                                        @if ($check)
+                                                            <span class="badge badge-success">
+                                                                Submitted
+                                                            </span>
+                                                        @else
+                                                            <span class="badge badge-info">
+                                                                Not Submitted
+                                                            </span>
+                                                        @endif
                                                     @else
-                                                        <span class="badge badge-info float-right">
+                                                        <span class="badge badge-info">
                                                             Not Submitted
                                                         </span>
                                                     @endif
-                                                @else
-                                                    <span class="badge badge-info float-right">
-                                                        Not Submitted
-                                                    </span>
-                                                @endif
-                                                <span class="product-description">
-                                                    {{ $task->description }}
                                                 </span>
                                             </div>
                                         </a>
