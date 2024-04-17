@@ -32,17 +32,18 @@
                         <div class="d-flex flex-wrap border-bottom">
                             @foreach ($listStudent as $student)
                                 <div class="col-sm-4">
-                                    <div class="text-center">
-                                        <img class="profile-user-img img-fluid img-circle"
-                                            src="{{ asset('assets') }}/images/profile/{{ $student->student->user->image }}"
-                                            alt="User profile picture" style="width: 125px; height: 125px;">
-                                    </div>
                                     <a href="/student/profile/{{ $student->student->user->id }}">
+                                        <div class="text-center">
+                                            <img class="profile-user-img img-fluid img-circle"
+                                                src="{{ asset('assets') }}/images/profile/{{ $student->student->user->image }}"
+                                                alt="User profile picture" style="width: 125px; height: 125px;">
+                                        </div>
+
                                         <p class="text-center mb-0 mt-2" style="font-size: 1rem">
                                             {{ $student->student->user->name }} </p>
+                                        <p class="text-center text-muted" style="font-size: 0.8rem">
+                                            {{ $student->student->user->email }} </p>
                                     </a>
-                                    <p class="text-center text-muted" style="font-size: 0.8rem">
-                                        {{ $student->student->user->email }} </p>
                                 </div>
                             @endforeach
                         </div>
@@ -54,17 +55,17 @@
                         <div class="d-flex flex-wrap border-bottom">
                             @foreach ($teacherClassroom as $teacher)
                                 <div class="col-sm-4">
-                                    <div class="text-center">
-                                        <img class="profile-user-img img-fluid img-circle"
-                                            src="{{ asset('assets') }}/images/profile/{{ $teacher->teacher->user->image }}"
-                                            alt="User profile picture" style="width: 125px; height: 125px;">
-                                    </div>
                                     <a href="/teacher/profile/{{ $teacher->teacher->user->id }}">
+                                        <div class="text-center">
+                                            <img class="profile-user-img img-fluid img-circle"
+                                                src="{{ asset('assets') }}/images/profile/{{ $teacher->teacher->user->image }}"
+                                                alt="User profile picture" style="width: 125px; height: 125px;">
+                                        </div>
                                         <p class="text-center mb-0 mt-2" style="font-size: 1rem">
                                             {{ $teacher->teacher->user->name }} </p>
+                                        <p class="text-center text-muted" style="font-size: 0.8rem">
+                                            {{ $teacher->teacher->user->email }} </p>
                                     </a>
-                                    <p class="text-center text-muted" style="font-size: 0.8rem">
-                                        {{ $teacher->teacher->user->email }} </p>
                                 </div>
                             @endforeach
                         </div>

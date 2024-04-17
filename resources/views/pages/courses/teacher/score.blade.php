@@ -69,16 +69,18 @@
                         @foreach ($listStudentScore as $studentScore)
                             <tr>
                                 <td>
-                                    <div class="user-block">
-                                        <img class="img-circle img-bordered-sm"
-                                            src="{{ url('/assets/images/profile/') }}/{{ $studentScore->student->user->image }}"
-                                            alt="user image">
-                                        <span class="username text-truncate">
-                                            {{ $studentScore->student->user->name }}
-                                        </span>
-                                        <span class="description text-truncate">
-                                            {{ $studentScore->student->user->email }}</span>
-                                    </div>
+                                    <a href="{{ route('student-profile', $studentScore->student->user->id) }}">
+                                        <div class="user-block">
+                                            <img class="img-circle img-bordered-sm"
+                                                src="{{ url('/assets/images/profile/') }}/{{ $studentScore->student->user->image }}"
+                                                alt="user image">
+                                            <span class="username text-truncate">
+                                                {{ $studentScore->student->user->name }}
+                                            </span>
+                                            <span class="description text-truncate">
+                                                {{ $studentScore->student->user->email }}</span>
+                                        </div>
+                                    </a>
                                 </td>
                                 @php
                                     if (
