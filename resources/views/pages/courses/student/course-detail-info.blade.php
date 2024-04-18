@@ -9,15 +9,17 @@
         <p class="card-text mb-0 border-top py-2 font-weight-bold">Teacher</p>
         <div class="row mb-2 border-bottom">
             @foreach ($teacherClassroom as $item)
-                <div class="col-md-3 mb-2 d-flex align-items-center ">
-                    <img class="img-circle img-bordered-sm"
-                        src="{{ asset('assets') }}/images/profile/{{ $item->teacher->user->image }}" alt="user image"
-                        width="50" height="50">
-                    <div class="ml-1 text-truncate">
-                        <span>{{ $item->teacher->user->name }}</span> <br>
-                        <span style="font-size: 0.8rem;">{{ $item->teacher->user->email }}</span>
+                <a href="{{ route('teacher-profile', $item->teacher->user->id) }}" class="col-md-3 mb-2 ">
+                    <div class="d-flex align-items-center ">
+                        <img class="img-circle img-bordered-sm"
+                            src="{{ asset('assets') }}/images/profile/{{ $item->teacher->user->image }}"
+                            alt="user image" width="50" height="50">
+                        <div class="ml-1 text-truncate">
+                            <span>{{ $item->teacher->user->name }}</span> <br>
+                            <span style="font-size: 0.8rem;">{{ $item->teacher->user->email }}</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             @endforeach
         </div>
         @php
