@@ -1,11 +1,11 @@
 @extends('layouts.template')
 
-@section('title', 'Courses Detail - Assignment')
+@section('title', 'Courses Detail - Task')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('student-dashboard') }}">Home</a></li>
     <li class="breadcrumb-item"><a href="{{ route('student-course') }}">My Courses</a></li>
-    <li class="breadcrumb-item active">Courses Detail - Assignment</li>
+    <li class="breadcrumb-item active">Courses Detail - Task</li>
 @endsection
 
 @section('content')
@@ -18,7 +18,7 @@
         <div class="card">
             <div class="card-header">
                 <ul class="nav nav-pills">
-                    <li class="nav-item"><a class="nav-link active" href="#status" data-toggle="pill">List Assignment</a>
+                    <li class="nav-item"><a class="nav-link active" href="#status" data-toggle="pill">List Task</a>
                     </li>
                 </ul>
             </div>

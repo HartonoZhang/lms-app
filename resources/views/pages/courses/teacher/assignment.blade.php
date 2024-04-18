@@ -1,17 +1,17 @@
 @extends('layouts.template')
 
-@section('title', 'Courses Detail - Assignment')
+@section('title', 'Courses Detail - Task')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('teacher-dashboard') }}">Home</a></li>
     <li class="breadcrumb-item"><a href="{{ route('teacher-course') }}">My Courses</a></li>
-    <li class="breadcrumb-item active">Courses Detail - Assignment</li>
+    <li class="breadcrumb-item active">Courses Detail - Task</li>
 @endsection
 
 @section('content')
     <div class="container-fluid h-100">
         <div class="d-flex justify-content-end">
-            <a class="btn btn-primary mb-2" href="{{ route('create-task', $classroom->id) }}">Create Assigment</a>
+            <a class="btn btn-primary mb-2" href="{{ route('create-task', $classroom->id) }}">Create Task</a>
         </div>
         @include('pages.courses.teacher.course-detail-info', [
             'classroom' => $classroom,
@@ -21,7 +21,7 @@
         <div class="card">
             <div class="card-header">
                 <ul class="nav nav-pills">
-                    <li class="nav-item"><a class="nav-link active" href="#list" data-toggle="pill">Assignment</a>
+                    <li class="nav-item"><a class="nav-link active" href="#list" data-toggle="pill">Task</a>
                     </li>
                 </ul>
             </div>
@@ -57,7 +57,7 @@
                         @else
                             <div class="d-flex justify-content-center align-items-center flex-column">
                                 <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data">
-                                <p>There are no assignment yet!</p>
+                                <p>There is no task yet!</p>
                             </div>
                         @endif
                     </div>

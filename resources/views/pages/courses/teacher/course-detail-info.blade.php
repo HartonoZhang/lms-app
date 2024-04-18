@@ -49,7 +49,7 @@
             <a href="{{ route('teacher-course-detail', $classroom->id) }}"
                 class="btn {{ request()->is('teacher/course/' . $classroom->id) ? 'btn-primary' : 'btn-secondary' }} mr-2 mb-2">Sessions</a>
             <a href="{{ route('teacher-course-detail-assignment', $classroom->id) }}"
-                class="btn {{ request()->is('teacher/course/' . $classroom->id . '/assignment') ? 'btn-primary' : 'btn-secondary' }} mr-2 mb-2">Assignments</a>
+                class="btn {{ request()->is('teacher/course/' . $classroom->id . '/assignment') ? 'btn-primary' : 'btn-secondary' }} mr-2 mb-2">Task</a>
             <a href="{{ route('teacher-course-detail-people', $classroom->id) }}"
                 class="btn {{ request()->is('teacher/course/' . $classroom->id . '/people') ? 'btn-primary' : 'btn-secondary' }} mr-2 mb-2">People</a>
             <a href="{{ route('teacher-course-detail-score', $classroom->id) }}"
