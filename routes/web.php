@@ -179,6 +179,8 @@ Route::middleware('auth')->group(function () {
             Route::put('/updatePhoto', [StudentController::class, 'savePhoto'])->name('update-student-photo');
             Route::put('/updatePassword', [StudentController::class, 'savePassword'])->name('update-student-password');
 
+            Route::get('/calender', [StudentController::class, 'calender'])->name('student-calender');
+
             Route::prefix('course')->group(function () {
                 Route::get('/', [CourseController::class, 'studentCourse'])->name('student-course');
                 Route::get('/{id}', [CourseController::class, 'studentCourseDetailSession'])->name('student-course-detail');

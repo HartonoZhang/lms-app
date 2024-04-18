@@ -29,6 +29,15 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
+                @if (Auth::user()->role_id !== 1)
+                    <li class="nav-item">
+                        <a href="/{{ $role }}/calender"
+                            class="{{ request()->is($role.'/calender') ? 'active' : '' }} nav-link">
+                            <i class="nav-icon far fa-calendar-alt"></i>
+                            <p>Calender</p>
+                        </a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="fas fa-trophy nav-icon"></i>

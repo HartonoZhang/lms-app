@@ -346,4 +346,43 @@ class StudentController extends Controller
             return back();
         }
     }
+
+    public function getListTask($listClassroom)
+    {
+        $result = [];
+        foreach ($listClassroom as $classroom) {
+            foreach ($classroom->tasks as $task) {
+                array_push($result, $task);
+                $task->course = $classroom->course->name;
+            }
+        }
+        return $result;
+    }
+
+    public function getListSession($listClassroom)
+    {
+        $result = [];
+        if(!$listClassroom){
+            return [];
+        }
+        foreach ($listClassroom as $classroom) {
+            foreach ($classroom->sessions as $session) {
+                array_push($result, $session);
+                $session->course = $classroom->course->name;
+            }
+        }
+        return $result;
+    }
+
+
+    public function calender()
+    {
+        $myListClassroom = $this->myListClassroom();
+        $listTask = $this->getListTask($myListClassroom);
+        $listSession = $this->getListSession($myListClassroom);
+        return view('pages.calender.index', [
+            'listTask' => $listTask,
+            'listSession' => $listSession
+        ]);
+    }
 }
