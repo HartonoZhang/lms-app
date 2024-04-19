@@ -153,7 +153,8 @@ class MaterialController extends Controller
             ]);
 
             $this->message('Add new material successfully', 'success');
-            return back();
+            $previousUrl = app('url')->previousPath();
+            return redirect()->to($previousUrl . '?' . http_build_query(['session' => $request->material_sessionId]));
         }
     }
 
@@ -210,8 +211,10 @@ class MaterialController extends Controller
     public function deleteMaterial($id)
     {
         $material = Material::findOrFail($id);
-        $this->message('Successfully remove material "'.$material->title.'"', 'success');
+        $sessionId = $material->session_id;
+        $this->message('Successfully remove material "' . $material->title . '"', 'success');
         $material->delete();
-        return back();
+        $previousUrl = app('url')->previousPath();
+        return redirect()->to($previousUrl . '?' . http_build_query(['session' => $sessionId]));
     }
 }

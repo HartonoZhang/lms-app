@@ -38,7 +38,8 @@ class ThreadController extends Controller
             ]);
 
             $this->message('New thread successfully posted!', 'success');
-            return back();
+            $previousUrl = app('url')->previousPath();
+            return redirect()->to($previousUrl . '?' . http_build_query(['session' => $request->sessionId]));
         }
     }
 
@@ -102,6 +103,6 @@ class ThreadController extends Controller
         $thread = Thread::findOrFail($thread);
         $thread->delete();
         $role = strtolower(Auth::user()->role->name);
-        return redirect()->route($role.'-course-detail', $session)->with(['status' => 'success', 'message' => 'Successfully remove thread']);
+        return redirect()->route($role . '-course-detail', $session)->with(['status' => 'success', 'message' => 'Successfully remove thread']);
     }
 }

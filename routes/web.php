@@ -123,6 +123,8 @@ Route::middleware('auth')->group(function () {
             Route::put('/updatePhoto', [TeacherController::class, 'savePhoto'])->name('update-teacher-photo');
             Route::put('/updatePassword', [TeacherController::class, 'savePassword'])->name('update-teacher-password');
 
+            Route::get('/calender', [TeacherController::class, 'calender'])->name('teacher-calender');
+
             Route::prefix('quest')->group(function () {
                 Route::get('/', [QuestController::class, 'teacherView'])->name('teacher-quest');
                 Route::get('/create', [QuestController::class, 'createQuestion'])->name('create-question');
@@ -178,6 +180,8 @@ Route::middleware('auth')->group(function () {
             Route::put('/updateProfile', [StudentController::class, 'saveProfiles'])->name('update-student-profile');
             Route::put('/updatePhoto', [StudentController::class, 'savePhoto'])->name('update-student-photo');
             Route::put('/updatePassword', [StudentController::class, 'savePassword'])->name('update-student-password');
+
+            Route::get('/calender', [StudentController::class, 'calender'])->name('student-calender');
 
             Route::prefix('course')->group(function () {
                 Route::get('/', [CourseController::class, 'studentCourse'])->name('student-course');
