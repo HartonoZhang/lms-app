@@ -296,7 +296,7 @@
                 $sessions.text(`Session ${ele.data('slideTo') + 1}`);
             }
 
-            changeSessionText()
+            changeSessionText();
 
             $('#carouselExampleCaptions').on('slid.bs.carousel', function(e) {
                 changeSessionText();

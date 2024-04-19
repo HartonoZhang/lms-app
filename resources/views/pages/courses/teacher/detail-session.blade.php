@@ -26,9 +26,20 @@
                     </div>
                     <div class="card-body my-0 py-0">
                         <ol class="carousel-indicators my-0 py-0">
+                            @php
+                                $idQuery = app('request')->input('session');
+                                if (!$idQuery) {
+                                    $idQuery = $sessions[0]->id;
+                                }
+                            @endphp
                             @foreach ($sessions as $key => $item)
-                                <li data-target="#carouselExampleCaptions" data-slide-to="{{ $key }}"
-                                    class="{{ $key === 0 ? 'active' : '' }}">{{ $key + 1 }}</li>
+                                @if ($idQuery == $item->id)
+                                    <li data-target="#carouselExampleCaptions" data-slide-to="{{ $key }}"
+                                        class="active">{{ $key + 1 }}</li>
+                                @else
+                                    <li data-target="#carouselExampleCaptions" data-slide-to="{{ $key }}">
+                                        {{ $key + 1 }}</li>
+                                @endif
                             @endforeach
                         </ol>
                     </div>
@@ -36,7 +47,7 @@
 
                 <div class="carousel-inner">
                     @foreach ($sessions as $key => $item)
-                        <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
+                        <div class="carousel-item {{ $idQuery == $item->id ? 'active' : '' }}">
                             <div class="col-md-11 px-0 mx-auto">
                                 <div class="card">
                                     <div class="card-header p-2">
@@ -290,7 +301,8 @@
                                                                 <tr>
                                                                     <td>
                                                                         <div class="user-block">
-                                                                            <a href="{{ route('student-profile', $student->student->user->id) }}">
+                                                                            <a
+                                                                                href="{{ route('student-profile', $student->student->user->id) }}">
                                                                                 <img class="img-circle img-bordered-sm"
                                                                                     src="{{ url('/assets/images/profile/') }}/{{ $student->student->user->image }}"
                                                                                     alt="user image">
@@ -632,10 +644,16 @@
             }
         }).buttons().container().appendTo('.tabel-attendances_wrapper .col-md-6:eq(0)');
 
-        $('#carouselExampleCaptions').on('slid.bs.carousel', function(e) {
+        function changeSessionText() {
             var ele = $('#carouselExampleCaptions .carousel-indicators li.active');
             var $sessions = $('#sessionText');
             $sessions.text(`Session ${ele.data('slideTo') + 1}`);
+        }
+
+        changeSessionText();
+
+        $('#carouselExampleCaptions').on('slid.bs.carousel', function(e) {
+            changeSessionText();
         })
 
         $('*[data-target="#add-thread-modal"]').click(function() {

@@ -337,4 +337,29 @@ class TeacherController extends Controller
         $teacher->delete();
         return back();
     }
+
+    public function getListSession($listClassroom)
+    {
+        $result = [];
+        if(!$listClassroom){
+            return [];
+        }
+        foreach ($listClassroom as $classroom) {
+            foreach ($classroom->sessions as $session) {
+                array_push($result, $session);
+                $session->course = $classroom->course->name;
+            }
+        }
+        return $result;
+    }
+
+    public function calender()
+    {
+        $myListClassroom = $this->myListClassroom();
+        $listSession = $this->getListSession($myListClassroom);
+        return view('pages.calender.index', [
+            'listTask' => [],
+            'listSession' => $listSession
+        ]);
+    }
 }

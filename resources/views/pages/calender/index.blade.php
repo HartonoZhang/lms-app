@@ -3,7 +3,7 @@
 @section('title', 'My Calender')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('student-calender') }}">Home</a></li>
+    <li class="breadcrumb-item"><a href="/{{ strtolower(Auth::user()->role->name) }}">Home</a></li>
     <li class="breadcrumb-item active">My Calender</li>
 @endsection
 
@@ -19,7 +19,9 @@
                         <div class="card-body">
                             <!-- the events -->
                             <div class="p-2 bg-warning mb-2 rounded">Session</div>
-                            <div class="p-2 bg-info rounded">Task</div>
+                            @if(Auth::user()->role_id === 3)
+                                <div class="p-2 bg-info rounded">Task</div>
+                            @endif
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -54,19 +56,17 @@
     <script src="{{ asset('assets') }}/plugins/fullcalendar/main.js"></script>
     <script type="text/javascript">
         $(function() {
-
+            var roleName = @json(strtolower(Auth::user()->role->name));
             var listSession = @json($listSession);
             var listTask = @json($listTask);
-
-            console.log(listSession);
-
+            
             var listSessionEvent = listSession.map(session => {
                 return {
                     title: session.course + ' - ' + session.title,
                     start: session.start_time,
                     end: session.end_time,
                     backgroundColor: '#ffbb55',
-                    url: `/student/course/${session.classroom_id}?session=${session.id}`
+                    url: `/${roleName}/course/${session.classroom_id}?session=${session.id}`
                 }
             })
 
@@ -76,7 +76,7 @@
                     start: task.created_at,
                     end: task.deadline,
                     backgroundColor: '#7d8da1',
-                    url: `/student/course/${task.classroom_id}/assignment`
+                    url: `/${roleName}/course/${task.classroom_id}/assignment`
                 }
             })
 
