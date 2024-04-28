@@ -49,7 +49,7 @@
                                             class="fas fa-exclamation-triangle"></i></a>
                                 @endif
                             @endif
-                        @elseif ($post->user->role_id !== 1)
+                        @elseif ($post->user->role_id !== 1 && Auth::user()->role_id !== 1)
                             <a href="#" class="float-right btn-tool" data-toggle="modal" data-target="#modal-report"
                                 data-placement="top" title="Report"><i class="fas fa-exclamation-triangle"></i></a>
                         @endif
