@@ -151,9 +151,6 @@ Route::middleware('auth')->group(function () {
                 Route::post('/create-material', [MaterialController::class, 'addMaterial'])->name('create-material');
                 Route::delete('/delete-material/{id}', [MaterialController::class, 'deleteMaterial'])->name('delete-material');
 
-                Route::get('/update-material/{id}', [MaterialController::class, 'updateMaterial'])->name('edit-material');
-                Route::put('/update-material/{id}', [MaterialController::class, 'editMaterial'])->name('edit-material');
-
                 Route::post('/{id}/attendance/{sessionId}/save', [AttendanceController::class, 'saveAttendance'])->name('save-attendance');
 
                 Route::get('/{classroom}/assignment/create', [TaskController::class, 'createTask'])->name('create-task');

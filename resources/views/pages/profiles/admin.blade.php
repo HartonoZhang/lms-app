@@ -53,7 +53,11 @@
                         <div class="tab-content">
                             <div class="active tab-pane" id="posts">
                                 @if (count($posts) == 0)
-                                    <p>There is no posts yet</p>
+                                    <p class="d-flex justify-content-center align-items-center flex-column">
+                                        <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data"
+                                            width="150" height="150">
+                                        There are no post yet!
+                                    </p>
                                 @else
                                     @foreach ($posts as $item)
                                         <div class="post">

@@ -6,7 +6,6 @@ use App\Models\Classroom;
 use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session as FacadesSession;
-use Illuminate\Support\Facades\Validator;
 
 class SessionController extends Controller
 {
