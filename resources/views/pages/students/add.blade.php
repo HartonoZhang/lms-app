@@ -105,20 +105,8 @@
                             @enderror
                         </div>
                     </div>
-                    {{-- <div class="form-row">
-                        <div class="col-sm-4 mb-3">
-                            <div class="form-label-group in-border mb-1">
-                                <input type="date" id="graduation" class="form-control form-control-mb"
-                                    name="gradution_date" placeholder=">Graduation Date*"
-                                    value="{{ old('gradution_date', '') }}" />
-                                <label for="graduation">Graduation Date</label>
-                            </div>
-                            @error('gradution_date')
-                                <p class="text-danger mb-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div> --}}
-                    <button type="submit" class="btn btn-primary mt-3">Add</button>
+                    <a type="button" href="{{route('student-list')}}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Add</button>
                 </form>
             </div>
         </div>

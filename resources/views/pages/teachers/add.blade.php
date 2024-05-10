@@ -117,6 +117,7 @@
                             @enderror
                         </div>
                     </div>
+                    <a type="button" href="{{route('teacher-list')}}" class="btn btn-secondary">Cancel</a>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </form>
             </div>
