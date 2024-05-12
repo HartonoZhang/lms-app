@@ -103,6 +103,7 @@ class ThreadController extends Controller
         $thread = Thread::findOrFail($thread);
         $thread->delete();
         $role = strtolower(Auth::user()->role->name);
-        return redirect()->route($role . '-course-detail', $session)->with(['status' => 'success', 'message' => 'Successfully remove thread']);
+        $classroomId = \App\Models\Session::find($session)->classroom->id;
+        return redirect()->route($role . '-course-detail', $classroomId)->with(['status' => 'success', 'message' => 'Successfully remove thread']);
     }
 }
