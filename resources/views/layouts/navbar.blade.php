@@ -249,7 +249,7 @@
                         <a href="#" class="nav-link">
                             <i class="fas fa-chalkboard nav-icon"></i>
                             <p>
-                                Class
+                                Classroom
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
@@ -258,14 +258,14 @@
                                 <a href="{{ route('class-list') }}"
                                     class="{{ request()->is('class/list') ? 'active' : '' }} nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Class List</p>
+                                    <p>Classroom List</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('class-add') }}"
                                     class="{{ request()->is('class/add') ? 'active' : '' }} nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Class Add</p>
+                                    <p>Classroom Add</p>
                                 </a>
                             </li>
                         </ul>
