@@ -11,6 +11,7 @@ use App\Models\TaskUpload;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -108,6 +109,7 @@ class TaskController extends Controller
                     'status' => 'In Review'
                 ]);
             } else {
+                File::delete(public_path('assets/tasks/answer/'.$isTaskUploaded->file_upload));
                 $isTaskUploaded->update([
                     'file_upload' => $fileName,
                     'status' => 'In Review'
@@ -203,6 +205,8 @@ class TaskController extends Controller
 
             $file = '';
             if ($request->file('file_upload')) {
+                File::delete(public_path('assets/tasks/question/'.$task->question_file));
+
                 $extension = $request->file('file_upload')->getClientOriginalExtension();
                 $file = Auth::user()->id . '-' . now()->timestamp . '.' . $extension;
                 $request->file('file_upload')->move('assets/tasks/question', $file);
@@ -252,9 +256,22 @@ class TaskController extends Controller
         return back();
     }
 
+    public function deleteAllFile($task)
+    {
+        if($task->question_file){
+            File::delete(public_path('assets/tasks/question/'.$task->question_file));
+        }
+        if(count($task->uploads)){
+            foreach ($task->uploads as $taskUpload) {
+               File::delete(public_path('assets/tasks/answer/'.$taskUpload->file_upload));
+            }
+        }
+    }
+
     public function deleteTask($classroomId, $taskId)
     {
-        $task = Task::findOrFail($taskId);
+        $task = Task::with('uploads')->findOrFail($taskId);
+        $this->deleteAllFile($task);
         $task->delete();
 
         $teacher = Teacher::with('profile')->where('user_id', '=', Auth::user()->id)->first();

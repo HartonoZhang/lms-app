@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -64,6 +65,7 @@ class MaterialController extends Controller
     {
         $material = Material::findOrFail($id);
         $sessionId = $material->session_id;
+        File::delete(public_path('assets/material/'.$material->value));
         $this->message('Successfully remove material "' . $material->title . '"', 'success');
         $material->delete();
         $previousUrl = app('url')->previousPath();

@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/leaderboard/teachers', [TeacherController::class, 'leaderboards'])->name('teacher-leaderboard');
     Route::get('teacher/profile/{id}', [TeacherController::class, 'profile'])->name('teacher-profile');
     Route::get('student/profile/{id}', [StudentController::class, 'profile'])->name('student-profile');
+    Route::get('admin/profile/{id}', [AdminController::class, 'profile']);
 
     Route::prefix('thread')->group(function () {
         Route::get('/{id}', [ThreadController::class, 'detail'])->name('thread-detail');
@@ -109,7 +110,6 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('admin')->group(function () {
             Route::get('/', [AdminController::class, 'home'])->name('admin-dashboard');
-            Route::get('/profile/{id}', [AdminController::class, 'profile']);
 
             Route::put('/updateProfile', [AdminController::class, 'saveProfiles'])->name('update-admin-profile');
             Route::put('/updatePassword', [AdminController::class, 'savePassword'])->name('update-admin-password');

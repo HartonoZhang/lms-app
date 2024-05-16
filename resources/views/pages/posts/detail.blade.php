@@ -24,8 +24,8 @@
                                 <a href="/student/profile/{{ $post->user->id }}">{{ $post->user->name }}</a>
                                 <span class="badge text-white ml-1" style="background-color: #7380ec">Student</span>
                             @else
-                                {{ $post->user->name }} <span class="badge text-white ml-1"
-                                    style="background-color: #f3797e">Admin</span>
+                                <a href="/admin/profile/{{ $post->user->id }}">{{ $post->user->name }}</a> <span
+                                    class="badge text-white ml-1" style="background-color: #f3797e">Admin</span>
                             @endif
                         </div>
                         @if (Auth::user()->id === $post->user->id)
@@ -49,7 +49,7 @@
                                             class="fas fa-exclamation-triangle"></i></a>
                                 @endif
                             @endif
-                        @elseif ($post->user->role_id !== 1 && Auth::user()->role_id !== 1)
+                        @elseif ($post->user->role_id != 1)
                             <a href="#" class="float-right btn-tool" data-toggle="modal" data-target="#modal-report"
                                 data-placement="top" title="Report"><i class="fas fa-exclamation-triangle"></i></a>
                         @endif
@@ -97,34 +97,26 @@
                 <h3 class="card-title">Comments ({{ count($comments) }})</h3>
             </div>
             <div class="card-body">
-                @if (Auth::user()->role_id !== 1)
-                    <form class="mb-4" action={{ route('post-comment-create', $post->id) }} method="POST"
-                        enctype="multipart/form-data" data-remote="true">
-                        @csrf
-                        <div class="input-group">
-                            <input class="form-control form-control-md" type="text" name="comment"
-                                placeholder="Type a comment">
-                            <div class="input-group-prepend">
-                                <button type="submit" class="btn btn-primary rounded-right">Send</button>
-                            </div>
+                <form class="mb-4" action={{ route('post-comment-create', $post->id) }} method="POST"
+                    enctype="multipart/form-data" data-remote="true">
+                    @csrf
+                    <div class="input-group">
+                        <input class="form-control form-control-md" type="text" name="comment"
+                            placeholder="Type a comment">
+                        <div class="input-group-prepend">
+                            <button type="submit" class="btn btn-primary rounded-right">Send</button>
                         </div>
-                    </form>
-                @endif
+                    </div>
+                </form>
                 @if (count($comments) == 0)
                     <p>There is no comment yet!</p>
                 @else
                     @foreach ($comments as $item)
                         <div class="direct-chat-msg">
                             <div class="direct-chat-infos clearfix">
-                                @if ($item->user->role_id === 3)
-                                    <a href="/student/profile/{{ $item->user->id }}">
-                                        <span class="direct-chat-name float-left">{{ $item->user->name }}</span>
-                                    </a>
-                                @else
-                                    <a href="/teacher/profile/{{ $item->user->id }}">
-                                        <span class="direct-chat-name float-left">{{ $item->user->name }}</span>
-                                    </a>
-                                @endif
+                                <a href="/{{ Str::lower($item->user->role->name) }}/profile/{{ $item->user->id }}">
+                                    <span class="direct-chat-name float-left">{{ $item->user->name }}</span>
+                                </a>
                                 <span
                                     class="direct-chat-timestamp float-right">{{ $item->created_at->format('g:i A, d-m-y') }}</span>
                             </div>

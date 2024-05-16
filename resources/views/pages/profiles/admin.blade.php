@@ -21,18 +21,19 @@
                         </div>
                         <h3 class="profile-username text-center">{{ $admin->user->name }}</h3>
                         <p class="text-muted text-center">{{ $admin->user->email }}</p>
-
-                        <ul class="list-group list-group-unbordered mb-3">
-                            <li class="list-group-item">
-                                <b>Teachers</b> <a class="float-right">{{ count($teachers) }}</a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>Students</b> <a class="float-right">{{ count($students) }}</a>
-                            </li>
-                        </ul>
-                        <button class="btn btn-primary btn-block" data-toggle="modal"
-                            data-target="#modal-update-photo"><b>Change Profile Photo</b></button>
-                        <a href="{{ route('logout') }}" class="btn btn-danger btn-block"><b>Logout</b></a>
+                        @if (Auth::user()->role->id == 1)
+                            <ul class="list-group list-group-unbordered mb-3">
+                                <li class="list-group-item">
+                                    <b>Teachers</b> <a class="float-right">{{ count($teachers) }}</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Students</b> <a class="float-right">{{ count($students) }}</a>
+                                </li>
+                            </ul>
+                            <button class="btn btn-primary btn-block" data-toggle="modal"
+                                data-target="#modal-update-photo"><b>Change Profile Photo</b></button>
+                            <a href="{{ route('logout') }}" class="btn btn-danger btn-block"><b>Logout</b></a>
+                        @endif
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -44,9 +45,12 @@
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
                             <li class="nav-item"><a class="nav-link active" href="#posts" data-toggle="tab">Posts</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a>
-                            </li>
-                            <li class="nav-item"><a class="nav-link" href="#security" data-toggle="tab">Security</a></li>
+                            @if (Auth::user()->role->id == 1)
+                                <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link" href="#security" data-toggle="tab">Security</a>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                     <div class="card-body">
@@ -84,6 +88,12 @@
                                                     ({{ count($item->comment) }})
                                                 </a>
                                             </p>
+                                            <form class="mb-4" action={{ route('post-comment-create', $item->id) }}
+                                                method="POST" enctype="multipart/form-data" data-remote="true">
+                                                @csrf
+                                                <input class="form-control form-control-sm" type="text"
+                                                    name="comment" placeholder="Type a comment">
+                                            </form>
                                         </div>
                                     @endforeach
                                     {{ $posts->links() }}

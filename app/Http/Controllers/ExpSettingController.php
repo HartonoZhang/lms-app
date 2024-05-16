@@ -17,11 +17,11 @@ class ExpSettingController extends Controller
     public function update(Request $request)
     {
         $validation = $request->validate([
-            'exp_bronze' => ['required', 'integer', 'min:0', 'lt:exp_silver'],
-            'exp_silver' => ['required', 'integer', 'min:0', 'gt:exp_bronze'],
-            'exp_gold' => ['required', 'integer', 'min:0', 'gt:exp_silver'],
-            'exp_purple' => ['required', 'integer', 'min:0', 'gt:exp_gold'],
-            'exp_emerald' => ['required', 'integer', 'min:0', 'gt:exp_purple'],
+            'exp_bronze' => ['required', 'integer', 'min:0', 'lte:exp_silver'],
+            'exp_silver' => ['required', 'integer', 'min:0', 'gte:exp_bronze'],
+            'exp_gold' => ['required', 'integer', 'min:0', 'gte:exp_silver'],
+            'exp_purple' => ['required', 'integer', 'min:0', 'gte:exp_gold'],
+            'exp_emerald' => ['required', 'integer', 'min:0', 'gte:exp_purple'],
             'do_quest' => ['required', 'integer', 'min:0'],
             'do_asg' => ['required', 'integer', 'min:0'],
             'do_exam' => ['required', 'integer', 'min:0'],

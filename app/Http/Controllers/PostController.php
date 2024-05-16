@@ -7,6 +7,7 @@ use App\Models\PostComment;
 use App\Models\PostReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 
 class PostController extends Controller
@@ -71,7 +72,7 @@ class PostController extends Controller
     {
         if ($request->hasFile($requestImage)) {
             $extension = $request->file($requestImage)->getClientOriginalExtension();
-            $imgName = $requestImage . '-post-' . now()->timestamp . '.' . $extension;
+            $imgName = $requestImage . '-post-' . Auth::user()->id . '-' . now()->timestamp . '.' . $extension;
             $request->file($requestImage)->move('assets/images/posts/' . $requestImage, $imgName);
             return $imgName;
         }
@@ -125,9 +126,16 @@ class PostController extends Controller
         ]);
     }
 
+    public function deleteFileWithName($type, $post)
+    {
+        return File::delete(public_path('assets/images/posts/'.$type.'/'.$post[$type]));
+    }
+
+
     public function checkFileUpdate($requestName, $request, $name, $post)
     {
         if ($requestName) {
+            $this->deleteFileWithName($name, $post);
             return null;
         } else {
             $result = $this->checkFile($request, $name);
@@ -205,10 +213,24 @@ class PostController extends Controller
         }
     }
 
+    public function deleteFile($post)
+    {
+        if($post->image){
+            File::delete(public_path('assets/images/posts/image/'.$post->image));
+        }
+        if($post->image_2){
+            File::delete(public_path('assets/images/posts/image_2/'.$post->image_2));
+        }
+        if($post->file){
+            File::delete(public_path('assets/images/posts/file/'.$post->file));
+        }
+    }
+
     public function delete(Request $request, $id)
     {
         $currentUrl = $request->session()->previousUrl();
         $post = Post::findOrFail($id);
+        $this->deleteFile($post);
         $post->delete();
         if(parse_url($currentUrl)['path'] === '/post/list-report') {
             $this->message('Post successfully deleted!', 'success');

@@ -15,6 +15,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -253,6 +254,10 @@ class TeacherController extends Controller
             $imgName = $user->id . '-' . now()->timestamp . '.' . $extension;
             $request->file('image')->move('assets/images/profile', $imgName);
 
+            if($user->image != 'default.png') {
+                File::delete(public_path('assets/images/profile/'.$user->image));
+            }
+            
             $user->update([
                 'image' => $imgName
             ]);
