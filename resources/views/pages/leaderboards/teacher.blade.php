@@ -226,6 +226,11 @@
             color: white;
         }
 
+        .profile-user-img {
+            width: 90px !important;
+            height: 90px !important;
+        }
+
         .first-place,
         .second-place,
         .third-place {

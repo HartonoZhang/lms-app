@@ -177,7 +177,7 @@
                                         <a href="{{ route('post-detail', $item->id) }}">
                                             <div class="product-img">
                                                 <img src="{{ asset('assets') }}/images/profile/{{ $item->user->image }}"
-                                                    alt="Product Image" class="img-size-50">
+                                                    alt="Product Image" class="img-size-50 img-fluid img-circle">
                                             </div>
                                             <div class="product-info text-truncate" style="font-size: 0.9rem;">
                                                 <span class="product-title">{{ $item->title }}
