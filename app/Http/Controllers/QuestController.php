@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\ExpLog;
 use App\Models\ExpSetting;
 use App\Models\QuestQuestion;
 use App\Models\QuestStudentAnswer;
@@ -77,11 +78,26 @@ class QuestController extends Controller
         $currentExp = $profile->current_exp;
         if ($role == 'student') {
             $currentExp += $expSetting->do_quest;
+            ExpLog::create([
+                'user_id' => Auth::user()->id,
+                'message' => 'Kamu mendapatkan '. $expSetting->do_quest .' exp dari mengerjakan question dengan benar.'
+            ]);
         } else {
             $currentExp += $expSetting->create_question;
+            ExpLog::create([
+                'user_id' => Auth::user()->id,
+                'message' =>  'Kamu mendapatkan '. $expSetting->create_question .' exp dari membuat sebuah question.'
+            ]);
         }
 
         $badge = $this->checkBadge($profile, $currentExp);
+
+        if($profile->badge_name != $badge) {
+            ExpLog::create([
+                'user_id' => Auth::user()->id,
+                'message' =>  'Selamat, kamu mendapat medali '. $badge .'.'
+            ]);
+        }
 
         $profile->update([
             'current_exp' => $currentExp,
@@ -93,7 +109,21 @@ class QuestController extends Controller
     {
         $expSetting = ExpSetting::first();
         $currentExp = $profile->current_exp - $expSetting->create_question;
+
+        ExpLog::create([
+            'user_id' => Auth::user()->id,
+            'message' =>  'Exp kamu berkurang '. $expSetting->create_question .' exp dikarenakan menghapus question sendiri.'
+        ]);
+        
         $badge = $this->checkBadge($profile, $currentExp);
+
+        if($profile->badge_name != $badge) {
+            ExpLog::create([
+                'user_id' => Auth::user()->id,
+                'message' =>  'Kamu mendapat medali '. $badge .'.'
+            ]);
+        }
+
         $profile->update([
             'current_exp' => $currentExp,
             'badge_name' => $badge,
@@ -113,7 +143,7 @@ class QuestController extends Controller
             $question = QuestQuestion::findOrFail($id);
             $student = Student::with('profile')->where('user_id', '=', Auth::user()->id)->first();
             $status = '';
-            if ($question->correct_answer === $request->option) {
+            if ($question->correct_answer == $request->option) {
                 $status = 'Correct';
             } else {
                 $status = 'Wrong';
@@ -124,7 +154,7 @@ class QuestController extends Controller
                 'answer' => $request->option,
                 'status' => $status
             ]);
-            if ($status === 'Correct') {
+            if ($status == 'Correct') {
                 $this->updateExp($student->profile, 'student');
             }
             return redirect()->route('quest-answer-result', $id);

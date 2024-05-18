@@ -5,6 +5,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ExpLogController;
 use App\Http\Controllers\ExpSettingController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OrganizationController;
@@ -35,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::get('teacher/profile/{id}', [TeacherController::class, 'profile'])->name('teacher-profile');
     Route::get('student/profile/{id}', [StudentController::class, 'profile'])->name('student-profile');
     Route::get('admin/profile/{id}', [AdminController::class, 'profile']);
+    Route::get('/exp-history', [ExpLogController::class, 'list']);
 
     Route::prefix('thread')->group(function () {
         Route::get('/{id}', [ThreadController::class, 'detail'])->name('thread-detail');

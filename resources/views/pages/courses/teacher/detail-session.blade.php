@@ -182,7 +182,7 @@
                                                                                     class="btn btn-primary btn-sm rounded-0"
                                                                                     target="blank"
                                                                                     data-placement="top" title="Detail">
-                                                                                    <i class="fa fa-search"></i>
+                                                                                    <i class="fas fa-link"></i>
                                                                                 </a>
                                                                             </li>
                                                                             <li class="list-inline-item">

@@ -144,6 +144,15 @@
                         </li>
                     </ul>
                 </li>
+                @if (Auth::user()->role_id != 1)
+                    <li class="nav-item">
+                        <a href="/exp-history"
+                            class="{{ request()->is('exp-history') ? 'active' : '' }} nav-link">
+                            <i class="nav-icon fas fa-history"></i>
+                            <p>Exp History</p>
+                        </a>
+                    </li>
+                @endif
                 @if (Auth::user()->role_id === 1)
                     <li class="nav-item">
                         <a href="#" class="nav-link">

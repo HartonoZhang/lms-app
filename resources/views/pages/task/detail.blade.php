@@ -45,7 +45,7 @@
                                 disabled>
                                 <option disabled selected>Select a category</option>
                                 @foreach ($listCategory as $category)
-                                    @if ($task->task_category_id === $category->id)
+                                    @if ($task->task_category_id == $category->id)
                                         <option value="{{ $category->id }}" selected>{{ $category->name }} </option>
                                     @else
                                         <option value="{{ $category->id }}">{{ $category->name }} </option>
@@ -101,7 +101,7 @@
                         </div>
                         <small id="download" class="form-text text-muted">
                             <a href="{{ asset('assets/tasks/question') }}/{{ $task->question_file }}"
-                                target="_blank">Download</a>
+                                target="_blank" style="color: var(--color-primary)">Download</a>
                         </small>
                     </div>
                 </div>
@@ -130,7 +130,7 @@
                                 <td class="text-truncate">{{ $upload->student->user->name }}</td>
                                 <td class="text-truncate">
                                     <a href="{{ asset('assets/tasks/answer') }}/{{ $upload->file_upload }}"
-                                        target="_blank">Download</a>
+                                        target="_blank" style="color: var(--color-primary)">Download</a>
                                 </td>
                                 <td>{{ $upload->created_at->format('g:i A, d-m-y') }}</td>
                                 <td>{{ $upload->status }}</td>
@@ -330,9 +330,9 @@
             }).buttons().container().appendTo('#tabel-students_wrapper .col-md-6:eq(0)');
 
             @if (Session::has('status'))
-                @if (Session::get('status') === 'success')
+                @if (Session::get('status') == 'success')
                     toastr.success('{{ Session::get('message') }}')
-                @elseif (Session::get('status') === 'fail')
+                @elseif (Session::get('status') == 'fail')
                     toastr.error('{{ Session::get('message') }}')
                 @endif
             @endif

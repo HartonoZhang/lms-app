@@ -17,10 +17,10 @@
                         src="{{ asset('assets') }}/images/profile/{{ $post->user->image }}" alt="user image">
                     <span class="username">
                         <div class="d-flex align-items-center">
-                            @if ($post->user->role_id === 2)
+                            @if ($post->user->role_id == 2)
                                 <a href="/teacher/profile/{{ $post->user->id }}">{{ $post->user->name }}</a>
                                 <span class="badge text-white ml-1" style="background-color: #ffbb55">Teacher</span>
-                            @elseif ($post->user->role_id === 3)
+                            @elseif ($post->user->role_id == 3)
                                 <a href="/student/profile/{{ $post->user->id }}">{{ $post->user->name }}</a>
                                 <span class="badge text-white ml-1" style="background-color: #7380ec">Student</span>
                             @else
@@ -28,17 +28,19 @@
                                     class="badge text-white ml-1" style="background-color: #f3797e">Admin</span>
                             @endif
                         </div>
-                        @if (Auth::user()->id === $post->user->id)
+                        @if (Auth::user()->id == $post->user->id || Auth::user()->role->id == 1)
                             <a href="#" class="float-right btn-tool" data-toggle="modal" data-target="#modal-delete"
                                 data-placement="top" title="Delete"><i class="fas fa-times"></i></a>
+                        @endif
+                        @if (Auth::user()->id == $post->user->id)
                             <a href="{{ route('post-update', $post->id) }}" class="float-right btn-tool mr-2"><i
                                     class="fa fa-edit"></i></a>
-                            @if ($post->user->role_id !== 1)
-                                @if (count($reports) === 0)
+                            @if ($post->user->role_id != 1)
+                                @if (count($reports) == 0)
                                     <a href="#" class="float-right btn-tool mr-2" data-toggle="tooltip"
                                         data-placement="top" title="No users reported this post."><i
                                             class="fas fa-exclamation-triangle"></i></a>
-                                @elseif(count($reports) === 1)
+                                @elseif(count($reports) == 1)
                                     <a href="#" class="float-right btn-tool mr-2" data-toggle="tooltip"
                                         data-placement="top" title="1 user reported this post."><i
                                             class="fas fa-exclamation-triangle"></i></a>
@@ -233,9 +235,9 @@
             $('[data-toggle="tooltip"]').tooltip()
 
             @if (Session::has('status'))
-                @if (Session::get('status') === 'success')
+                @if (Session::get('status') == 'success')
                     toastr.success('{{ Session::get('message') }}')
-                @elseif (Session::get('status') === 'fail')
+                @elseif (Session::get('status') == 'fail')
                     toastr.error('{{ Session::get('message') }}')
                 @endif
             @endif

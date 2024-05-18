@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classroom;
+use App\Models\ExpLog;
 use App\Models\ExpSetting;
 use App\Models\Student;
 use App\Models\Task;
@@ -46,23 +47,46 @@ class TaskController extends Controller
         return $badge;
     }
 
-    public function updateExp($profile, $role, $taskCategoryId)
+    public function updateExp($profile, $role, $taskCategoryId, $userId)
     {
         $expSetting = ExpSetting::first();
         $currentExp = $profile->current_exp;
         if ($role == 'student') {
             if ($taskCategoryId == 1) {
                 $currentExp += $expSetting->do_asg;
+                ExpLog::create([
+                    'user_id' => $userId,
+                    'message' =>  'Kamu mendapatkan '. $expSetting->do_asg .' exp dari menyelesaikan sebuah tugas.'
+                ]);
             } else if ($taskCategoryId == 2) {
                 $currentExp += $expSetting->do_exam;
+                ExpLog::create([
+                    'user_id' => $userId,
+                    'message' =>  'Kamu mendapatkan '. $expSetting->do_exam .' exp dari menyelesaikan sebuah ujian.'
+                ]);
             } else {
                 $currentExp += $expSetting->do_project;
+                ExpLog::create([
+                    'user_id' => $userId,
+                    'message' =>  'Kamu mendapatkan '. $expSetting->do_project .' exp dari menyelesaikan sebuah proyek.'
+                ]);
             }
         } else {
             $currentExp += $expSetting->create_task;
+            ExpLog::create([
+                'user_id' => $userId,
+                'message' =>  'Kamu mendapatkan '. $expSetting->create_task .' exp dari membuat sebuah task.'
+            ]);
         }
 
         $badge = $this->checkBadge($profile, $currentExp);
+
+        if($profile->badge_name != $badge) {
+            ExpLog::create([
+                'user_id' => Auth::user()->id,
+                'message' =>  'Selamat, kamu mendapat medali '. $badge .'.'
+            ]);
+        }
 
         $profile->update([
             'current_exp' => $currentExp,
@@ -74,7 +98,21 @@ class TaskController extends Controller
     {
         $expSetting = ExpSetting::first();
         $currentExp = $profile->current_exp - $expSetting->create_task;
+
+        ExpLog::create([
+            'user_id' => Auth::user()->id,
+            'message' =>  'Exp kamu berkurang '. $expSetting->create_task .' exp dikarenakan menghapus task sendiri.'
+        ]);
+
         $badge = $this->checkBadge($profile, $currentExp);
+
+        if($profile->badge_name != $badge) {
+            ExpLog::create([
+                'user_id' => Auth::user()->id,
+                'message' =>  'Kamu mendapat medali '. $badge .'.'
+            ]);
+        }
+        
         $profile->update([
             'current_exp' => $currentExp,
             'badge_name' => $badge,
@@ -101,7 +139,7 @@ class TaskController extends Controller
                 ['task_id', '=', $id],
             ])->first();
 
-            if ($isTaskUploaded === null) {
+            if ($isTaskUploaded == null) {
                 TaskUpload::create([
                     'task_id' => $id,
                     'student_id' => $student->id,
@@ -139,6 +177,7 @@ class TaskController extends Controller
         $validation = $request->validate([
             'title' => ['required'],
             'description' => ['required'],
+            'category_id' => ['required'],
             'deadline' => ['required', 'date', 'after_or_equal:now'],
             'file_upload' => ['required', 'mimes:pdf,zip,ppt,pptx,xlx,xlsx,docx,doc,txt', 'max:2048']
         ]);
@@ -159,7 +198,7 @@ class TaskController extends Controller
                 'question_file' => $file
             ]);
 
-            $this->updateExp($teacher->profile, 'teacher',  $request->category_id);
+            $this->updateExp($teacher->profile, 'teacher',  $request->category_id, $teacher->user->id);
 
             return redirect()->route('teacher-course-detail-assignment', $classroomId)->with(['status' => 'success', 'message' => 'Successfully create task']);
         }
@@ -236,8 +275,8 @@ class TaskController extends Controller
             ]);
         }
         $task = Task::findOrFail($taskId);
-        $student = Student::with('profile')->findOrFail($studentId);
-        $this->updateExp($student->profile, 'student',  $task->task_category_id);
+        $student = Student::with('profile', 'user')->findOrFail($studentId);
+        $this->updateExp($student->profile, 'student',  $task->task_category_id, $student->user->id);
 
         $this->message('Change status done', 'success');
         return back();

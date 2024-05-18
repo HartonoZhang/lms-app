@@ -13,7 +13,7 @@
             <a href="{{ route('post-create-view') }}" class="btn btn-primary">
                 Create Post
             </a>
-            @if (Auth::user()->role_id === 1)
+            @if (Auth::user()->role_id == 1)
                 <a href="{{ route('post-report-view') }}" class="btn btn-danger ml-2">
                     View Report
                 </a>
@@ -28,10 +28,10 @@
                                 <img class="img-circle img-bordered-sm"
                                     src="{{ asset('assets') }}/images/profile/{{ $item->user->image }}" alt="user image">
                                 <span class="username d-flex align-items-center">
-                                    @if ($item->user->role_id === 1)
+                                    @if ($item->user->role_id == 1)
                                         {{ $item->user->name }} <span class="badge text-white ml-1"
                                             style="background-color: #f3797e">Admin</span>
-                                    @elseif($item->user->role_id === 2)
+                                    @elseif($item->user->role_id == 2)
                                         {{ $item->user->name }} <span class="badge text-white ml-1"
                                             style="background-color: #ffbb55">Teacher</span>
                                     @else
@@ -56,7 +56,9 @@
                             </p>
                         </div>
                     @endforeach
-                    {{ $posts->links() }}
+                    <div class="d-flex justify-content-end">
+                        {{ $posts->links() }}
+                    </div>
                 @else
                     <div class="d-flex justify-content-center align-items-center flex-column">
                         <img src="{{ asset('assets') }}/images/icons/no-data.png" alt="no-data">
@@ -86,9 +88,9 @@
     <script type="text/javascript">
         $(function() {
             @if (Session::has('status'))
-                @if (Session::get('status') === 'success')
+                @if (Session::get('status') == 'success')
                     toastr.success('{{ Session::get('message') }}')
-                @elseif (Session::get('status') === 'fail')
+                @elseif (Session::get('status') == 'fail')
                     toastr.error('{{ Session::get('message') }}')
                 @endif
             @endif

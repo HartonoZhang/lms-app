@@ -47,7 +47,7 @@
                                             @php
                                                 $dateUpload = 'Not Submitted';
                                                 foreach ($task->uploads as $upload) {
-                                                    if ($upload->student->user->id === Auth::user()->id) {
+                                                    if ($upload->student->user->id == Auth::user()->id) {
                                                         $dateUpload = $upload->created_at->format('g:i A, d-m-y');
                                                         break;
                                                     }
@@ -59,7 +59,7 @@
                                             @php
                                                 $status = 'Not Submitted';
                                                 foreach ($task->uploads as $upload) {
-                                                    if ($upload->student->user->id === Auth::user()->id) {
+                                                    if ($upload->student->user->id == Auth::user()->id) {
                                                         $status = $upload->status;
                                                         break;
                                                     }
@@ -71,7 +71,7 @@
                                             @php
                                                 $note = '-';
                                                 foreach ($task->uploads as $upload) {
-                                                    if ($upload->student->user->id === Auth::user()->id) {
+                                                    if ($upload->student->user->id == Auth::user()->id) {
                                                         $note = $upload->note;
                                                         break;
                                                     }
@@ -82,15 +82,17 @@
                                         <td>
                                             @php
                                                 $file = '';
+                                                $statusUpload = '';
                                                 foreach ($task->uploads as $upload) {
-                                                    if ($upload->student->user->id === Auth::user()->id) {
+                                                    if ($upload->student->user->id == Auth::user()->id) {
                                                         $file = $upload->file_upload;
+                                                        $statusUpload = $upload->status;
                                                         break;
                                                     }
                                                 }
                                             @endphp
                                             <ul class="list-inline m-0">
-                                                @if ($task->deadline > date('Y-m-d H:i:s'))
+                                                @if ($task->deadline > date('Y-m-d H:i:s') && $statusUpload != 'Done')
                                                     <li class="list-inline-item">
                                                         <a href="#" class="btn btn-primary btn-sm rounded-0"
                                                             data-toggle="modal"
@@ -245,9 +247,9 @@
             }).buttons().container().appendTo('#tabel-assignment_wrapper .col-md-6:eq(0)');
 
             @if (Session::has('status'))
-                @if (Session::get('status') === 'success')
+                @if (Session::get('status') == 'success')
                     toastr.success('{{ Session::get('message') }}')
-                @elseif (Session::get('status') === 'fail')
+                @elseif (Session::get('status') == 'fail')
                     toastr.error('{{ Session::get('message') }}')
                 @endif
             @endif

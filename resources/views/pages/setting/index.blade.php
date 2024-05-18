@@ -15,117 +15,19 @@
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            <li class="nav-item"><a class="nav-link active" href="#organization"
-                                    data-toggle="pill">Organization</a>
-                            </li>
-                            <li class="nav-item"><a class="nav-link" href="#gamification" data-toggle="pill">Gamification
+
+                            <li class="nav-item"><a class="nav-link active" href="#gamification"
+                                    data-toggle="pill">Gamification
                                     EXP</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="#organization"
+                                    data-toggle="pill">Organization</a>
                             </li>
                         </ul>
                     </div>
                     <div class="card-body">
                         <div class="tab-content">
-                            <div class="active tab-pane show fade" id="organization">
-                                <form class="form-horizontal" action={{ route('organization-edit') }} method="POST"
-                                    enctype="multipart/form-data" data-remote="true">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="form-group">
-                                        <label for="inputWebName">Website Name *</label>
-                                        <input type="text" id="inputWebName" class="form-control"
-                                            value="{{ $organization->web_name }}" name="web_name">
-                                        @error('web_name')
-                                            <p class="text-danger mt-0">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputName">Organization Name *</label>
-                                        <input type="text" id="inputName" class="form-control"
-                                            value="{{ $organization->name }}" name="name">
-                                        @error('name')
-                                            <p class="text-danger mt-0">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputDescription">Logo *</label>
-                                        <div class="input-group border-upload">
-                                            <input id="logo" type="file" onchange="readURL(this);"
-                                                class="form-control" name="logo">
-                                            <label id="logo-label" for="logo" class="font-weight-light text-muted">
-                                                {{ $organization->logo ? 'File name: ' . $organization->logo : 'Choose file' }}
-                                            </label>
-                                            <div class="input-group-append">
-                                                <label for="logo" class="btn btn-primary m-0 px-4">
-                                                    <i class="fas fa-logo mr-2"></i>
-                                                    <small class="text-uppercase font-weight-bold">Choose
-                                                        file</small></label>
-                                            </div>
-                                        </div>
-                                        <small id="emailHelp" class="form-text text-muted">Recommended image size is 150px x
-                                            150px</small>
-                                        @error('logo')
-                                            <p class="text-danger mt-0">{{ $message }}</p>
-                                        @enderror
-                                        <div class="row mt-2">
-                                            <div
-                                                class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
-                                                <span>Current Logo</span>
-                                                <img class="img-fluid img-circle mt-2"
-                                                    src="{{ asset('assets') }}/images/organization/{{ $organization->logo }}"
-                                                    alt="User profile picture" style="width: 150px; height: 150px;">
-                                            </div>
-                                            <div
-                                                class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
-                                                <span>New Logo</span>
-                                                <img id="logo-result" src="#" alt=""
-                                                    class="img-fluid img-circle mt-2">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputDescription">Favicon *</label>
-                                        <div class="input-group border-upload">
-                                            <input id="favicon" type="file" onchange="readURL(this);"
-                                                class="form-control" name="favicon">
-                                            <label id="favicon-label" for="favicon" class="font-weight-light text-muted">
-                                                {{ $organization->favicon ? 'File name: ' . $organization->favicon : 'Choose file' }}
-                                            </label>
-                                            <div class="input-group-append">
-                                                <label for="favicon" class="btn btn-primary m-0 px-4">
-                                                    <i class="fas fa-upload mr-2"></i>
-                                                    <small class="text-uppercase font-weight-bold">Choose
-                                                        file</small></label>
-                                            </div>
-                                        </div>
-                                        <small id="emailHelp" class="form-text text-muted">Recommended image size is 16px x
-                                            16px or
-                                            32px
-                                            x 32px</small>
-                                        @error('favicon')
-                                            <p class="text-danger mt-0">{{ $message }}</p>
-                                        @enderror
-                                        <div class="row mt-2">
-                                            <div
-                                                class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
-                                                <span>Current Favicon</span>
-                                                <img class="img-fluid img-circle mt-2"
-                                                    src="{{ asset('assets') }}/images/organization/{{ $organization->favicon }}"
-                                                    alt="favicon" style="width: 150px; height: 150px;">
-                                            </div>
-                                            <div
-                                                class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
-                                                <span>New Favicon</span>
-                                                <img id="favicon-result" src="#" alt=""
-                                                    class="img-fluid img-circle mt-2">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary">Update</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="tab-pane show fade" id="gamification">
+                            <div class="active tab-pane show fade" id="gamification">
                                 <form class="form-horizontal" action="{{ route('exp-setting-edit') }}" method="POST"
                                     enctype="multipart/form-data" data-remote="true">
                                     @csrf
@@ -166,7 +68,8 @@
                                         <div class="form-group col-md-4">
                                             <label for="exp_emerald">Max Exp for Emerald Badge*</label>
                                             <input type="text" id="exp_emerald" class="form-control"
-                                                value="{{ old('exp_emerald', $expSetting->exp_emerald) }}" name="exp_emerald">
+                                                value="{{ old('exp_emerald', $expSetting->exp_emerald) }}"
+                                                name="exp_emerald">
                                             @error('exp_emerald')
                                                 <p class="text-danger my-0">{{ $message }}</p>
                                             @enderror
@@ -210,7 +113,8 @@
                                         <div class="form-group col-md-4">
                                             <label for="create_question">Teacher Question*</label>
                                             <input type="text" id="create_question" class="form-control"
-                                                value="{{ old('create_question', $expSetting->create_question) }}" name="create_question">
+                                                value="{{ old('create_question', $expSetting->create_question) }}"
+                                                name="create_question">
                                             @error('create_question')
                                                 <p class="text-danger my-0">{{ $message }}</p>
                                             @enderror
@@ -218,10 +122,114 @@
                                         <div class="form-group col-md-4">
                                             <label for="create_task">Teacher Task*</label>
                                             <input type="text" id="create_task" class="form-control"
-                                                value="{{  old('create_task', $expSetting->create_task) }}" name="create_task">
+                                                value="{{ old('create_task', $expSetting->create_task) }}"
+                                                name="create_task">
                                             @error('create_task')
                                                 <p class="text-danger my-0">{{ $message }}</p>
                                             @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane show fade" id="organization">
+                                <form class="form-horizontal" action={{ route('organization-edit') }} method="POST"
+                                    enctype="multipart/form-data" data-remote="true">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="form-group">
+                                        <label for="inputWebName">Website Name *</label>
+                                        <input type="text" id="inputWebName" class="form-control"
+                                            value="{{ $organization->web_name }}" name="web_name">
+                                        @error('web_name')
+                                            <p class="text-danger mt-0">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputName">Organization Name *</label>
+                                        <input type="text" id="inputName" class="form-control"
+                                            value="{{ $organization->name }}" name="name">
+                                        @error('name')
+                                            <p class="text-danger mt-0">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputDescription">Logo *</label>
+                                        <div class="input-group border-upload">
+                                            <input id="logo" type="file" onchange="readURL(this);"
+                                                class="form-control" name="logo">
+                                            <label id="logo-label" for="logo" class="font-weight-light text-muted">
+                                                {{ $organization->logo ? 'File name: ' . $organization->logo : 'Choose file' }}
+                                            </label>
+                                            <div class="input-group-append">
+                                                <label for="logo" class="btn btn-primary m-0 px-4">
+                                                    <i class="fas fa-logo mr-2"></i>
+                                                    <small class="text-uppercase font-weight-bold">Choose
+                                                        file</small></label>
+                                            </div>
+                                        </div>
+                                        <small id="emailHelp" class="form-text text-muted">Recommended image size is 150px
+                                            x
+                                            150px</small>
+                                        @error('logo')
+                                            <p class="text-danger mt-0">{{ $message }}</p>
+                                        @enderror
+                                        <div class="row mt-2">
+                                            <div
+                                                class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
+                                                <span>Current Logo</span>
+                                                <img class="img-fluid img-circle mt-2"
+                                                    src="{{ asset('assets') }}/images/organization/{{ $organization->logo }}"
+                                                    alt="User profile picture" style="width: 150px; height: 150px;">
+                                            </div>
+                                            <div
+                                                class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
+                                                <span>New Logo</span>
+                                                <img id="logo-result" src="#" alt=""
+                                                    class="img-fluid img-circle mt-2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputDescription">Favicon *</label>
+                                        <div class="input-group border-upload">
+                                            <input id="favicon" type="file" onchange="readURL(this);"
+                                                class="form-control" name="favicon">
+                                            <label id="favicon-label" for="favicon"
+                                                class="font-weight-light text-muted">
+                                                {{ $organization->favicon ? 'File name: ' . $organization->favicon : 'Choose file' }}
+                                            </label>
+                                            <div class="input-group-append">
+                                                <label for="favicon" class="btn btn-primary m-0 px-4">
+                                                    <i class="fas fa-upload mr-2"></i>
+                                                    <small class="text-uppercase font-weight-bold">Choose
+                                                        file</small></label>
+                                            </div>
+                                        </div>
+                                        <small id="emailHelp" class="form-text text-muted">Recommended image size is 16px
+                                            x
+                                            16px or
+                                            32px
+                                            x 32px</small>
+                                        @error('favicon')
+                                            <p class="text-danger mt-0">{{ $message }}</p>
+                                        @enderror
+                                        <div class="row mt-2">
+                                            <div
+                                                class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
+                                                <span>Current Favicon</span>
+                                                <img class="img-fluid img-circle mt-2"
+                                                    src="{{ asset('assets') }}/images/organization/{{ $organization->favicon }}"
+                                                    alt="favicon" style="width: 150px; height: 150px;">
+                                            </div>
+                                            <div
+                                                class="image-area col-md-6 d-flex flex-column align-items-center justify-content-center">
+                                                <span>New Favicon</span>
+                                                <img id="favicon-result" src="#" alt=""
+                                                    class="img-fluid img-circle mt-2">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -316,9 +324,9 @@
                 });
 
                 @if (Session::has('status'))
-                    @if (Session::get('status') === 'success')
+                    @if (Session::get('status') == 'success')
                         toastr.success('{{ Session::get('message') }}')
-                    @elseif (Session::get('status') === 'fail')
+                    @elseif (Session::get('status') == 'fail')
                         toastr.error('{{ Session::get('message') }}')
                     @endif
                 @endif
