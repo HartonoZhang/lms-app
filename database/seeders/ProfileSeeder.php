@@ -79,84 +79,84 @@ class ProfileSeeder extends Seeder
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
                 "current_exp" => 6000,
-                "badge_name" => "bronze"
+                "badge_name" => "silver"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
                 "current_exp" => 7500,
-                "badge_name" => "bronze"
+                "badge_name" => "silver"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
                 "current_exp" => 11000,
-                "badge_name" => "bronze"
+                "badge_name" => "gold"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
                 "current_exp" => 17000,
-                "badge_name" => "bronze"
+                "badge_name" => "purple"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
                 "current_exp" => 18500,
-                "badge_name" => "bronze"
+                "badge_name" => "purple"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
                 "current_exp" => 21000,
-                "badge_name" => "bronze"
+                "badge_name" => "emerald"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
                 "current_exp" => 7500,
-                "badge_name" => "bronze"
+                "badge_name" => "silver"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
                 "current_exp" => 11500,
-                "badge_name" => "bronze"
+                "badge_name" => "gold"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
                 "current_exp" => 13500,
-                "badge_name" => "bronze"
+                "badge_name" => "gold"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
                 "current_exp" => 12550,
-                "badge_name" => "bronze"
+                "badge_name" => "gold"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
                 "current_exp" => 23050,
-                "badge_name" => "bronze"
+                "badge_name" => "emerald"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
                 "current_exp" => 12100,
-                "badge_name" => "bronze"
+                "badge_name" => "gold"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
@@ -191,14 +191,14 @@ class ProfileSeeder extends Seeder
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
                 "current_exp" => 7000,
-                "badge_name" => "bronze"
+                "badge_name" => "silver"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
                 "current_exp" => 7550,
-                "badge_name" => "bronze"
+                "badge_name" => "silver"
             ],[
                 "address_id" => null,
                 "gender" => "Female",

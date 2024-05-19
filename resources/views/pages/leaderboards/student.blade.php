@@ -97,7 +97,11 @@
                 $bigThree = false;
                 $currentUserId = Auth::user()->id;
                 $leaderboardCount = $datas->count() >= 10 ? 10 : $datas->count();
-                if($first->user->id === $currentUserId || $second->user->id === $currentUserId || $third->user->id === $currentUserId){
+                if (
+                    $first->user->id === $currentUserId ||
+                    $second->user->id === $currentUserId ||
+                    $third->user->id === $currentUserId
+                ) {
                     $bigThree = true;
                 }
             @endphp
@@ -133,7 +137,10 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td class="col-4">{{ $datas[$i]->profile->current_exp }}</td>
+                                <td class="col-4">{{ $datas[$i]->profile->current_exp }}
+                                    <img src="{{ asset('assets') }}/images/badges/{{ $datas[$i]->profile->badge_name }}.png"
+                                        alt="badge" style="width: 50px;">
+                                </td>
                             </tr>
                         @endfor
                         @if ($isCurrentRole && !$isTopTen && !$bigThree)
@@ -162,7 +169,10 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td class="col-4">{{ $thisStudent->profile->current_exp }}</td>
+                                <td class="col-4">{{ $thisStudent->profile->current_exp }}
+                                    <img src="{{ asset('assets') }}/images/badges/{{ $thisStudent->profile->badge_name }}.png"
+                                        alt="badge" style="width: 50px;">
+                                </td>
                             </tr>
                         @endif
                     </tbody>
