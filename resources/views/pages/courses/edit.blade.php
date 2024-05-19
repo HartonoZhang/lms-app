@@ -42,7 +42,7 @@
                             @enderror
                         </div>
                     </div>
-                    <a type="button" href="{{route('course-list')}}" class="btn btn-danger">Cancel</a>
+                    <a type="button" href="{{route('course-list')}}" class="btn btn-secondary">Cancel</a>
                     <button type="submit" class="btn btn-primary">Edit</button>
                 </form>
             </div>

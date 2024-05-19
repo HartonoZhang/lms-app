@@ -52,7 +52,7 @@
                             @enderror
                         </div>
                     </div>
-                    <a type="button" href="{{route('period-list')}}" class="btn btn-danger">Cancel</a>
+                    <a type="button" href="{{route('period-list')}}" class="btn btn-secondary">Cancel</a>
                     <button type="submit" class="btn btn-primary">Edit</button>
                     <script type="text/javascript">
                         var startDate = document.getElementById('startDate');

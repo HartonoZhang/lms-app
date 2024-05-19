@@ -22,224 +22,224 @@ class ProfileSeeder extends Seeder
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 200,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 150,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 300,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 1000,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 450,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 300,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 1500,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 3000,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 6000,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 7500,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 11000,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 17000,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 18500,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 21000,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 7500,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 11500,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 13500,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 12550,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 23050,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 12100,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 1700,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 2000,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 3000,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 4000,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 7000,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 7550,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 2050,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Female",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 3500,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 1000,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 400,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 3950,
                 "badge_name" => "bronze"
             ],[
                 "address_id" => null,
                 "gender" => "Male",
                 "phone_number" => "08123456789",
                 "religion" => "Muslim",
-                "current_exp" => 0,
+                "current_exp" => 4000,
                 "badge_name" => "bronze"
             ],
         ];

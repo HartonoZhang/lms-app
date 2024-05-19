@@ -16,17 +16,17 @@ class ExpSettinngSeeder extends Seeder
     public function run()
     {
         ExpSetting::insert([
-            'exp_bronze' => 0,
-            'exp_silver' => 0,
-            'exp_gold' => 0,
-            'exp_purple' => 0,
-            'exp_emerald' => 0,
-            'do_quest' => 0,
-            'do_asg' => 0,
-            'do_exam' => 0,
-            'do_project' => 0,
-            'create_task' => 0,
-            'create_question' => 0
+            'exp_bronze' => 5000,
+            'exp_silver' => 10000,
+            'exp_gold' => 15000,
+            'exp_purple' => 20000,
+            'exp_emerald' => 25000,
+            'do_quest' => 50,
+            'do_asg' => 100,
+            'do_exam' => 1000,
+            'do_project' => 1500,
+            'create_task' => 250,
+            'create_question' => 50
         ]);
     }
 }
