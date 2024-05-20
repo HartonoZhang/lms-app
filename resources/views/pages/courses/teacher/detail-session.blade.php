@@ -180,8 +180,8 @@
                                                                                 @endphp
                                                                                 <a href={{ $file_href }}
                                                                                     class="btn btn-primary btn-sm rounded-0"
-                                                                                    target="blank"
-                                                                                    data-placement="top" title="Detail">
+                                                                                    target="blank" data-placement="top"
+                                                                                    title="Detail">
                                                                                     <i class="fas fa-link"></i>
                                                                                 </a>
                                                                             </li>
@@ -284,6 +284,9 @@
                                                 @endif
                                             </div>
                                             <div class="tab-pane fade" id="attendance-{{ $item->id }}">
+                                                <button type="button" class="btn btn-warning mr-2"
+                                                    onclick="selectAllAttendance({{ $item->id }})"
+                                                    style="position: absolute; z-index: 99;">Select All</button>
                                                 <form class="form-horizontal"
                                                     action="{{ route('save-attendance', ['id' => $classroom->id, 'sessionId' => $item->id]) }}"
                                                     method="POST" enctype="multipart/form-data" data-remote="true">
@@ -589,6 +592,7 @@
 
 <script type="text/javascript">
     var presentCheckboxes = {};
+    var studentList = {!! $listStudent !!};
 
     function readURL(input) {
         if (input.files && input.files[0]) {
@@ -615,7 +619,21 @@
             }
         }
         $(`#present-list-${sessionId}`).val(presentCheckboxes[sessionId]);
-        console.log($(`#present-list-${sessionId}`).val())
+        // console.log($(`#present-list-${sessionId}`).val())
+    }
+
+    function selectAllAttendance(sessionId) {
+        if (studentList) {
+            studentList.forEach(list => {
+                let st = list.student;
+                if (presentCheckboxes[sessionId] && !presentCheckboxes[sessionId].includes(st.id)) {
+                    presentCheckboxes[sessionId].push(st.id)
+                }
+            })
+        }
+        $(`#present-list-${sessionId}`).closest('form').find('.student-checkbox').prop('checked', true);
+        $(`#present-list-${sessionId}`).val(presentCheckboxes[sessionId]);
+        // console.log(studentList, presentCheckboxes)
     }
 
     $(document).ready(function() {
@@ -638,6 +656,16 @@
                 //         return !checked;
                 //     });
                 // });
+
+                $('.student-checkbox').each(function() {
+                    let el = $(this);
+                    let sessionId = parseInt(el.data("sessionid"));
+                    let studentId = parseInt(el.val());
+                    if (presentCheckboxes[sessionId] && presentCheckboxes[sessionId]
+                        .includes(studentId)) {
+                        el.prop('checked', true);
+                    }
+                })
 
                 $('.student-checkbox').off('change').on('change', function(e) {
                     changeAttendanceList(this);
