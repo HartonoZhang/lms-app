@@ -351,6 +351,7 @@
                                                     </tbody>
                                                 </table>
                                                 <div class="d-flex justify-content-end mt-4">
+                                                    <button type="button" class="btn btn-warning mr-2" onclick="selectAllAttendance({{ $item->id }})">Select All</button>
                                                     <button type="submit" class="btn btn-primary">Save</button>
                                                 </div>
                                             </form>
@@ -589,6 +590,7 @@
 
 <script type="text/javascript">
     var presentCheckboxes = {};
+    var studentList = {!!$listStudent!!};
 
     function readURL(input) {
         if (input.files && input.files[0]) {
@@ -615,7 +617,21 @@
             }
         }
         $(`#present-list-${sessionId}`).val(presentCheckboxes[sessionId]);
-        console.log($(`#present-list-${sessionId}`).val())
+        // console.log($(`#present-list-${sessionId}`).val(), presentCheckboxes)
+    }
+
+    function selectAllAttendance(sessionId) {
+        if (studentList) {
+            studentList.forEach(list => {
+                let st = list.student;
+                if (presentCheckboxes[sessionId] && !presentCheckboxes[sessionId].includes(st.id)) {
+                    presentCheckboxes[sessionId].push(st.id)
+                }
+            })
+        }
+        $(`#present-list-${sessionId}`).closest('form').find('.student-checkbox').prop('checked', true);
+        $(`#present-list-${sessionId}`).val(presentCheckboxes[sessionId]);
+        // console.log(studentList, presentCheckboxes)
     }
 
     $(document).ready(function() {
@@ -638,6 +654,14 @@
                 //         return !checked;
                 //     });
                 // });
+                $('.student-checkbox').each(function() {
+                    let el = $(this);
+                    let sessionId = parseInt(el.data("sessionid"));
+                    let studentId = parseInt(el.val());
+                    if (presentCheckboxes[sessionId] && presentCheckboxes[sessionId].includes(studentId)) {
+                        el.prop('checked',true);
+                    }
+                })
 
                 $('.student-checkbox').off('change').on('change', function(e) {
                     changeAttendanceList(this);
