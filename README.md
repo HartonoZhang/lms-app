@@ -15,7 +15,7 @@ Manfaat untuk membuat aplikasi ini:
 
 ## Setup Aplikasi
 
-Clone dari branch "hz"__
+Clone dari branch "hz"<br />
 Sebelum memulai menjalankan perintah command prompt, harus terlebih dahulu membuat file .env baru di dalam proyek. Lokasi file baru tersebut setingkat dengan file .env.example. Isi dalamnya bisa didapatkan dari copy .env.example yang ada di lokal proyek dan paste ke dalam file .env baru.
 
 Setelah file .env dibuat, maka dapat menjalankan perintah command prompt dibawah ini:
@@ -27,6 +27,6 @@ Setelah file .env dibuat, maka dapat menjalankan perintah command prompt dibawah
 
 ## Anggota Kelompok
 
-2440020272 - Hartono Zhang__
-2440078765 - Fredrick Kho__
-2440026780 - Kenneth Vincent Kwandou__
+2440020272 - Hartono Zhang<br />
+2440078765 - Fredrick Kho<br />
+2440026780 - Kenneth Vincent Kwandou<br />
