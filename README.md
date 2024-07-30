@@ -1,66 +1,32 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Aplikasi LMS dengan fitur Gamifikasi
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi LMS (Learning Management System) berbasis web yang bisa digunakan oleh sekolah dengan fungsi untuk mengatur, memanajemen, mendokumentasi, dan juga mengadministrasi data sekolah. Aplikasi LMS ini dirancang dengan banyak fitur yang membantu dan mendukung proses pembelajaran untuk guru dan murid. Selain dari itu, aplikasi ini juga disematkan dengan sistem gamifikasi dengan elemen gamifikasi yaitu experience (exp), badge, dan leaderboard dimana pelajar mendapatkan experience ketika mengerjakan soal quiz dan tugas yang diberikan pengajar, sedangkan pengajar mendapatkan experience ketika membuat soal quiz dan tugas.
 
-## About Laravel
+Tujuan untuk membuat aplikasi ini:
+- Membuat aplikasi untuk memudahkan proses mengatur, memanajemen, mendokumentasi, dan mengadministrasi data pada sekolah.
+- Membuat aplikasi untuk memudahkan proses kegiatan belajar mengajar untuk guru dan pelajar pada sekolah.
+- Membuat aplikasi yang dapat meningkatkan performa, pengalaman, dan motivasi belajar untuk pelajar pada sekolah dengan gamifikasi.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Manfaat untuk membuat aplikasi ini:
+- Memudahkan administrator dalam mengatur dan memanajemen para guru dan juga para murid.
+- Meningkatkan produktivitas secara keseluruhan dalam pengaturan tugas yang jelas.
+- Memudahkan para guru dan murid dalam melakukan kegiatan belajar
+- Meningkatkan motivasi para murid untuk belajar dan para guru untuk mengajar dengan sistem gamifikasi yang diterapkan pada aplikasi tersebut.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Setup Aplikasi
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Clone dari branch "hz"
+Sebelum memulai menjalankan perintah command prompt, harus terlebih dahulu membuat file .env baru di dalam proyek. Lokasi file baru tersebut setingkat dengan file .env.example. Isi dalamnya bisa didapatkan dari copy .env.example yang ada di lokal proyek dan paste ke dalam file .env baru.
 
-## Learning Laravel
+Setelah file .env dibuat, maka dapat menjalankan perintah command prompt dibawah ini:
+1. composer install
+2. php artisan key:generate
+3. php artisan migrate
+4. php artisan db:seed
+5. php artisan serve
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Anggota Kelompok
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+2440020272 - Hartono Zhang
+2440078765 - Fredrick Kho
+2440026780 - Kenneth Vincent Kwandou
