@@ -15,7 +15,7 @@ Manfaat untuk membuat aplikasi ini:
 
 ## Setup Aplikasi
 
-Clone dari branch "hz"<br />
+Download zip dari branch "hz" atau clone dari branch "hz"<br />
 Sebelum memulai menjalankan perintah command prompt, harus terlebih dahulu membuat file .env baru di dalam proyek. Lokasi file baru tersebut setingkat dengan file .env.example. Isi dalamnya bisa didapatkan dari copy .env.example yang ada di lokal proyek dan paste ke dalam file .env baru.
 
 Setelah file .env dibuat, maka dapat menjalankan perintah command prompt dibawah ini:
